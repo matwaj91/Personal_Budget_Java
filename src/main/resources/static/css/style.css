@@ -1,0 +1,156 @@
+body {
+    background-image: url("/img/background.jpg");
+    height: 100vh;
+    background-size: cover;
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgb(26, 24, 25);
+    letter-spacing: 2px;
+}
+
+h2 {
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgb(26, 24, 25);
+    letter-spacing: 2px;
+}
+
+p {
+    text-indent: 30px;
+    text-shadow: 2px 2px 2px rgba(204, 204, 204, 1);
+}
+
+.container {
+    margin-top: 130px;
+    display: flex;
+    justify-content: center;
+}
+
+#email:focus,
+#password:focus,
+#amount:focus,
+#limitAmount:focus,
+#date:focus,
+#payment:focus,
+#category:focus,
+#comment:focus,
+#dateFrom:focus,
+#dateTo:focus,
+#name:focus {
+    -webkit-box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 1);
+    -moz-box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 1);
+    box-shadow: 0px 0px 10px 2px rgba(204, 204, 204, 1);
+    border: 2px solid #85bb65;
+}
+
+.greenButton {
+    background-color: #85bb65;
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+.greenButton:hover {
+    background-color: #74aa54;
+}
+
+.blackButton {
+    background-color: black;
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+.blackButton:hover {
+    background-color: #222;
+}
+
+.redButton {
+    background-color: rgb(241, 82, 82);
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+.redButton:hover {
+    background-color: rgb(243, 127, 127);
+}
+
+.alert {
+    margin-top: 1px;
+    border: 1px solid black;
+}
+
+.alert-informative {
+    color: black;
+}
+
+.alert-positive {
+    color: #74aa54;
+}
+
+.alert-negative {
+    color: rgb(241, 82, 82);
+}
+
+.error {
+    color: red;
+    font-size: 16px;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: rgb(109, 160, 79);
+}
+
+input[type='radio']:hover,
+input[type='checkbox']:hover {
+    box-shadow: 0 0 5px 0px #74aa54;
+}
+
+.navbar-nav .nav-link {
+    font-family: 'Lato', sans-serif;
+}
+
+.navbar-nav .nav-item:hover .nav-link {
+    text-shadow: 1px 1px 2px rgb(26, 24, 25);
+    color: #74aa54;
+}
+
+.dropdown-item {
+    font-family: 'Lato', sans-serif;
+    color: rgba(0, 0, 0, .55)
+}
+
+.dropdown-item:hover {
+    text-shadow: 1px 1px 2px rgb(26, 24, 25);
+    color: #74aa54;
+    background-color: white;
+}
+
+td,
+th,
+tr,
+th[scope="col"],
+th[scope="row"] {
+    border: 3px solid black;
+}
+
+.category:hover {
+    text-shadow: 1px 1px 2px rgb(26, 24, 25);
+    color: #74aa54;
+    background-color: white;
+}
+
+.flag {
+    height: 40px;
+    width: 40px;
+}
+
+.us {
+    margin-right: 50px;
+}
+
+.pl {
+    margin-left: 50px;
+}
+

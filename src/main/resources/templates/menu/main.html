@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "~{base :: head}">
+</head>
+	<body>
+		<header>
+				<nav class="navbar navbar-light bg-white navbar-expand-md">
+					<a class="navbar-brand " href="#"></a>
+					<button class="navbar-toggler order-first " type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="navigation">
+						<span class="navbar-toggler-icon opacity-75"></span>
+					</button>
+
+					<div class="collapse navbar-collapse justify-content-left " id="mainMenu">
+						<ul class=" navbar-nav h5 p-0 mr-2">
+							<li class="nav-item ">
+								<a class="nav-link active" href="/menu">[[#{main.home}]]</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/Menu/income">[[#{main.addIncome}]]</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/Menu/expense">[[#{main.addExpense}]]</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
+								<ul class="dropdown-menu" aria-labelledby="subMenu">
+									<li>
+										<a class="dropdown-item h5" href="/Menu/currentMonth">[[#{main.currentMonth}]]</a>
+									</li>
+									<li>
+										<a class="dropdown-item h5" href="/Menu/previousMonth">[[#{main.previousMonth}]]</a>
+									</li>
+									<li>
+										<a class="dropdown-item h5" href="/Menu/currentYear">[[#{main.currentYear}]]</a>
+									</li>
+									<li>
+										<button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{main.nonstandard}]]</button>
+									</li>
+								</ul>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="subMenu" aria-haspopup="true">[[#{settings}]]</a>
+								<ul class="dropdown-menu" aria-labelledby="subMenu">
+									<li>
+										<a class="dropdown-item h5" href="/income/changeCategory">[[#{settings.categoriesIncome}]]</a>
+									</li>
+									<li>
+										<a class="dropdown-item h5" href="/expense/changeCategory">[[#{settings.categoriesExpense}]]</a>
+									</li>
+									<li>
+										<a class="dropdown-item h5" href="/setting/changeCategory">[[#{settings.paymentMethods}]]</a>
+									</li>
+									<li>
+										<a class="dropdown-item h5" href="/setting/changeAccount">[[#{settings.user}]]</a>
+									</li>
+								</ul>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="/api/v1/logOut">[[#{logOut}]]</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+					<form action="/Menu/nonstandard" method="post" id="nonstandard">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{dateRange}]]
+									</h5>
+									<button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body h5">
+									<div class="form-group mx-auto">
+										<label for="dateFrom" class="font-weight-normal text-black">[[#{dateFrom}]]</label>
+										<input type="date" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
+									</div>
+									<div class="form-group mx-auto">
+										<label for="dateTo" class="font-weight-normal text-black">[[#{dateTo}]]</label>
+										<input type="date" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetNonstandard()">[[#{close}]]</button>
+									<button type="submit" class="greenButton btn text-white">[[#{checkBalance}]]</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+		</header>
+		<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-{{ message.type }}">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="container-fluid my-2 p-2 h4 mx-auto">
+			<div class="bg-white mt-4 rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-5">
+				<div class="mb-4">
+					<h1 class="display-4 text-center p-0">[[#{title}]]</h1>
+				</div>
+				<div>
+					<p class="text-justify fst-italic lh-lg mb-4">Create monthly, yearly or nonstandard budgets arranged by 
+																  category and keep track of your expenses.
+																  Know when you go over budget and anticipate 
+																  how much money you can spare to meet your targets.
+					</p>
+					<div class="text-center fw-bolder fst-italic m">
+						Take control of your Budget!
+					</div>
+				</div>
+			</div>
+		</div>
+		<footer th:replace = "~{base :: footer}"></footer>
+	</body>
+</html>

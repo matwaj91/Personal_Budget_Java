@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "~{base :: head}">
+</head>
+<body>
+	<section>
+		<header>
+			<div>
+				<h1 class="display-1 text-center p-1">[[#{title}]]</h1>
+			</div>
+		</header>
+	</section>
+	<main>
+		<div class="container mt-1 p-3 h5 mx-auto">
+			<form th:action="@{/api/v1/signup}" th:object="${registrationDto}" method="post" id="formSignup" class="bg-white rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+				<div class="form-group mx-auto">
+					<label for="name" class="font-weight-normal text-black">[[#{name}]]</label>
+					<input type="text" th:field="*{name}" class="form-control font-weight-bold text-dark border-4 error" id="name" name="name" aria-describedby="name" value="">
+					<div class="alert-negative" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+				</div>
+				<div class="form-group mx-auto">
+					<label for="email" class="font-weight-normal text-black">[[#{email.provide}]]</label>
+					<input type="text" th:field="*{email}" class="form-control font-weight-bold text-dark border-4 error" id="email" name="email" aria-describedby="email" value="">
+					<div class="alert-negative" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+					<div th:if="${isUserAlreadyRegistered != null}" class="alert-negative">
+						<div th:text="#{email.taken}"></div>
+					</div>
+				</div>
+				<div class="form-group mx-auto">
+					<label for="password" class="font-weight-normal text-black">[[#{password.provide}]]</label>
+					<input type="password" th:field="*{password}" class="form-control font-weight-bold text-dark border-4 error" id="password" name="password">
+					<div class="alert-negative" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+				</div>
+				<div class="h6">
+					<label class="font-weight-normal text-black">[[#{password.show}]]</label>
+					<i>
+						<span class="bi bi-eye-slash" id="togglePassword"></span>
+					</i>
+				</div>
+				<button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{signup}]]</button>
+				<a href="/api/v1/login" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{backToLogin}]]</a>
+			</form>
+		</div>
+	</main>
+
+		<footer th:replace = "~{base :: footer}"></footer>
+
+		<script src="/js/hideShowPassword.js"></script>
+	</body>
+</html>

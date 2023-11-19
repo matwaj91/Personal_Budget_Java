@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace = "~{base :: head}">
+</head>
+<body>
+	<section>
+		<header>
+			<div>
+				<h1 class="display-1 text-center p-1">[[#{title}]]</h1>
+			</div>
+		</header>
+	</section>
+	<main>
+		<div class="container mt-1 p-3 h5 mx-auto">
+			<form th:action="@{/api/v1/login}" th:object="${loginDto}" method="post" id="formLogin" class="bg-white rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+				<div class="form-group">
+					<label for="email" class="font-weight-normal text-black">[[#{email.provide}]]</label>
+					<input type="text" th:field="*{email}" class="form-control font-weight-bold text-dark border-4 rounded-3 error" id="email" name="email">
+					<div class="alert-negative" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+					<div th:if="${isRegistered == false} and !${#fields.hasErrors('email')}"  class="alert-negative">
+						<div th:text="#{email.exists}"></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password" class="font-weight-normal text-black">[[#{password.provide}]]</label>
+					<input type="password" th:field="*{password}" class="form-control font-weight-bold text-dark border-4 rounded-3 error" id="password" name="password">
+					<div class="alert-negative" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+					<div th:if="${isPasswordValid == false}"  class="alert-negative">
+						<div th:text="#{password.incorrect}"></div>
+					</div>
+				</div>
+				<div class="h6">
+					<label class="font-weight-normal text-black ">[[#{password.show}]]</label>
+					<i>
+						<span class="bi bi-eye-slash" id="togglePassword"></span>
+					</i>
+				</div>
+				<div class="h6 checkbox ">
+					<label class="font-weight-normal text-black">
+						<input type="checkbox" name="remember_me"  checked="checked" />
+						[[#{password.remember}]]
+					</label>
+				</div>
+				<div class="h6">
+					<a href="/password/forgot" class="text-decoration-none text-black">[[#{password.forgot}]]</a>
+				</div>
+				<button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{login}]]</button>
+				<a href="/api/v1/signup" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{createNewAccount}]]</a>
+			</form>
+		</div>
+	</main>
+	<!--<footer th:replace = "~{base :: footer}"></footer>-->
+	<footer th:base = "footer">
+		<div class="d-flex justify-content-center text-center h5 ">
+			[[#{footer}]]
+		</div>
+		<div class="d-flex justify-content-center text-center h5">
+			<a th:href="@{?lang=en}"><img src="/img/usa.png" alt="us" class="flag us"></a>
+			<a th:href="@{?lang=de}"><img src="/img/germany.png" alt="de" class="flag"></a>
+			<a th:href="@{?lang=pl}"><img src="/img/poland.png" alt="pl" class="flag pl"></a>
+		</div>
+	</footer>
+	<script src="/js/hideShowPassword.js"></script>
+	</body>
+</html>
