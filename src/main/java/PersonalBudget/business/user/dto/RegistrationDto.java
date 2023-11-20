@@ -19,5 +19,4 @@ public class RegistrationDto extends UserDto{
 
     @Size(min = 6, message = "{password.six}")
     private String password;
-
 }

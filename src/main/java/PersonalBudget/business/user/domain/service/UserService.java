@@ -5,7 +5,10 @@ import PersonalBudget.business.user.domain.repository.UserRepository;
 import PersonalBudget.business.user.dto.LoginDto;
 import PersonalBudget.business.user.dto.RegistrationDto;
 import PersonalBudget.business.user.dto.UserDto;
+import PersonalBudget.common.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -37,7 +40,9 @@ public class UserService {
         User user = new User(
                 registrationDto.getName(),
                 registrationDto.getEmail(),
-                bCryptPasswordEncoder.encode(registrationDto.getPassword()));
+                bCryptPasswordEncoder.encode(registrationDto.getPassword()),
+                UserRole.USER
+        );
         userRepository.save(user);
     }
 

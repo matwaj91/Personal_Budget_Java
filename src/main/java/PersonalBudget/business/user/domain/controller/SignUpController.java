@@ -2,6 +2,7 @@ package PersonalBudget.business.user.domain.controller;
 
 import PersonalBudget.business.user.domain.service.UserService;
 import PersonalBudget.business.user.dto.RegistrationDto;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,6 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static PersonalBudget.common.security.UserRole.ADMIN;
+import static PersonalBudget.common.security.UserRole.USER;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig { //mechanizm Spring Security oparty jest na filtrach
@@ -23,6 +26,7 @@ public class SecurityConfig { //mechanizm Spring Security oparty jest na filtrac
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(http -> http
                         .requestMatchers("/", "/api/v1/login", "/api/v1/signup").permitAll()
+                        //.requestMatchers("/api/v1/menu", "/api/v1/success").hasRole(USER.name())
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
@@ -33,9 +37,15 @@ public class SecurityConfig { //mechanizm Spring Security oparty jest na filtrac
     public UserDetailsService userDetailsService() {
         UserDetails firstUser = User.withUsername("user")
                 .password(passwordEncoder().encode("password"))
+                .roles(String.valueOf(ADMIN)) //ROLE_ADMIN
                 .build();
 
-        return new InMemoryUserDetailsManager(firstUser);
+        UserDetails secondUser = User.withUsername("user2")
+                .password(passwordEncoder().encode("password2"))
+                .roles(String.valueOf(USER)) //ROLE_USER
+                .build();
+
+        return new InMemoryUserDetailsManager(firstUser, secondUser);
     }
 
     @Bean
