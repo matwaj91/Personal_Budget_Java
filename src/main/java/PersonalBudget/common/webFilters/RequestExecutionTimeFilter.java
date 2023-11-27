@@ -15,7 +15,6 @@ public class RequestExecutionTimeFilter implements Filter {
         long startTime = System.currentTimeMillis();
         chain.doFilter(request, response);
         long endTime = System.currentTimeMillis();
-        log.info("Request execution time: {} ms", endTime - startTime);
     }
 
 }

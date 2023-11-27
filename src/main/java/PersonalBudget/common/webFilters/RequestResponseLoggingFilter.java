@@ -16,9 +16,6 @@ public class RequestResponseLoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
-        log.info("Request: {} {}", req.getMethod(), req.getRequestURI());
         chain.doFilter(request, response);
-        log.info("Response: {}", res.getStatus());
     }
 }

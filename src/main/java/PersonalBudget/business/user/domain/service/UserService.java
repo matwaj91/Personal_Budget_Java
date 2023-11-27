@@ -2,19 +2,18 @@ package PersonalBudget.business.user.domain.service;
 
 import PersonalBudget.business.user.domain.model.User;
 import PersonalBudget.business.user.domain.repository.UserRepository;
-import PersonalBudget.business.user.dto.LoginDto;
 import PersonalBudget.business.user.dto.RegistrationDto;
-import PersonalBudget.business.user.dto.UserDto;
-import PersonalBudget.common.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -25,10 +24,10 @@ public class UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public boolean isEmail(UserDto userDto) {
-        User user = userRepository
-                .findUserByEmail(userDto.getEmail());
-        if (user != null) {
+    public boolean isEmail(RegistrationDto registrationDto) {
+        Optional<User> optionalUser = userRepository
+                .findUserByEmail(registrationDto.getEmail());
+        if (optionalUser.isPresent()) {
             return true;
         } else {
             return false;
@@ -40,25 +39,15 @@ public class UserService {
         User user = new User(
                 registrationDto.getName(),
                 registrationDto.getEmail(),
-                bCryptPasswordEncoder.encode(registrationDto.getPassword()),
-                UserRole.USER
+                bCryptPasswordEncoder.encode(registrationDto.getPassword())
         );
         userRepository.save(user);
     }
 
-    public boolean isLoginValid(LoginDto loginDto) {
-        User user = userRepository.findUserByEmail(loginDto.getEmail());
-        String encodedPassword = user.getPassword();
-        String password = loginDto.getPassword();
-
-        if (bCryptPasswordEncoder.matches(password, encodedPassword)) {
-            Optional<User> optionalUser =
-                    userRepository.findUserByEmailAndPassword(loginDto.getEmail(), encodedPassword);
-            if (optionalUser.isPresent()) {
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(email).orElseThrow(() ->
+                        new UsernameNotFoundException("User not found"));
     }
 }
 

@@ -29,6 +29,7 @@ p {
 }
 
 #email:focus,
+#username:focus,
 #password:focus,
 #amount:focus,
 #limitAmount:focus,
@@ -151,6 +152,6 @@ th[scope="row"] {
 }
 
 .pl {
-    margin-left: 50px;
+    margin-right: 50px;
 }
 

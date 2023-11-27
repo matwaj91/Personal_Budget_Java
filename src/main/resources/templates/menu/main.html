@@ -56,7 +56,7 @@
 								</ul>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" href="/api/v1/logOut">[[#{logOut}]]</a>
+								<a class="nav-link" th:href="@{/api/v1/logout}">[[#{logOut}]]</a>
 							</li>
 						</ul>
 					</div>
@@ -100,13 +100,9 @@
 					<h1 class="display-4 text-center p-0">[[#{title}]]</h1>
 				</div>
 				<div>
-					<p class="text-justify fst-italic lh-lg mb-4">Create monthly, yearly or nonstandard budgets arranged by 
-																  category and keep track of your expenses.
-																  Know when you go over budget and anticipate 
-																  how much money you can spare to meet your targets.
-					</p>
+					<p class="text-justify fst-italic lh-lg mb-4">[[#{description}]]</p>
 					<div class="text-center fw-bolder fst-italic m">
-						Take control of your Budget!
+						[[#{controlBudget}]]
 					</div>
 				</div>
 			</div>
