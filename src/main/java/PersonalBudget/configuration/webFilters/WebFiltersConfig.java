@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class WebFiltersConfiguration {
+public class WebFiltersConfig {
 
     @Bean
     public FilterRegistrationBean<RequestResponseLoggingFilter> requestResponseLoggingFilter() {

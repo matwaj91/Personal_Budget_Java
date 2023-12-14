@@ -1,59 +1,54 @@
 package PersonalBudget.business.user.domain.controller;
 
 import PersonalBudget.business.user.domain.service.UserService;
-import PersonalBudget.business.user.dto.RegistrationDto;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import PersonalBudget.business.user.dto.RegistrationDTO;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class SignUpController {
 
     private final UserService userService;
 
-    @Autowired
-    public SignUpController(UserService userService) {
-        this.userService = userService;
-    }
-
     @GetMapping(value = "/signup")
-    public String showRegisterPage() {
+    public String getSignUpPage() {
         return "signup/signup";
     }
 
-    @ModelAttribute("registrationDto")
-    public RegistrationDto registrationDtoDto() {
-        return new RegistrationDto();
+    @ModelAttribute("registrationDTO")
+    public RegistrationDTO registrationDTO(String name, String email, String password) {
+        return new RegistrationDTO(name, email, password);
     }
 
     @PostMapping(value = "/signup")
-    public String registerNewUser(
-            @Valid @ModelAttribute("registrationDto") @RequestBody RegistrationDto registrationDto,
-            BindingResult bindingResult, Model model, HttpServletResponse response) {
+    public String registerNewUser(@Valid @ModelAttribute("registrationDTO") @RequestBody RegistrationDTO registrationDTO,
+            BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "signup/signup";
         }
-        if(userService.isEmail(registrationDto)) {
-            response.setStatus(HttpStatus.CONFLICT.value());
+        if(userService.isEmail(registrationDTO)) {
             model.addAttribute("isUserAlreadyRegistered", true);
             return "signup/signup";
-        } else {
-            userService.addNewUser(registrationDto);
-            return "redirect:/api/v1/success";
         }
+        userService.addNewUser(registrationDTO);
+        return "redirect:signup/success";
     }
 
-    @GetMapping(value = "/success")
-    public String showSuccessSignUpPage() {
+    @GetMapping(value = "/signup/success")
+    public String getSuccessSignUpPage() {
         return "signup/success";
     }
 }

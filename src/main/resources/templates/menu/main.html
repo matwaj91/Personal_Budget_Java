@@ -13,7 +13,7 @@
 					<div class="collapse navbar-collapse justify-content-left " id="mainMenu">
 						<ul class=" navbar-nav h5 p-0 mr-2">
 							<li class="nav-item ">
-								<a class="nav-link active" href="/menu">[[#{main.home}]]</a>
+								<a class="nav-link" href="/menu">[[#{main.home}]]</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link" href="/Menu/income">[[#{main.addIncome}]]</a>
@@ -25,21 +25,21 @@
 								<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
 								<ul class="dropdown-menu" aria-labelledby="subMenu">
 									<li>
-										<a class="dropdown-item h5" href="/Menu/currentMonth">[[#{main.currentMonth}]]</a>
+										<a class="dropdown-item h5" href="/Menu/currentMonth">[[#{displayBalance.currentMonth}]]</a>
 									</li>
 									<li>
-										<a class="dropdown-item h5" href="/Menu/previousMonth">[[#{main.previousMonth}]]</a>
+										<a class="dropdown-item h5" href="/Menu/previousMonth">[[#{displayBalance.previousMonth}]]</a>
 									</li>
 									<li>
-										<a class="dropdown-item h5" href="/Menu/currentYear">[[#{main.currentYear}]]</a>
+										<a class="dropdown-item h5" href="/Menu/currentYear">[[#{displayBalance.currentYear}]]</a>
 									</li>
 									<li>
-										<button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{main.nonstandard}]]</button>
+										<button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
 									</li>
 								</ul>
 							</li>
 							<li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="subMenu" aria-haspopup="true">[[#{settings}]]</a>
+								<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="subMenu" aria-haspopup="true">[[#{main.settings}]]</a>
 								<ul class="dropdown-menu" aria-labelledby="subMenu">
 									<li>
 										<a class="dropdown-item h5" href="/income/changeCategory">[[#{settings.categoriesIncome}]]</a>
@@ -56,7 +56,7 @@
 								</ul>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" th:href="@{/api/v1/logout}">[[#{logOut}]]</a>
+								<a class="nav-link" th:href="@{/api/v1/logout}">[[#{main.logOut}]]</a>
 							</li>
 						</ul>
 					</div>
@@ -66,43 +66,43 @@
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{dateRange}]]
+									<h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{nonstandard.dateRange}]]
 									</h5>
 									<button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body h5">
 									<div class="form-group mx-auto">
-										<label for="dateFrom" class="font-weight-normal text-black">[[#{dateFrom}]]</label>
+										<label for="dateFrom" class="font-weight-normal text-black">[[#{nonstandard.dateFrom}]]</label>
 										<input type="date" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
 									</div>
 									<div class="form-group mx-auto">
-										<label for="dateTo" class="font-weight-normal text-black">[[#{dateTo}]]</label>
+										<label for="dateTo" class="font-weight-normal text-black">[[#{nonstandard.dateTo}]]</label>
 										<input type="date" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
 									</div>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetNonstandard()">[[#{close}]]</button>
-									<button type="submit" class="greenButton btn text-white">[[#{checkBalance}]]</button>
+									<button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetNonstandard()">[[#{nonstandard.closeButton}]]</button>
+									<button type="submit" class="greenButton btn text-white">[[#{nonstandard.checkBalanceButton}]]</button>
 								</div>
 							</div>
 						</div>
 					</form>
 				</div>
 		</header>
-		<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-{{ message.type }}">
+		<!--<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible  alert-{{ message.type }}">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 				<span aria-hidden="true">&times;</span>
 			</button>
-		</div>
+		</div>!-->
 		<div class="container-fluid my-2 p-2 h4 mx-auto">
 			<div class="bg-white mt-4 rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-5">
 				<div class="mb-4">
 					<h1 class="display-4 text-center p-0">[[#{title}]]</h1>
 				</div>
 				<div>
-					<p class="text-justify fst-italic lh-lg mb-4">[[#{description}]]</p>
+					<p class="text-justify lh-lg mb-4">[[#{main.description}]]</p>
 					<div class="text-center fw-bolder fst-italic m">
-						[[#{controlBudget}]]
+						[[#{main.controlBudget}]]
 					</div>
 				</div>
 			</div>

@@ -9,36 +9,46 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig { //mechanizm Spring Security oparty jest na filtrach
+public class SecurityConfig {
+
+    private static final String URL = "/api/v1";
 
     @Bean
     public SecurityFilterChain basicAuthenticationSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(http -> http
-                        .requestMatchers("/",
-                                         "/api/v1/login",
-                                         "/api/v1/signup",
-                                         "/css/**",
-                                         "/js/**",
-                                         "/img/**",
-                                         "/api/v1/success")
-                        .permitAll()
-                        .anyRequest().authenticated()
-                )
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/api/v1/login")
-                        .defaultSuccessUrl("/api/v1/menu")
-                        .failureUrl("/api/v1/login?error")
-                )
-                .logout(logout -> logout
-                        .deleteCookies("JSESSIONID")
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/api/v1/logout"))
-                );
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                    .authorizeHttpRequests(http -> http.requestMatchers("/",
+                            URL + "/login",
+                            URL + "/signup",
+                            "/css/**",
+                            "/js/**",
+                            "/img/**",
+                            URL + "/signup/success",
+                            URL + "/password/forgot")
+                            .permitAll()
+                            .anyRequest().authenticated()
+                    )
+                    .formLogin(formLogin -> formLogin.loginPage(URL + "/login")
+                            .permitAll()
+                            .defaultSuccessUrl(URL + "/menu", true)
+                            .failureUrl(URL + "/login?error")
+                            .usernameParameter("email")
+                            .passwordParameter("password")
+                    )
+                    .logout(logout -> logout.logoutUrl(URL + "/logout")
+                            .deleteCookies("JSESSIONID", "remember-me")
+                            .clearAuthentication(true)
+                            .invalidateHttpSession(true)
+                            .logoutSuccessUrl(URL + "/login?logout")
+
+                    )
+                    .rememberMe(remember -> remember.key("uniqueAndSecret")
+                            .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(10))
+                    );
         return  httpSecurity.build();
     }
 
