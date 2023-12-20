@@ -12,7 +12,7 @@
 	</section>
 	<main>
 		<div class="container mt-1 p-3 h5 mx-auto">
-			<form th:action="@{/api/v1/signup}" th:object="${registrationDTO}" method="post" id="formSignup" class="bg-white rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+			<form th:action="@{/api/v1/signup}" th:object="${userDTO}" method="post" id="formSignup" class="bg-white rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
 				<div class="form-group mx-auto">
 					<label for="name" class="font-weight-normal text-black">[[#{name.form}]]</label>
 					<input type="text" th:field="*{name}" class="form-control font-weight-bold text-dark border-4 error" id="name" name="name" aria-describedby="name" value="">

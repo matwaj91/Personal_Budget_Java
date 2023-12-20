@@ -1,10 +1,9 @@
 package PersonalBudget.business.user.domain.controller;
 
 import PersonalBudget.business.user.domain.service.UserService;
-import PersonalBudget.business.user.dto.RegistrationDTO;
+import PersonalBudget.business.user.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,23 +26,23 @@ public class SignUpController {
         return "signup/signup";
     }
 
-    @ModelAttribute("registrationDTO")
-    public RegistrationDTO registrationDTO(String name, String email, String password) {
-        return new RegistrationDTO(name, email, password);
+    @ModelAttribute("userDTO")
+    public UserDTO userDTO(String name, String email, String password) {
+        return new UserDTO(name, email, password);
     }
 
     @PostMapping(value = "/signup")
-    public String registerNewUser(@Valid @ModelAttribute("registrationDTO") @RequestBody RegistrationDTO registrationDTO,
+    public String registerNewUser(@Valid @ModelAttribute("userDTO") @RequestBody UserDTO userDTO,
             BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "signup/signup";
         }
-        if(userService.isEmail(registrationDTO)) {
+        if(userService.isEmail(userDTO)) {
             model.addAttribute("isUserAlreadyRegistered", true);
             return "signup/signup";
         }
-        userService.addNewUser(registrationDTO);
+        userService.addNewUser(userDTO);
         return "redirect:signup/success";
     }
 

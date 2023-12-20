@@ -1,11 +1,10 @@
 package PersonalBudget.business.user.domain.service;
 
+import PersonalBudget.business.user.domain.mapper.Mapper;
 import PersonalBudget.business.user.domain.model.UserEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
-import PersonalBudget.business.user.dto.RegistrationDTO;
+import PersonalBudget.business.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,12 +18,12 @@ import java.util.Optional;
 public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
+    private final Mapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ModelMapper modelMapper;
 
-    public boolean isEmail(RegistrationDTO registrationDto) {
+    public boolean isEmail(UserDTO userDTO) {
         Optional<UserEntity> optionalUser = userRepository
-                .findUserByEmail(registrationDto.email());
+                .findUserByEmail(userDTO.email());
         if (optionalUser.isPresent()) {
             return true;
         } else {
@@ -32,16 +31,8 @@ public class UserService implements UserDetailsService{
         }
     }
 
-    public void addNewUser(RegistrationDTO registrationDTO) {
-        String encodedPassword = bCryptPasswordEncoder.encode(registrationDTO.password());
-
-        UserEntity userEntity = modelMapper.map(registrationDTO, UserEntity.class);
-        /*userEntity = new UserEntity().builder()
-                .name(registrationDTO.name())
-                .email(registrationDTO.email())
-                .password(encodedPassword)
-                .build();*/
-
+    public void addNewUser(UserDTO userDTO) {
+        UserEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder);
         userRepository.save(userEntity);
     }
 
