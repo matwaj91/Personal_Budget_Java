@@ -22,9 +22,7 @@ public class UserService implements UserDetailsService{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public boolean isEmail(UserDTO userDTO) {
-        Optional<UserEntity> optionalUser = userRepository
-                .findUserByEmail(userDTO.email());
-        if (optionalUser.isPresent()) {
+        if (userRepository.existsByEmail(userDTO.email())) {
             return true;
         } else {
             return false;
