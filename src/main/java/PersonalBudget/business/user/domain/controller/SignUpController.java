@@ -48,6 +48,6 @@ public class SignUpController {
 
     @GetMapping(value = "/signup/success")
     public String getSuccessSignUpPage() {
-        return "signup/success";
+        return "signup/success";   
     }
 }
