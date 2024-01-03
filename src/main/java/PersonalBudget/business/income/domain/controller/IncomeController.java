@@ -1,6 +1,7 @@
 package PersonalBudget.business.income.domain.controller;
 
 import PersonalBudget.business.income.domain.service.IncomeService;
+import PersonalBudget.business.income.domain.service.IncomeTemplateService;
 import PersonalBudget.business.income.dto.IncomeDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,20 +13,21 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/menu/addIncome")
+@RequestMapping("/api/v1/menu/income")
 public class IncomeController {
 
     private final IncomeService incomeService;
+    private final IncomeTemplateService incomeTemplateService;
+    private static final String INCOME = "menu/income";
+    private static final String REDIRECT  = "redirect:income/success";
+
 
     @GetMapping()
-    public String getAddIncomePage(Model model) {
-        List<String> incomeCategories = incomeService.getCategoriesAssignedToUser();
-        model.addAttribute("incomeCategories", incomeCategories);
-        return "menu/addIncome";
+    public String getIncomePage(Model model) {
+        incomeTemplateService.addIncomeCategoriesAttribute(model);
+        return INCOME;
     }
 
     @ModelAttribute("incomeDTO")
@@ -36,20 +38,18 @@ public class IncomeController {
     @PostMapping()
     public String getProperPageAfterAddingIncome(@Valid @ModelAttribute("incomeDTO") IncomeDTO incomeDTO,
                                            BindingResult bindingResult, Model model) {
-        List<String> incomeCategories = incomeService.getCategoriesAssignedToUser();
-        model.addAttribute("incomeCategories", incomeCategories);
+        incomeTemplateService.addIncomeCategoriesAttribute(model);
         if (bindingResult.hasErrors()) {
-            return "menu/addIncome";
+            return INCOME;
         }
         incomeService.addIncome(incomeDTO);
-        return "redirect:addIncome/success";
+        return REDIRECT;
     }
 
     @GetMapping(value = "/success")
     public String getIncomeSuccessPage(Model model) {
-        model.addAttribute("addedIncome","addedIncome");
-        List<String> incomeCategories = incomeService.getCategoriesAssignedToUser();
-        model.addAttribute("incomeCategories", incomeCategories);
-        return "menu/addIncome";
+        incomeTemplateService.addIncomeAttribute(model);
+        incomeTemplateService.addIncomeCategoriesAttribute(model);
+        return INCOME;
     }
 }

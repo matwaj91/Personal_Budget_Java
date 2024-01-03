@@ -1,6 +1,7 @@
 package PersonalBudget.business.user.domain.controller;
 
 import PersonalBudget.business.user.domain.service.UserService;
+import PersonalBudget.business.user.domain.service.UserTemplateService;
 import PersonalBudget.business.user.dto.UserDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SignUpController {
 
     private final UserService userService;
+    private final UserTemplateService userTemplateService;
+    public static final String SIGNUP = "signup/signup";
+    public static final String SUCCESS = "signup/success";
+    public static final String REDIRECT = "redirect:signup/success";
+
 
     @GetMapping(value = "/signup")
     public String getSignUpPage() {
-        return "signup/signup";
+        return SIGNUP;
     }
 
     @ModelAttribute("userDTO")
@@ -35,18 +41,18 @@ public class SignUpController {
     public String getProperPageAfterSignUp(@Valid @ModelAttribute("userDTO") @RequestBody UserDTO userDTO,
                                            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "signup/signup";
+            return SIGNUP;
         }
         if(userService.isEmail(userDTO)) {
-            model.addAttribute("isUserAlreadyRegistered", true);
-            return "signup/signup";
+            userTemplateService.addEmailVerificationAttribute(model);
+            return SIGNUP;
         }
         userService.addNewUser(userDTO);
-        return "redirect:signup/success";
+        return REDIRECT;
     }
 
     @GetMapping(value = "/signup/success")
     public String getSuccessSignUpPage() {
-        return "signup/success";   
+        return SUCCESS;
     }
 }

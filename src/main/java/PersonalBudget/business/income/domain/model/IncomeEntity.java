@@ -19,25 +19,27 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "incomes")
+@Table(name = "income")
 public class IncomeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "income_seq")
-    @SequenceGenerator(name = "income_seq",
-            sequenceName = "income_seq",
-            allocationSize = 1)
-    @Column(columnDefinition = "serial")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_seq")
+    @SequenceGenerator(name = "income_seq", sequenceName = "income_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
 
-    private Long user_id;
+    @Column(name = "user_id")
+    private Long userId;
 
-    private Long income_category_assigned_to_user_id;
+    @Column(name = "income_category_assigned_to_user")
+    private Long assignedIncomeCategory;
 
+    @Column(name = "amount")
     private String amount;
 
-    private String date_of_income;
+    @Column(name = "date_of_income")
+    private String incomeDate;
 
-    private String income_comment;
+    @Column(name = "income_comment")
+    private String incomeComment;
 }
