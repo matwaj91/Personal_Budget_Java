@@ -33,8 +33,7 @@ public class SignUpController {
 
     @PostMapping(value = "/signup")
     public String getProperPageAfterSignUp(@Valid @ModelAttribute("userDTO") @RequestBody UserDTO userDTO,
-            BindingResult bindingResult, Model model) {
-
+                                           BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "signup/signup";
         }

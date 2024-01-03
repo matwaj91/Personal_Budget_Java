@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +27,12 @@ import java.util.Collection;
 public class UserEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "users_seq")
+    @SequenceGenerator(name = "users_seq",
+            sequenceName = "users_seq",
+            allocationSize = 1)
+    @Column(columnDefinition = "serial") //INSERT statement can simply omit the id column:
     private Long id;
 
     private String name;
