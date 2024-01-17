@@ -23,8 +23,8 @@ import lombok.Setter;
 public class IncomeCategoryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_seq")
-    @SequenceGenerator(name = "category_seq", sequenceName = "category_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_category_seq")
+    @SequenceGenerator(name = "income_category_seq", sequenceName = "income_category_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

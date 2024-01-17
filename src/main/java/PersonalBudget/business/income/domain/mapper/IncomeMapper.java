@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class IncomeMapper {
 
+
     public IncomeEntity mapIncomeDTOToIncomeEntity(IncomeDTO incomeDTO, Long userId, Long userIncomeCategory) {
         return IncomeEntity.builder()
                 .userId(userId)

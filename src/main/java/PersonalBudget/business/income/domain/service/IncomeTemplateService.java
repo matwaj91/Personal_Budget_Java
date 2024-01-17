@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 
 import java.util.List;
 
-
 @RequiredArgsConstructor
 @Service
 public class IncomeTemplateService {
@@ -19,6 +18,6 @@ public class IncomeTemplateService {
     }
 
     public void addIncomeAttribute(Model model) {
-        model.addAttribute("addedIncome",true);
+        model.addAttribute("addedIncome", true);
     }
 }

@@ -7,6 +7,6 @@ import org.springframework.ui.Model;
 public class UserTemplateService {
 
     public void addEmailVerificationAttribute(Model model) {
-        model.addAttribute("isUserAlreadyRegistered",true);
+        model.addAttribute("isUserAlreadyRegistered", true);
     }
 }

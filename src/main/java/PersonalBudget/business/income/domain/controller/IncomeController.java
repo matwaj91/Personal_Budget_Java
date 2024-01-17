@@ -20,14 +20,14 @@ public class IncomeController {
 
     private final IncomeService incomeService;
     private final IncomeTemplateService incomeTemplateService;
-    private static final String INCOME = "menu/income";
-    private static final String REDIRECT  = "redirect:income/success";
-
+    private static final String INCOME_PAGE = "menu/income";
+    private static final String INCOME_SUCCESS_PAGE = "income/success";
+    private static final String REDIRECT_INCOME_SUCCESS_PAGE  = "redirect:" + INCOME_SUCCESS_PAGE;
 
     @GetMapping()
     public String getIncomePage(Model model) {
         incomeTemplateService.addIncomeCategoriesAttribute(model);
-        return INCOME;
+        return INCOME_PAGE;
     }
 
     @ModelAttribute("incomeDTO")
@@ -40,16 +40,16 @@ public class IncomeController {
                                            BindingResult bindingResult, Model model) {
         incomeTemplateService.addIncomeCategoriesAttribute(model);
         if (bindingResult.hasErrors()) {
-            return INCOME;
+            return INCOME_PAGE;
         }
         incomeService.addIncome(incomeDTO);
-        return REDIRECT;
+        return REDIRECT_INCOME_SUCCESS_PAGE;
     }
 
     @GetMapping(value = "/success")
     public String getIncomeSuccessPage(Model model) {
         incomeTemplateService.addIncomeAttribute(model);
         incomeTemplateService.addIncomeCategoriesAttribute(model);
-        return INCOME;
+        return INCOME_PAGE;
     }
 }

@@ -25,11 +25,11 @@ import java.util.Collections;
 @Builder
 @Entity
 @Table(name = "user_account")
-public class UserEntity implements UserDetails {
+public class UserAccountEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_account_seq")
+    @SequenceGenerator(name = "user_account_seq", sequenceName = "user_account_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

@@ -1,5 +1,6 @@
 package PersonalBudget.business.user.domain.controller;
 
+import PersonalBudget.business.income.domain.IncomeFacade;
 import PersonalBudget.business.user.domain.service.UserService;
 import PersonalBudget.business.user.domain.service.UserTemplateService;
 import PersonalBudget.business.user.dto.UserDTO;
@@ -22,14 +23,14 @@ public class SignUpController {
 
     private final UserService userService;
     private final UserTemplateService userTemplateService;
-    public static final String SIGNUP = "signup/signup";
-    public static final String SUCCESS = "signup/success";
-    public static final String REDIRECT = "redirect:signup/success";
-
+    private final IncomeFacade incomeFacade;
+    public static final String SIGNUP_PAGE = "signup/signup";
+    public static final String SIGNUP_SUCCESS_PAGE = "signup/success";
+    public static final String REDIRECT_SIGNUP_SUCCESS_PAGE = "redirect:" + SIGNUP_SUCCESS_PAGE;
 
     @GetMapping(value = "/signup")
     public String getSignUpPage() {
-        return SIGNUP;
+        return SIGNUP_PAGE;
     }
 
     @ModelAttribute("userDTO")
@@ -41,18 +42,19 @@ public class SignUpController {
     public String getProperPageAfterSignUp(@Valid @ModelAttribute("userDTO") @RequestBody UserDTO userDTO,
                                            BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return SIGNUP;
+            return SIGNUP_PAGE;
         }
         if(userService.isEmail(userDTO)) {
             userTemplateService.addEmailVerificationAttribute(model);
-            return SIGNUP;
+            return SIGNUP_PAGE;
         }
         userService.addNewUser(userDTO);
-        return REDIRECT;
+        incomeFacade.addDefaultCategoriesForUser(userDTO.email());
+        return REDIRECT_SIGNUP_SUCCESS_PAGE;
     }
 
     @GetMapping(value = "/signup/success")
     public String getSuccessSignUpPage() {
-        return SUCCESS;
+        return SIGNUP_SUCCESS_PAGE;
     }
 }
