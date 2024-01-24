@@ -13,8 +13,4 @@ public class UserFacade {
     public Long fetchLoggedInUserId() {
         return userService.getCurrentLoggedInUserId();
     }
-
-    public Long fetchNewUserId(String email) {
-        return userService.getPreviouslyAddedUserId(email);
-    }
 }

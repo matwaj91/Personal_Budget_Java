@@ -3,7 +3,7 @@ package PersonalBudget.business.user.domain.service;
 import PersonalBudget.business.user.domain.mapper.UserMapper;
 import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
-import PersonalBudget.business.user.domain.service.exception.UserIdNotFoundException;
+import PersonalBudget.business.user.domain.service.exception.UserNotFoundException;
 import PersonalBudget.business.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -26,28 +26,23 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByEmail(userDTO.email());
     }
 
-    public void addNewUser(UserDTO userDTO) {
+    public Long addNewUser(UserDTO userDTO) {
         UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder);
-        userRepository.save(userEntity);
-    }
-
-    public Long getPreviouslyAddedUserId(String email) {
-        return userRepository.findIdByEmail(email).orElseThrow(() ->
-                new UserIdNotFoundException("User id not found"));
+        return userRepository.save(userEntity).getId();
     }
 
     /**
      * retrieve the currently logged-in user details
      *
      * @return id of currently logged-in user
-     * @throws UserIdNotFoundException if user id will not be found
+     * @throws UserNotFoundException if user id will not be found
      */
     public Long getCurrentLoggedInUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
         return userRepository.findIdByEmail(email).orElseThrow(() ->
-                new UserIdNotFoundException("User id not found"));
+                new UserNotFoundException("User not found"));
     }
 
     @Override

@@ -48,8 +48,8 @@ public class SignUpController {
             userTemplateService.addEmailVerificationAttribute(model);
             return SIGNUP_PAGE;
         }
-        userService.addNewUser(userDTO);
-        incomeFacade.addDefaultCategoriesForUser(userDTO.email());
+        Long id = userService.addNewUser(userDTO);
+        incomeFacade.addDefaultCategoriesForUser(id);
         return REDIRECT_SIGNUP_SUCCESS_PAGE;
     }
 
