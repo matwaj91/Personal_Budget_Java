@@ -12,8 +12,8 @@ import PersonalBudget.business.user.domain.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @RequiredArgsConstructor
@@ -39,18 +39,11 @@ public class IncomeService {
     }
 
     public List<IncomeCategoryEntity> buildDefaultCategories(Long userId) {
-        return Arrays.stream(DefaultCategory.values()).map(defaultCategory -> IncomeCategoryEntity.builder()
+        return Stream.of(DefaultCategory.values()).map(defaultCategory -> IncomeCategoryEntity.builder()
                 .userId(userId)
                 .name(defaultCategory.toString().toLowerCase())
                 .build())
                 .toList();
-
-        /*return DefaultCategory.stream().map(defaultCategory -> IncomeCategoryEntity.builder()
-                .userId(userId)
-                .name(defaultCategory.toString().toLowerCase())
-                .build())
-                .toList();
-         */
     }
 
     public void addDefaultCategoriesToUserAccount(Long userId) {

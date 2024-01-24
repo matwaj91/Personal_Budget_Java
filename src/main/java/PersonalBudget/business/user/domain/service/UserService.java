@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(userEntity);
     }
 
-    public Long getNewUserId(String email) {
+    public Long getPreviouslyAddedUserId(String email) {
         return userRepository.findIdByEmail(email).orElseThrow(() ->
                 new UserIdNotFoundException("User id not found"));
     }
@@ -40,7 +40,7 @@ public class UserService implements UserDetailsService {
      * retrieve the currently logged-in user details
      *
      * @return id of currently logged-in user
-     * @throws exception if user Id will not be found
+     * @throws UserIdNotFoundException if user id will not be found
      */
     public Long getCurrentLoggedInUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

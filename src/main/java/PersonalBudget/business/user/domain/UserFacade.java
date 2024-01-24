@@ -4,8 +4,6 @@ import PersonalBudget.business.user.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class UserFacade {
@@ -17,6 +15,6 @@ public class UserFacade {
     }
 
     public Long fetchNewUserId(String email) {
-        return userService.getNewUserId(email);
+        return userService.getPreviouslyAddedUserId(email);
     }
 }
