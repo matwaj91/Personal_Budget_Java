@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Getter
 @Setter
@@ -23,28 +24,27 @@ import java.util.Collection;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "users")
-public class UserEntity implements UserDetails {
+@Table(name = "user_account")
+public class UserAccountEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "users_seq")
-    @SequenceGenerator(name = "users_seq",
-            sequenceName = "users_seq",
-            allocationSize = 1)
-    @Column(columnDefinition = "serial") //INSERT statement can simply omit the id column:
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_account_seq")
+    @SequenceGenerator(name = "user_account_seq", sequenceName = "user_account_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
-    @Column(unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
+    @Column(name = "password")
     private String password;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.emptyList();
     }
 
     @Override

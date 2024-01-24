@@ -1,11 +1,13 @@
 package PersonalBudget.business.user.domain.service;
 
-import PersonalBudget.business.income.domain.repository.IncomeCategoryRepository;
 import PersonalBudget.business.user.domain.mapper.UserMapper;
-import PersonalBudget.business.user.domain.model.UserEntity;
+import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
+import PersonalBudget.business.user.domain.service.exception.UserNotFoundException;
 import PersonalBudget.business.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,23 +19,30 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final IncomeCategoryRepository incomeCategoryRepository;
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public boolean isEmail(UserDTO userDTO) {
-        if (userRepository.existsByEmail(userDTO.email())) {
-            return true;
-        } else {
-            return false;
-        }
+        return userRepository.existsByEmail(userDTO.email());
     }
 
-    public void addNewUser(UserDTO userDTO) {
-        UserEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder);
-        userRepository.save(userEntity);
-        Long userId = userRepository.findIdByEmail(userDTO.email());
-        incomeCategoryRepository.addDefaultCategories(userId);
+    public Long addNewUser(UserDTO userDTO) {
+        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder);
+        return userRepository.save(userEntity).getId();
+    }
+
+    /**
+     * retrieve the currently logged-in user details
+     *
+     * @return id of currently logged-in user
+     * @throws UserNotFoundException if user id will not be found
+     */
+    public Long getCurrentLoggedInUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String email = userDetails.getUsername();
+        return userRepository.findIdByEmail(email).orElseThrow(() ->
+                new UserNotFoundException("User not found"));
     }
 
     @Override

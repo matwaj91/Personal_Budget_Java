@@ -19,19 +19,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "incomes_category_assigned_to_users")
+@Table(name = "income_category")
 public class IncomeCategoryEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-                    generator = "category_seq")
-    @SequenceGenerator(name = "category_seq",
-                    sequenceName = "category_seq",
-                    allocationSize = 1)
-    @Column(columnDefinition = "serial") //INSERT statement can simply omit the id column
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_category_seq")
+    @SequenceGenerator(name = "income_category_seq", sequenceName = "income_category_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
 
-    private Long user_id;
+    @Column(name = "user_id")
+    private Long userId;
 
+    @Column(name = "name")
     private String name;
 }
