@@ -1,14 +1,16 @@
-package PersonalBudget.business.income.dto;
+package PersonalBudget.business.expense.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 
-public record IncomeDTO(
+public record ExpenseDTO(
 
         @NotEmpty(message = "{amount.empty}")
         String amount,
         @NotEmpty(message = "{date.empty}")
-        String incomeDate,
+        String expenseDate,
+        @NotEmpty(message = "{payment.empty}")
+        String paymentMethod,
         @NotEmpty(message = "{category.empty}")
         String category,
-        String incomeComment) {
+        String expenseComment) {
 }

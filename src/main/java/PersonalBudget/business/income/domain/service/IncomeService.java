@@ -1,12 +1,12 @@
 package PersonalBudget.business.income.domain.service;
 
 import PersonalBudget.business.income.domain.mapper.IncomeMapper;
-import PersonalBudget.business.income.domain.model.DefaultCategory;
+import PersonalBudget.business.income.domain.model.IncomeDefaultCategory;
 import PersonalBudget.business.income.domain.model.IncomeCategoryEntity;
 import PersonalBudget.business.income.domain.model.IncomeEntity;
 import PersonalBudget.business.income.domain.repository.IncomeCategoryRepository;
 import PersonalBudget.business.income.domain.repository.IncomeRepository;
-import PersonalBudget.business.income.domain.service.exception.CategoryIdNotFoundException;
+import PersonalBudget.business.income.domain.service.exception.IncomeCategoryIdNotFoundException;
 import PersonalBudget.business.income.dto.IncomeDTO;
 import PersonalBudget.business.user.domain.UserFacade;
 import lombok.RequiredArgsConstructor;
@@ -33,13 +33,13 @@ public class IncomeService {
     public void addIncome(IncomeDTO incomeDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
         Long userIncomeCategory = incomeCategoryRepository.findCategoryIdByUserIdAndCategoryName(userId, incomeDTO.category()).orElseThrow(() ->
-                new CategoryIdNotFoundException("Category id not found"));
+                new IncomeCategoryIdNotFoundException("Category id not found"));
         IncomeEntity incomeEntity = incomeMapper.mapIncomeDTOToIncomeEntity(incomeDTO, userId, userIncomeCategory);
         incomeRepository.save(incomeEntity);
     }
 
     public List<IncomeCategoryEntity> buildDefaultCategories(Long userId) {
-        return Stream.of(DefaultCategory.values()).map(defaultCategory -> IncomeCategoryEntity.builder()
+        return Stream.of(IncomeDefaultCategory.values()).map(defaultCategory -> IncomeCategoryEntity.builder()
                 .userId(userId)
                 .name(defaultCategory.toString().toLowerCase())
                 .build())

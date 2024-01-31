@@ -1,5 +1,6 @@
 package PersonalBudget.business.user.domain.controller;
 
+import PersonalBudget.business.expense.domain.ExpenseFacade;
 import PersonalBudget.business.income.domain.IncomeFacade;
 import PersonalBudget.business.user.domain.service.UserService;
 import PersonalBudget.business.user.domain.service.UserTemplateService;
@@ -24,6 +25,7 @@ public class SignUpController {
     private final UserService userService;
     private final UserTemplateService userTemplateService;
     private final IncomeFacade incomeFacade;
+    private final ExpenseFacade expenseFacade;
     public static final String SIGNUP_PAGE = "signup/signup";
     public static final String SIGNUP_SUCCESS_PAGE = "signup/success";
     public static final String REDIRECT_SIGNUP_SUCCESS_PAGE = "redirect:" + SIGNUP_SUCCESS_PAGE;
@@ -49,7 +51,9 @@ public class SignUpController {
             return SIGNUP_PAGE;
         }
         Long id = userService.addNewUser(userDTO);
-        incomeFacade.addDefaultCategoriesForUser(id);
+        incomeFacade.addDefaultIncomeCategoriesForUser(id);
+        expenseFacade.addDefaultExpenseCategoriesForUser(id);
+        expenseFacade.addDefaultPaymentMethodsForUser(id);
         return REDIRECT_SIGNUP_SUCCESS_PAGE;
     }
 
