@@ -26,6 +26,7 @@ public class SignUpController {
     private final UserTemplateService userTemplateService;
     private final IncomeFacade incomeFacade;
     private final ExpenseFacade expenseFacade;
+
     public static final String SIGNUP_PAGE = "signup/signup";
     public static final String SIGNUP_SUCCESS_PAGE = "signup/success";
     public static final String REDIRECT_SIGNUP_SUCCESS_PAGE = "redirect:" + SIGNUP_SUCCESS_PAGE;

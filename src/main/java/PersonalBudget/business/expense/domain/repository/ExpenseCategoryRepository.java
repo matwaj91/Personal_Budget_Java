@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface ExpenseCategoryRepository extends JpaRepository<ExpenseCategoryEntity, Long> {
 
     @Query(value = "select e.name from ExpenseCategoryEntity e where e.userId = :userId")
-    List<String> findAllExpenseCategoryName(@Param("userId") Long userId);
+    List<String> findAllExpenseCategoryNames(@Param("userId") Long userId);
 
     @Query(value = "select e.id from ExpenseCategoryEntity e where e.userId = :userId AND e.name = :category")
-    Optional<Long> findExpenseCategoryIdByUserIdAndCategoryName(@Param("userId") Long userId, @Param("category") String category);
+    Optional<ExpenseCategoryEntity> findExpenseCategoryIdByUserIdAndCategoryName(@Param("userId") Long userId, @Param("category") String category);
 }

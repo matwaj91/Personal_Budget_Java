@@ -4,11 +4,11 @@ import jakarta.validation.constraints.NotEmpty;
 
 public record IncomeDTO(
 
-        @NotEmpty(message = "{amount.empty}")
+        @NotEmpty(message = "{income.amount.empty}")
         String amount,
-        @NotEmpty(message = "{date.empty}")
+        @NotEmpty(message = "{income.date.empty}")
         String incomeDate,
-        @NotEmpty(message = "{category.empty}")
+        @NotEmpty(message = "{income.category.empty}")
         String category,
         String incomeComment) {
 }

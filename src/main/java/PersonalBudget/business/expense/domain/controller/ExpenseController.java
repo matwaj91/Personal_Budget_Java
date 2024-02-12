@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/menu/expense")
@@ -25,7 +28,7 @@ public class ExpenseController {
     }
 
     @ModelAttribute("expenseDTO")
-    public ExpenseDTO expenseDTO(String amount, String expenseDate, String paymentMethod, String category, String expenseComment) {
+    public ExpenseDTO expenseDTO(BigDecimal amount, LocalDate expenseDate, String paymentMethod, String category, String expenseComment) {
         return new ExpenseDTO(amount, expenseDate, paymentMethod, category, expenseComment);
     }
 

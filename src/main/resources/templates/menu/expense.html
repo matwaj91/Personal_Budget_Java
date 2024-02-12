@@ -104,19 +104,19 @@
                 <h1 class="display-6 text-center p-0">[[#{expense.form}]]</h1>
             </div>
             <div class="form-group mx-auto">
-                <label for="amount" class="font-weight-normal text-black">[[#{form.amount}]]</label>
+                <label for="amount" class="font-weight-normal text-black">[[#{expense.form.amount}]]</label>
                 <input type="number" th:field="*{amount}" min="0" step="0.01" class="form-control font-weight-bold text-dark border-4" id="amount" name="amount" aria-describedby="amount">
                 <div class="alert-negative" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></div>
             </div>
             <div class="form-group mx-auto">
-                <label for="date" class="font-weight-normal text-black">[[#{form.date}]]</label>
+                <label for="date" class="font-weight-normal text-black">[[#{expense.form.date}]]</label>
                 <input type="date" th:field="*{expenseDate}" class="form-control font-weight-bold text-dark border-4" id="date" name="date" aria-describedby="date">
                 <div class="alert-negative" th:if="${#fields.hasErrors('expenseDate')}" th:errors="*{expenseDate}"></div>
             </div>
             <div class="form-group mx-auto">
-                <label for="payment" class="font-weight-normal text-black">[[#{form.payment}]]</label>
+                <label for="payment" class="font-weight-normal text-black">[[#{expense.form.payment}]]</label>
                 <select th:field="*{paymentMethod}" class="form-control text-dark border-4 font-weight-bold" id="payment" size="1" name="payment" aria-describedby="payment">
-                    <option value="">[[#{form.payment.choice}]]</option>
+                    <option value="">[[#{expense.form.payment.choice}]]</option>
                     <option th:each="paymentMethod : ${paymentMethods}"
                             th:text="${paymentMethod}"
                             th:value="${paymentMethod}">
@@ -124,9 +124,9 @@
                 <div class="alert-negative" th:if="${#fields.hasErrors('paymentMethod')}" th:errors="*{paymentMethod}"></div>
             </div>
             <div class="form-group mx-auto">
-                <label for="category" class="font-weight-normal text-black">[[#{form.category}]]</label>
+                <label for="category" class="font-weight-normal text-black">[[#{expense.form.category}]]</label>
                 <select th:field="*{category}" class="form-control text-dark border-4 font-weight-bold" id="category" size="1" name="category" aria-describedby="category">
-                    <option value="">[[#{form.category.choice}]]</option>
+                    <option value="">[[#{expense.form.category.choice}]]</option>
                     <option th:each="category : ${expenseCategories}"
                             th:text="${category}"
                             th:value="${category}">
@@ -134,12 +134,12 @@
                 <div class="alert-negative" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
             </div>
             <div class="form-group mx-auto">
-                <label for="comment" class="font-weight-normal text-black">[[#{form.comment}]]</label>
+                <label for="comment" class="font-weight-normal text-black">[[#{expense.form.comment}]]</label>
                 <textarea id="comment" name="comment" placeholder="Type something here. . . " rows="2" class="form-control font-weight-bold text-black border-4"></textarea>
             </div>
-            <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{form.add}]]
+            <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.add}]]
             </button>
-            <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{form.cancel}]]</a>
+            <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.cancel}]]</a>
         </form>
     </div>
 </article>

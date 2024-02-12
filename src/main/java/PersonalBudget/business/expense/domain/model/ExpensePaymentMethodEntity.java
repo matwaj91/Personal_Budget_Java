@@ -20,11 +20,11 @@ import lombok.Setter;
 @Builder
 @Entity
 @Table(name = "payment_method")
-public class PaymentMethodEntity {
+public class ExpensePaymentMethodEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_method_seq")
-    @SequenceGenerator(name = "payment_method_seq", sequenceName = "payment_method_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "payment_method_sq")
+    @SequenceGenerator(name = "payment_method_sq", sequenceName = "payment_method_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

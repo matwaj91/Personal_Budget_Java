@@ -1,6 +1,6 @@
 package PersonalBudget.business.expense.domain.model;
 
-public enum DefaultPaymentMethod {
+public enum ExpenseDefaultPaymentMethod {
 
     CASH,
     CARD,

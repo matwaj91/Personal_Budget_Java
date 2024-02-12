@@ -13,12 +13,12 @@ public class ExpenseTemplateService {
     private final ExpenseService expenseService;
 
     public void addExpenseCategoriesAttribute(Model model) {
-        List<String> expenseCategories = expenseService.getExpenseCategoriesAssignedToUser();
+        List<String> expenseCategories = expenseService.getUserExpenseCategories();
         model.addAttribute("expenseCategories", expenseCategories);
     }
 
     public void addPaymentMethodsAttribute(Model model) {
-        List<String> paymentMethods = expenseService.getPaymentMethodsAssignedToUser();
+        List<String> paymentMethods = expenseService.getUserPaymentMethods();
         model.addAttribute("paymentMethods", paymentMethods);
     }
 

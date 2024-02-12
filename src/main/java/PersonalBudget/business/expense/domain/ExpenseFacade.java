@@ -10,11 +10,11 @@ public class ExpenseFacade {
 
     private final ExpenseService expenseService;
 
-    public void addDefaultExpenseCategoriesForUser(Long id) {
-        expenseService.addDefaultExpenseCategoriesToUserAccount(id);
+    public void addDefaultExpenseCategoriesForUser(Long userId) {
+        expenseService.addDefaultExpenseCategoriesToUserAccount(userId);
     }
 
-    public void addDefaultPaymentMethodsForUser(Long id) {
-        expenseService.addDefaultPaymentMethodsToUserAccount(id);
+    public void addDefaultPaymentMethodsForUser(Long userId) {
+        expenseService.addDefaultPaymentMethodsToUserAccount(userId);
     }
 }
