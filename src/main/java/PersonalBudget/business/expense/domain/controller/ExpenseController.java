@@ -28,8 +28,8 @@ public class ExpenseController {
     }
 
     @ModelAttribute("expenseDTO")
-    public ExpenseDTO expenseDTO(BigDecimal amount, LocalDate expenseDate, String paymentMethod, String category, String expenseComment) {
-        return new ExpenseDTO(amount, expenseDate, paymentMethod, category, expenseComment);
+    public ExpenseDTO expenseDTO(BigDecimal amount, LocalDate expenseDate, Long paymentMethodId, Long expenseCategoryId, String expenseComment) {
+        return new ExpenseDTO(amount, expenseDate, paymentMethodId, expenseCategoryId, expenseComment);
     }
 
     @PostMapping()

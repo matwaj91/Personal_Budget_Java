@@ -9,9 +9,9 @@ import PersonalBudget.business.expense.domain.model.ExpensePaymentMethodEntity;
 import PersonalBudget.business.expense.domain.repository.ExpenseCategoryRepository;
 import PersonalBudget.business.expense.domain.repository.ExpensePaymentMethodRepository;
 import PersonalBudget.business.expense.domain.repository.ExpenseRepository;
-import PersonalBudget.business.expense.domain.service.exception.ExpenseCategoryIdNotFoundException;
-import PersonalBudget.business.expense.domain.service.exception.PaymentMethodIdNotFoundException;
+import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseDTO;
+import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import PersonalBudget.business.user.domain.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,23 +29,21 @@ public class ExpenseService {
     private final ExpenseMapper expenseMapper;
     private final UserFacade userFacade;
 
-    public List<String> getUserExpenseCategories() {
+    public List<ExpenseCategoryDTO> getUserExpenseCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseCategoryRepository.findAllExpenseCategoryNames(loggedInUserId);
+        return expenseCategoryRepository.findAllExpenseCategory(loggedInUserId);
     }
 
-    public List<String> getUserPaymentMethods() {
+    public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
         return paymentMethodRepository.findAllPaymentMethodName(loggedInUserId);
     }
 
     public void addExpense(ExpenseDTO expenseDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
-        Long userExpenseCategory = expenseCategoryRepository.findExpenseCategoryIdByUserIdAndCategoryName(userId, expenseDTO.category()).orElseThrow(() ->
-                new ExpenseCategoryIdNotFoundException("Expense Category id not found"));
-        Long userPaymentMethod = paymentMethodRepository.findPaymentMethodIdByUserIdAndMethodName(userId, expenseDTO.paymentMethod()).orElseThrow(() ->
-                new PaymentMethodIdNotFoundException("Payment method id not found"));
-        ExpenseEntity expenseEntity = expenseMapper.mapExpenseDTOToExpenseEntity(expenseDTO, userId, userExpenseCategory, userPaymentMethod);
+        Long userExpenseCategoryId = expenseDTO.expenseCategoryId();
+        Long userPaymentMethodId = expenseDTO.paymentMethodId();
+        ExpenseEntity expenseEntity = expenseMapper.mapExpenseDTOToExpenseEntity(expenseDTO, userId, userExpenseCategoryId, userPaymentMethodId);
         expenseRepository.save(expenseEntity);
     }
 

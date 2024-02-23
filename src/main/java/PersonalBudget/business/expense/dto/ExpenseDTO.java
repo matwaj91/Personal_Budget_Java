@@ -1,8 +1,6 @@
 package PersonalBudget.business.expense.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,9 +10,9 @@ public record ExpenseDTO(
         BigDecimal amount,
         @NotNull(message = "{expense.date.empty}")
         LocalDate expenseDate,
-        @NotEmpty(message = "{expense.payment.empty}")
-        String paymentMethod,
-        @NotEmpty(message = "{expense.category.empty}")
-        String category,
+        @NotNull(message = "{expense.payment.empty}")
+        Long paymentMethodId,
+        @NotNull(message = "{expense.category.empty}")
+        Long expenseCategoryId,
         String expenseComment) {
 }

@@ -115,23 +115,23 @@
             </div>
             <div class="form-group mx-auto">
                 <label for="payment" class="font-weight-normal text-black">[[#{expense.form.payment}]]</label>
-                <select th:field="*{paymentMethod}" class="form-control text-dark border-4 font-weight-bold" id="payment" size="1" name="payment" aria-describedby="payment">
+                <select th:field="*{paymentMethodId}" class="form-control text-dark border-4 font-weight-bold" id="payment" size="1" name="payment" aria-describedby="payment">
                     <option value="">[[#{expense.form.payment.choice}]]</option>
-                    <option th:each="paymentMethod : ${paymentMethods}"
-                            th:text="${paymentMethod}"
-                            th:value="${paymentMethod}">
+                    <option th:each="payment : ${paymentMethods}"
+                            th:text="${payment.expensePaymentMethod}"
+                            th:value="${payment.id}">
                 </select>
-                <div class="alert-negative" th:if="${#fields.hasErrors('paymentMethod')}" th:errors="*{paymentMethod}"></div>
+                <div class="alert-negative" th:if="${#fields.hasErrors('paymentMethodId')}" th:errors="*{paymentMethodId}"></div>
             </div>
             <div class="form-group mx-auto">
                 <label for="category" class="font-weight-normal text-black">[[#{expense.form.category}]]</label>
-                <select th:field="*{category}" class="form-control text-dark border-4 font-weight-bold" id="category" size="1" name="category" aria-describedby="category">
+                <select th:field="*{expenseCategoryId}" class="form-control text-dark border-4 font-weight-bold" id="category" name="category" size="1" aria-describedby="category">
                     <option value="">[[#{expense.form.category.choice}]]</option>
                     <option th:each="category : ${expenseCategories}"
-                            th:text="${category}"
-                            th:value="${category}">
+                            th:text="${category.expenseCategory}"
+                            th:value="${category.id}">
                 </select>
-                <div class="alert-negative" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+                <div class="alert-negative" th:if="${#fields.hasErrors('expenseCategoryId')}" th:errors="*{expenseCategoryId}"></div>
             </div>
             <div class="form-group mx-auto">
                 <label for="comment" class="font-weight-normal text-black">[[#{expense.form.comment}]]</label>
