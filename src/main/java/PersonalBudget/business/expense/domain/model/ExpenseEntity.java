@@ -2,17 +2,14 @@ package PersonalBudget.business.expense.domain.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,16 +37,26 @@ public class ExpenseEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @ManyToOne //wiele expense moze byc przypisane do tej samej kategorii wydatku
-    @JoinColumn(name = "expense_category_assigned_to_user")
-    private ExpenseCategoryEntity expenseCategoryId;
+    @Column(name = "expense_category_id")
+    private Long expenseCategoryId;
 
-    @Column(name = "payment_method_assigned_to_user")
+    @ManyToOne
+    @JoinColumn(name = "expense_category_id", insertable = false, updatable = false)
+    private ExpenseCategoryEntity expenseCategory;
+
+    @NotNull
+    @Column(name = "payment_method_id")
     private Long expensePaymentMethodId;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id", insertable = false, updatable = false)
+    private ExpensePaymentMethodEntity expensePaymentMethod;
+
+    @NotNull
     @Column(name = "amount")
     private BigDecimal amount;
 
+    @NotNull
     @Column(name = "date_of_expense")
     private LocalDate expenseDate;
 

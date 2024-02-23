@@ -41,7 +41,7 @@ public class ExpenseService {
 
     public void addExpense(ExpenseDTO expenseDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
-        ExpenseCategoryEntity userExpenseCategory = expenseCategoryRepository.findExpenseCategoryIdByUserIdAndCategoryName(userId, expenseDTO.category()).orElseThrow(() ->
+        Long userExpenseCategory = expenseCategoryRepository.findExpenseCategoryIdByUserIdAndCategoryName(userId, expenseDTO.category()).orElseThrow(() ->
                 new ExpenseCategoryIdNotFoundException("Expense Category id not found"));
         Long userPaymentMethod = paymentMethodRepository.findPaymentMethodIdByUserIdAndMethodName(userId, expenseDTO.paymentMethod()).orElseThrow(() ->
                 new PaymentMethodIdNotFoundException("Payment method id not found"));

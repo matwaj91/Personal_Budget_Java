@@ -14,5 +14,5 @@ public interface ExpenseCategoryRepository extends JpaRepository<ExpenseCategory
     List<String> findAllExpenseCategoryNames(@Param("userId") Long userId);
 
     @Query(value = "select e.id from ExpenseCategoryEntity e where e.userId = :userId AND e.name = :category")
-    Optional<ExpenseCategoryEntity> findExpenseCategoryIdByUserIdAndCategoryName(@Param("userId") Long userId, @Param("category") String category);
+    Optional<Long> findExpenseCategoryIdByUserIdAndCategoryName(@Param("userId") Long userId, @Param("category") String category);
 }
