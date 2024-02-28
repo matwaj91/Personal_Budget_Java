@@ -31,7 +31,7 @@ public class ExpenseService {
 
     public List<ExpenseCategoryDTO> getUserExpenseCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseCategoryRepository.findAllExpenseCategory(loggedInUserId);
+        return expenseCategoryRepository.findAllExpenseCategoryByUserId(loggedInUserId);
     }
 
     public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
