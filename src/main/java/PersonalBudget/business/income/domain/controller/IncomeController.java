@@ -1,8 +1,6 @@
 package PersonalBudget.business.income.domain.controller;
 
 import PersonalBudget.business.income.domain.service.IncomePageHandler;
-import PersonalBudget.business.income.domain.service.IncomeService;
-import PersonalBudget.business.income.domain.service.IncomeTemplateService;
 import PersonalBudget.business.income.dto.IncomeDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +33,7 @@ public class IncomeController {
     }
 
     @PostMapping()
-    public String getProperPageAfterAddingIncome(@ModelAttribute("incomeDTO") IncomeDTO incomeDTO,
+    public String getProperPageAfterAddingIncome(@Valid @ModelAttribute("incomeDTO") IncomeDTO incomeDTO,
                                            BindingResult bindingResult, Model model) {
         return incomePageHandler.handleIncomePageAfterSubmit(bindingResult, model, incomeDTO);
     }

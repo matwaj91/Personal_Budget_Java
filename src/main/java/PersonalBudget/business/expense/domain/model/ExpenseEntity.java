@@ -28,8 +28,8 @@ public class ExpenseEntity {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expense_sq")
-    @SequenceGenerator(name = "expense_sq", sequenceName = "expense_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expense_sg")
+    @SequenceGenerator(name = "expense_sg", sequenceName = "expense_sq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
