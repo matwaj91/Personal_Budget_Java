@@ -26,11 +26,13 @@ import java.time.LocalDate;
 public class IncomeEntity {
 
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_sg")
     @SequenceGenerator(name = "income_sg", sequenceName = "income_sq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "user_id")
     private Long userId;
 
@@ -38,6 +40,7 @@ public class IncomeEntity {
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private UserAccountEntity userAccount;
 
+    @NotNull
     @Column(name = "income_category_id")
     private Long incomeCategoryId;
 
