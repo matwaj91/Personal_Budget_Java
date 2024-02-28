@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "~{base :: head}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-light bg-white navbar-expand-md">
+        <a class="navbar-brand " href="#"></a>
+        <button class="navbar-toggler order-first " type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="navigation">
+            <span class="navbar-toggler-icon opacity-75"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-left " id="mainMenu">
+            <ul class=" navbar-nav h5 p-0 mr-2">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/api/v1/menu">[[#{main.home}]]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/api/v1/menu/income">[[#{main.addIncome}]]</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/api/v1/menu/expense">[[#{main.addExpense}]]</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
+                    <ul class="dropdown-menu" aria-labelledby="subMenu">
+                        <li>
+                            <a class="dropdown-item h5" href="/Menu/currentMonth">[[#{displayBalance.currentMonth}]]</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item h5" href="/Menu/previousMonth">[[#{displayBalance.previousMonth}]]</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item h5" href="/Menu/currentYear">[[#{displayBalance.currentYear}]]</a>
+                        </li>
+                        <li>
+                            <button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="subMenu" aria-haspopup="true">[[#{main.settings}]]</a>
+                    <ul class="dropdown-menu" aria-labelledby="subMenu">
+                        <li>
+                            <a class="dropdown-item h5" href="/income/changeCategory">[[#{settings.categoriesIncome}]]</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item h5" href="/expense/changeCategory">[[#{settings.categoriesExpense}]]</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item h5" href="/setting/changeCategory">[[#{settings.paymentMethods}]]</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item h5" href="/setting/changeAccount">[[#{settings.user}]]</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/api/v1/logout}">[[#{main.logOut}]]</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+        <form action="/Menu/nonstandard" method="post" id="nonstandard">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{nonstandard.dateRange}]]
+                        </h5>
+                        <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body h5">
+                        <div class="form-group mx-auto">
+                            <label for="dateFrom" class="font-weight-normal text-black">[[#{nonstandard.dateFrom}]]</label>
+                            <input type="date" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
+                        </div>
+                        <div class="form-group mx-auto">
+                            <label for="dateTo" class="font-weight-normal text-black">[[#{nonstandard.dateTo}]]</label>
+                            <input type="date" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetNonstandard()">[[#{nonstandard.closeButton}]]</button>
+                        <button type="submit" class="greenButton btn text-white">[[#{nonstandard.checkBalanceButton}]]</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</header>
+<div th:if="${addedExpense == true}">
+    <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+        [[#{expense.success}]]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<article>
+    <div class="container mt-2 p-2 h5 mx-auto">
+        <form method="post" id="formIncome"  th:action="@{/api/v1/menu/expense}" th:object="${expenseDTO}" class="bg-white mt-4 rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 ">
+            <div class="mb-2">
+                <h1 class="display-6 text-center p-0">[[#{expense.form}]]</h1>
+            </div>
+            <div class="form-group mx-auto">
+                <label for="amount" class="font-weight-normal text-black">[[#{expense.form.amount}]]</label>
+                <input type="number" th:field="*{amount}" min="0" step="0.01" class="form-control font-weight-bold text-dark border-4" id="amount" name="amount" aria-describedby="amount">
+                <div class="alert-negative" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></div>
+            </div>
+            <div class="form-group mx-auto">
+                <label for="date" class="font-weight-normal text-black">[[#{expense.form.date}]]</label>
+                <input type="date" th:field="*{expenseDate}" class="form-control font-weight-bold text-dark border-4" id="date" name="date" aria-describedby="date">
+                <div class="alert-negative" th:if="${#fields.hasErrors('expenseDate')}" th:errors="*{expenseDate}"></div>
+            </div>
+            <div class="form-group mx-auto">
+                <label for="payment" class="font-weight-normal text-black">[[#{expense.form.payment}]]</label>
+                <select th:field="*{paymentMethodId}" class="form-control text-dark border-4 font-weight-bold" id="payment" size="1" name="payment" aria-describedby="payment">
+                    <option value="">[[#{expense.form.payment.choice}]]</option>
+                    <option th:each="paymentMethod : ${paymentMethods}"
+                            th:text="${paymentMethod.expensePaymentMethod}"
+                            th:value="${paymentMethod.id}">
+                </select>
+                <div class="alert-negative" th:if="${#fields.hasErrors('paymentMethodId')}" th:errors="*{paymentMethodId}"></div>
+            </div>
+            <div class="form-group mx-auto">
+                <label for="category" class="font-weight-normal text-black">[[#{expense.form.category}]]</label>
+                <select th:field="*{expenseCategoryId}" class="form-control text-dark border-4 font-weight-bold" id="category" name="category" size="1" aria-describedby="category">
+                    <option value="">[[#{expense.form.category.choice}]]</option>
+                    <option th:each="category : ${expenseCategories}"
+                            th:text="${category.expenseCategory}"
+                            th:value="${category.id}">
+                </select>
+                <div class="alert-negative" th:if="${#fields.hasErrors('expenseCategoryId')}" th:errors="*{expenseCategoryId}"></div>
+            </div>
+            <div class="form-group mx-auto">
+                <label for="comment" class="font-weight-normal text-black">[[#{expense.form.comment}]]</label>
+                <textarea id="comment" name="comment" placeholder="Type something here. . . " rows="2" class="form-control font-weight-bold text-black border-4"></textarea>
+            </div>
+            <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.add}]]
+            </button>
+            <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.cancel}]]</a>
+        </form>
+    </div>
+</article>
+<footer th:replace = "~{base :: footer}"></footer>
+<script src="/js/setTodayDate.js"></script>
+</body>
+</html>

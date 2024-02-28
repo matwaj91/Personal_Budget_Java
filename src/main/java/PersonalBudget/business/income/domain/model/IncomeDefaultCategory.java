@@ -1,6 +1,6 @@
 package PersonalBudget.business.income.domain.model;
 
-public enum DefaultCategory {
+public enum IncomeDefaultCategory {
 
     SALARY,
     INTEREST,
