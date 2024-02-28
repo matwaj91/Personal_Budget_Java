@@ -1,20 +1,23 @@
 package PersonalBudget.business.income.domain.model;
 
+import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,22 +26,32 @@ import lombok.Setter;
 public class IncomeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_seq")
-    @SequenceGenerator(name = "income_seq", sequenceName = "income_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "income_sg")
+    @SequenceGenerator(name = "income_sg", sequenceName = "income_sq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "user_id")
     private Long userId;
 
-    @Column(name = "income_category_assigned_to_user")
-    private Long assignedIncomeCategory;
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserAccountEntity userAccount;
 
+    @Column(name = "income_category_id")
+    private Long incomeCategoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "income_category_id", insertable = false, updatable = false)
+    private IncomeCategoryEntity incomeCategory;
+
+    @NotNull
     @Column(name = "amount")
-    private String amount;
+    private BigDecimal amount;
 
-    @Column(name = "date_of_income")
-    private String incomeDate;
+    @NotNull
+    @Column(name = "income_date")
+    private LocalDate incomeDate;
 
     @Column(name = "income_comment")
     private String incomeComment;

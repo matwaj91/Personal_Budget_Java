@@ -115,13 +115,13 @@
         </div>
         <div class="form-group mx-auto">
           <label for="category" class="font-weight-normal text-black">[[#{income.form.category}]]</label>
-          <select th:field="*{category}" class="form-control text-dark border-4 font-weight-bold" id="category" size="1" name="category" aria-describedby="category">
+          <select th:field="*{incomeCategoryId}" class="form-control text-dark border-4 font-weight-bold" id="category" size="1" name="category" aria-describedby="category">
             <option value="">[[#{income.form.category.choice}]]</option>
             <option th:each="category : ${incomeCategories}"
-                    th:text="${category}"
-                    th:value="${category}">
+                    th:text="${category.incomeCategory}"
+                    th:value="${category.id}">
           </select>
-          <div class="alert-negative" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+          <div class="alert-negative" th:if="${#fields.hasErrors('incomeCategoryId')}" th:errors="*{incomeCategoryId}"></div>
         </div>
         <div class="form-group mx-auto">
           <label for="comment" class="font-weight-normal text-black">[[#{income.form.comment}]]</label>

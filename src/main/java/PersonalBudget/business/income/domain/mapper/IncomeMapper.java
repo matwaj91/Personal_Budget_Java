@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class IncomeMapper {
 
-
-    public IncomeEntity mapIncomeDTOToIncomeEntity(IncomeDTO incomeDTO, Long userId, Long userIncomeCategory) {
+    public IncomeEntity mapIncomeDTOToIncomeEntity(IncomeDTO incomeDTO, Long userId, Long userIncomeCategoryId) {
         return IncomeEntity.builder()
                 .userId(userId)
-                .assignedIncomeCategory(userIncomeCategory)
+                .incomeCategoryId(userIncomeCategoryId)
                 .amount(incomeDTO.amount())
                 .incomeDate(incomeDTO.incomeDate())
                 .incomeComment(incomeDTO.incomeComment())
