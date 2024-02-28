@@ -1,5 +1,6 @@
 package PersonalBudget.business.expense.domain.model;
 
+import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,14 +27,21 @@ import java.time.LocalDate;
 public class ExpenseEntity {
 
     @Id
+    @NotNull
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "expense_sq")
     @SequenceGenerator(name = "expense_sq", sequenceName = "expense_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
+    @NotNull
     @Column(name = "user_id")
     private Long userId;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private UserAccountEntity userAccount;
+
+    @NotNull
     @Column(name = "expense_category_id")
     private Long expenseCategoryId;
 

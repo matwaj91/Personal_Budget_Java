@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ExpenseMapper {
 
-    public ExpenseEntity mapExpenseDTOToExpenseEntity(ExpenseDTO expenseDTO, Long userId, Long userExpenseCategoryId, Long userPaymentMethodId) {
+    public ExpenseEntity mapExpenseDTOToExpenseEntity(ExpenseDTO expenseDTO, Long userId) {
         return ExpenseEntity.builder()
                 .userId(userId)
-                .expenseCategoryId(userExpenseCategoryId)
-                .expensePaymentMethodId(userPaymentMethodId)
+                .expenseCategoryId(expenseDTO.expenseCategoryId())
+                .expensePaymentMethodId(expenseDTO.paymentMethodId())
                 .amount(expenseDTO.amount())
                 .expenseDate(expenseDTO.expenseDate())
                 .expenseComment(expenseDTO.expenseComment())

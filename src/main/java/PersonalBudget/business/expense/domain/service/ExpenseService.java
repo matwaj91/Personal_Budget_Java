@@ -41,9 +41,7 @@ public class ExpenseService {
 
     public void addExpense(ExpenseDTO expenseDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
-        Long userExpenseCategoryId = expenseDTO.expenseCategoryId();
-        Long userPaymentMethodId = expenseDTO.paymentMethodId();
-        ExpenseEntity expenseEntity = expenseMapper.mapExpenseDTOToExpenseEntity(expenseDTO, userId, userExpenseCategoryId, userPaymentMethodId);
+        ExpenseEntity expenseEntity = expenseMapper.mapExpenseDTOToExpenseEntity(expenseDTO, userId);
         expenseRepository.save(expenseEntity);
     }
 
