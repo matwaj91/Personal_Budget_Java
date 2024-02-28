@@ -19,7 +19,7 @@
             <a class="nav-link" href="/api/v1/menu/income">[[#{main.addIncome}]]</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/Menu/expense">[[#{main.addExpense}]]</a>
+            <a class="nav-link" href="/api/v1/menu/expense">[[#{main.addExpense}]]</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
@@ -127,9 +127,9 @@
           <label for="comment" class="font-weight-normal text-black">[[#{income.form.comment}]]</label>
           <textarea id="comment" name="comment" placeholder="Type something here. . . " rows="2" class="form-control font-weight-bold text-black border-4"></textarea>
         </div>
-        <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{income.form.add}]]
+        <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.add}]]
         </button>
-        <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{income.form.cancel}]]</a>
+        <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.cancel}]]</a>
       </form>
     </div>
   </article>

@@ -10,7 +10,7 @@ public class IncomeFacade {
 
     private final IncomeService incomeService;
 
-    public void addDefaultCategoriesForUser(Long id) {
+    public void addDefaultIncomeCategoriesForUser(Long id) {
         incomeService.addDefaultIncomeCategoriesToUserAccount(id);
     }
 }

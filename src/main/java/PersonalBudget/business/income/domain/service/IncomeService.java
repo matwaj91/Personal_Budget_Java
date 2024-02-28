@@ -32,16 +32,17 @@ public class IncomeService {
 
     public void addIncome(IncomeDTO incomeDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
-        Long userIncomeCategoryId = incomeDTO.incomeCategoryId();
-        IncomeEntity incomeEntity = incomeMapper.mapIncomeDTOToIncomeEntity(incomeDTO, userId, userIncomeCategoryId);
+        IncomeEntity incomeEntity = incomeMapper.mapIncomeDTOToIncomeEntity(incomeDTO, userId);
         incomeRepository.save(incomeEntity);
     }
 
     public List<IncomeCategoryEntity> buildDefaultCategories(Long userId) {
-        return Stream.of(IncomeDefaultCategory.values()).map(defaultCategory -> IncomeCategoryEntity.builder()
-                .userId(userId)
-                .name(defaultCategory.toString().toLowerCase())
-                .build())
+        return Stream.of(IncomeDefaultCategory.values()).map(defaultCategory ->
+                    IncomeCategoryEntity.builder()
+                        .userId(userId)
+                        .name(defaultCategory.toString().toLowerCase())
+                        .build()
+                )
                 .toList();
     }
 
