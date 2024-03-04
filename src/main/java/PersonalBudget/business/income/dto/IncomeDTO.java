@@ -2,13 +2,16 @@ package PersonalBudget.business.income.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 public record IncomeDTO(
 
         @NotEmpty(message = "{income.amount.empty}")
-        String amount,
+        BigDecimal amount,
         @NotEmpty(message = "{income.date.empty}")
-        String incomeDate,
+        LocalDate incomeDate,
         @NotEmpty(message = "{income.category.empty}")
-        String category,
+        Long incomeCategoryId,
         String incomeComment) {
 }
