@@ -10,7 +10,6 @@ public record UserMapper() {
 
     public UserAccountEntity mapUserDTOToUserEntity(UserDTO userDTO, BCryptPasswordEncoder bCryptPasswordEncoder) {
         String encodedPassword = bCryptPasswordEncoder.encode(userDTO.password());
-
         return UserAccountEntity.builder()
                 .name(userDTO.name())
                 .email(userDTO.email())
