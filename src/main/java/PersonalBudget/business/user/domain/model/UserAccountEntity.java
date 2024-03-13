@@ -7,11 +7,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,7 +20,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,17 +28,21 @@ import java.util.Collections;
 public class UserAccountEntity implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_account_seq")
-    @SequenceGenerator(name = "user_account_seq", sequenceName = "user_account_seq", allocationSize = 1)
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_account_sg")
+    @SequenceGenerator(name = "user_account_sg", sequenceName = "user_account_sq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
+    @NotEmpty
     @Column(name = "name")
     private String name;
 
+    @NotEmpty
     @Column(name = "email", unique = true)
     private String email;
 
+    @NotEmpty
     @Column(name = "password")
     private String password;
 
