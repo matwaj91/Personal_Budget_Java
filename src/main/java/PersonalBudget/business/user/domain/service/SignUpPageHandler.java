@@ -16,9 +16,9 @@ public class SignUpPageHandler {
     private final UserTemplateService userTemplateService;
     private final IncomeFacade incomeFacade;
     private final ExpenseFacade expenseFacade;
-    public static final String SIGNUP_PAGE = "signup/signup";
-    public static final String SIGNUP_SUCCESS_PAGE = "signup/success";
-    public static final String REDIRECT_SIGNUP_SUCCESS_PAGE = "redirect:" + SIGNUP_SUCCESS_PAGE;
+    private static final String SIGNUP_PAGE = "signup/signup";
+    private static final String SIGNUP_SUCCESS_PAGE = "signup/success";
+    private static final String REDIRECT_SIGNUP_SUCCESS_PAGE = "redirect:" + SIGNUP_SUCCESS_PAGE;
 
     public String handleSignUpPage() {
         return SIGNUP_PAGE;
