@@ -10,7 +10,7 @@ public record IncomeDTO(
         @NotNull(message = "{income.amount.empty}")
         BigDecimal amount,
         @NotNull(message = "{income.date.empty}")
-        LocalDate incomeDate,
+        LocalDate date,
         @NotNull(message = "{income.category.empty}")
         Long incomeCategoryId,
         String incomeComment) {

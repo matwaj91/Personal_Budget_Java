@@ -23,4 +23,11 @@ public class BalanceController {
     public String getPreviousMonthBalancePage(Model model) {
         return balancePageHandler.handlePreviousMonthBalancePage(model);
     }
+
+    @GetMapping(value = "/current-year")
+    public String getCurrentYearBalancePage(Model model) {
+        return balancePageHandler.handleCurrentYearBalancePage(model);
+    }
+
+
 }

@@ -11,10 +11,10 @@ import PersonalBudget.business.expense.domain.repository.ExpensePaymentMethodRep
 import PersonalBudget.business.expense.domain.repository.ExpenseRepository;
 import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseDTO;
-import PersonalBudget.business.expense.dto.ExpenseParticularDTO;
 import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import PersonalBudget.business.user.domain.UserFacade;
 import PersonalBudget.common.util.CategorySumDTO;
+import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -83,7 +83,7 @@ public class ExpenseService {
         return expenseRepository.findAllExpenseCategoriesSum(loggedInUserId, dateFrom, dateTo);
     }
 
-    public List<ExpenseParticularDTO> getUserParticularsExpenseCategory(LocalDate dateFrom, LocalDate dateTo) {
+    public List<ParticularActivityDTO> getUserParticularsExpenseCategory(LocalDate dateFrom, LocalDate dateTo) {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
         return expenseRepository.findAllParticularExpensesEachCategory(loggedInUserId, dateFrom, dateTo);
     }

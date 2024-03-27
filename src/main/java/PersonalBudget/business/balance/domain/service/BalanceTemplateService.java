@@ -1,8 +1,7 @@
 package PersonalBudget.business.balance.domain.service;
 
-import PersonalBudget.business.expense.dto.ExpenseParticularDTO;
-import PersonalBudget.business.income.dto.IncomeParticularDTO;
 import PersonalBudget.common.util.CategorySumDTO;
+import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -27,7 +26,7 @@ public class BalanceTemplateService {
         model.addAttribute("incomeSum", incomeSum);
     }
 
-    public void addIncomeParticularAttribute(Model model, List<IncomeParticularDTO> particularIncomes) {
+    public void addIncomeParticularAttribute(Model model, List<ParticularActivityDTO> particularIncomes) {
         model.addAttribute("particularIncomes", particularIncomes);
     }
 
@@ -35,7 +34,7 @@ public class BalanceTemplateService {
         model.addAttribute("incomeChartData", incomeChartData);
     }
 
-    public void addExpenseParticularAttribute(Model model, List<ExpenseParticularDTO> particularExpenses) {
+    public void addExpenseParticularAttribute(Model model, List<ParticularActivityDTO> particularExpenses) {
         model.addAttribute("particularExpenses", particularExpenses);
     }
 

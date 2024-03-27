@@ -8,9 +8,9 @@ import PersonalBudget.business.income.domain.repository.IncomeCategoryRepository
 import PersonalBudget.business.income.domain.repository.IncomeRepository;
 import PersonalBudget.business.income.dto.IncomeCategoryDTO;
 import PersonalBudget.business.income.dto.IncomeDTO;
-import PersonalBudget.business.income.dto.IncomeParticularDTO;
 import PersonalBudget.business.user.domain.UserFacade;
 import PersonalBudget.common.util.CategorySumDTO;
+import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +59,7 @@ public class IncomeService {
         return incomeRepository.findAllIncomeCategoriesSum(loggedInUserId, dateFrom, dateTo);
     }
 
-    public List<IncomeParticularDTO> getUserParticularsIncomeCategory(LocalDate dateFrom, LocalDate dateTo) {
+    public List<ParticularActivityDTO> getUserParticularsIncomeCategory(LocalDate dateFrom, LocalDate dateTo) {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
         return incomeRepository.findAllParticularIncomesEachCategory(loggedInUserId, dateFrom, dateTo);
     }

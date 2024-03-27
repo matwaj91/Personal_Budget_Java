@@ -12,7 +12,7 @@ public class IncomeMapper {
                 .userId(userId)
                 .incomeCategoryId(incomeDTO.incomeCategoryId())
                 .amount(incomeDTO.amount())
-                .incomeDate(incomeDTO.incomeDate())
+                .date(incomeDTO.date())
                 .incomeComment(incomeDTO.incomeComment())
                 .build();
     }

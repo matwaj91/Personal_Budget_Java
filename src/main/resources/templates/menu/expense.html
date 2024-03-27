@@ -31,7 +31,7 @@
                             <a class="dropdown-item h5" href="/api/v1/menu/previous-month">[[#{displayBalance.previousMonth}]]</a>
                         </li>
                         <li>
-                            <a class="dropdown-item h5" href="/Menu/currentYear">[[#{displayBalance.currentYear}]]</a>
+                            <a class="dropdown-item h5" href="/api/v1/menu/current-year">[[#{displayBalance.currentYear}]]</a>
                         </li>
                         <li>
                             <button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
@@ -110,8 +110,8 @@
             </div>
             <div class="form-group mx-auto">
                 <label for="date" class="font-weight-normal text-black">[[#{expense.form.date}]]</label>
-                <input type="date" th:field="*{expenseDate}" class="form-control font-weight-bold text-dark border-4" id="date" name="date" aria-describedby="date">
-                <div class="alert-negative" th:if="${#fields.hasErrors('expenseDate')}" th:errors="*{expenseDate}"></div>
+                <input type="date" th:field="*{date}" class="form-control font-weight-bold text-dark border-4" id="date" name="date" aria-describedby="date">
+                <div class="alert-negative" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
             </div>
             <div class="form-group mx-auto">
                 <label for="payment" class="font-weight-normal text-black">[[#{expense.form.payment}]]</label>
