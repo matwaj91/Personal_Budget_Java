@@ -17,7 +17,7 @@ public interface IncomeRepository extends JpaRepository<IncomeEntity, Long> {
     List<CategorySumDTO> findAllIncomeCategoriesSum(@Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
 
 
-    @Query(value = "select new PersonalBudget.business.income.dto.IncomeParticularDTO(f.amount, f.incomeDate, e.name, f.incomeComment) from IncomeEntity f " +
+    @Query(value = "select new PersonalBudget.business.income.dto.IncomeParticularDTO(f.amount, f.incomeDate, e.name) from IncomeEntity f " +
                    "inner join IncomeCategoryEntity e on f.incomeCategoryId  = e.id where f.userId = :userId and f.incomeDate between :dateFrom and :dateTo")
     List<IncomeParticularDTO> findAllParticularIncomesEachCategory(@Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
 }

@@ -11,9 +11,10 @@ import org.springframework.ui.Model;
 import java.time.LocalDate;
 import java.util.List;
 
-import static PersonalBudget.common.util.Date.getCurrentMonth;
-import static PersonalBudget.common.util.Date.getCurrentYear;
+import static PersonalBudget.common.util.Date.getFirstDayCurrentMonth;
+import static PersonalBudget.common.util.Date.getFirstDayPreviousMonth;
 import static PersonalBudget.common.util.Date.getLastDayCurrentMonth;
+import static PersonalBudget.common.util.Date.getLastDayPreviousMonth;
 
 @RequiredArgsConstructor
 @Service
@@ -23,12 +24,22 @@ public class BalancePageHandler {
     private final BalanceTemplateService balanceTemplateService;
     private static final String BALANCE_PAGE = "menu/balance";
 
+
     public String handleCurrentMonthBalancePage(Model model) {
-        String currentYear = getCurrentYear();
-        String currentMonth = getCurrentMonth();
-        String lastDayCurrentMonth = getLastDayCurrentMonth();
-        LocalDate dateFrom = LocalDate.parse(currentYear + "-" + currentMonth + "-" + "01");
-        LocalDate dateTo = LocalDate.parse(currentYear + "-" + currentMonth + "-" + lastDayCurrentMonth);
+        LocalDate dateFrom = getFirstDayCurrentMonth();
+        LocalDate dateTo= getLastDayCurrentMonth();
+        handleBalancePage(model, dateFrom, dateTo);
+        return BALANCE_PAGE;
+    }
+
+    public String handlePreviousMonthBalancePage(Model model) {
+        LocalDate dateFrom = getFirstDayPreviousMonth();
+        LocalDate dateTo = getLastDayPreviousMonth();
+        handleBalancePage(model, dateFrom, dateTo);
+        return BALANCE_PAGE;
+    }
+
+    public void handleBalancePage(Model model, LocalDate dateFrom, LocalDate dateTo) {
         List<CategorySumDTO> incomeCategoriesSum  = balanceGateway.fetchUserIncomeCategoriesSums(dateFrom, dateTo);
         List<CategorySumDTO> expenseCategoriesSum = balanceGateway.fetchUserExpenseCategoriesSums(dateFrom, dateTo);
         List<List<Object>> incomeChartData = mapToChartData(incomeCategoriesSum);
@@ -43,7 +54,6 @@ public class BalancePageHandler {
         balanceTemplateService.addExpenseCategoriesSumAttribute(model, expenseCategoriesSum);
         balanceTemplateService.addIncomeChartDataAttribute(model, incomeChartData);
         balanceTemplateService.addExpenseChartDataAttribute(model, expenseChartData);
-        return BALANCE_PAGE;
     }
 
     private List<Object> mapSumDTONameAndAmountToList(CategorySumDTO incomeCategorySumDTO) {

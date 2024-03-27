@@ -15,7 +15,12 @@ public class BalanceController {
     private final BalancePageHandler balancePageHandler;
 
     @GetMapping(value = "/current-month")
-    public String getBalancePage(Model model) {
+    public String getCurrentMonthBalancePage(Model model) {
         return balancePageHandler.handleCurrentMonthBalancePage(model);
+    }
+
+    @GetMapping(value = "/previous-month")
+    public String getPreviousMonthBalancePage(Model model) {
+        return balancePageHandler.handlePreviousMonthBalancePage(model);
     }
 }

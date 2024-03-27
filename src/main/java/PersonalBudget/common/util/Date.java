@@ -1,24 +1,25 @@
 package PersonalBudget.common.util;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 
 public class Date {
 
-    private static final LocalDate currentDate = LocalDate.now();
-
-    public static String getCurrentMonth() {
-        String month = String.valueOf(currentDate.getMonthValue());
-        if (month.length() == 1) {
-            month = "0" + month;
-        }
-        return month;
+    public static LocalDate getFirstDayCurrentMonth() {
+        LocalDate localDate = LocalDate.now();
+        return localDate.withDayOfMonth(1);
     }
 
-    public static String getCurrentYear() {
-        return String.valueOf(currentDate.getYear());
+    public static LocalDate getLastDayCurrentMonth() {
+        return YearMonth.now().atEndOfMonth();
     }
 
-    public static String getLastDayCurrentMonth() {
-        return String.valueOf(currentDate.lengthOfMonth());
+    public static LocalDate getFirstDayPreviousMonth() {
+        LocalDate localDate = LocalDate.now();
+        return localDate.minusMonths(1).withDayOfMonth(1);
+    }
+
+    public static LocalDate getLastDayPreviousMonth() {
+        return YearMonth.now().minusMonths(1).atEndOfMonth();
     }
 }

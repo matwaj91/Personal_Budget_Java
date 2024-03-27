@@ -16,7 +16,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
                     "where f.userId = :userId and e.id = f.expenseCategoryId and f.expenseDate between :dateFrom and :dateTo group by e.name")
     List<CategorySumDTO> findAllExpenseCategoriesSum(@Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
 
-    @Query(value = "select new PersonalBudget.business.expense.dto.ExpenseParticularDTO(f.amount, f.expenseDate, e.name, f.expenseComment) from ExpenseEntity f " +
+    @Query(value = "select new PersonalBudget.business.expense.dto.ExpenseParticularDTO(f.amount, f.expenseDate, e.name) from ExpenseEntity f " +
                     "inner join ExpenseCategoryEntity e on f.expenseCategoryId  = e.id where f.userId = :userId and f.expenseDate between :dateFrom and :dateTo")
     List<ExpenseParticularDTO> findAllParticularExpensesEachCategory(@Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
 }

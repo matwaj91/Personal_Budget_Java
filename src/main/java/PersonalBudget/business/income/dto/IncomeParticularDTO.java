@@ -7,6 +7,5 @@ public record IncomeParticularDTO(
 
         BigDecimal amount,
         LocalDate incomeDate,
-        String name,
-        String incomeComment
+        String name
 ) {}
