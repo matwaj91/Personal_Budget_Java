@@ -11,11 +11,14 @@ import PersonalBudget.business.expense.domain.repository.ExpensePaymentMethodRep
 import PersonalBudget.business.expense.domain.repository.ExpenseRepository;
 import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseDTO;
+import PersonalBudget.business.expense.dto.ExpenseParticularDTO;
 import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import PersonalBudget.business.user.domain.UserFacade;
+import PersonalBudget.common.util.CategorySumDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -73,5 +76,15 @@ public class ExpenseService {
     public void addDefaultPaymentMethodsToUserAccount(Long userId) {
         List<ExpensePaymentMethodEntity> defaultPaymentMethods = buildDefaultPaymentMethods(userId);
         paymentMethodRepository.saveAll(defaultPaymentMethods);
+    }
+
+    public List<CategorySumDTO> getUserExpenseCategoriesSums(LocalDate dateFrom, LocalDate dateTo) {
+        Long loggedInUserId = userFacade.fetchLoggedInUserId();
+        return expenseRepository.findAllExpenseCategoriesSum(loggedInUserId, dateFrom, dateTo);
+    }
+
+    public List<ExpenseParticularDTO> getUserParticularsExpenseCategory(LocalDate dateFrom, LocalDate dateTo) {
+        Long loggedInUserId = userFacade.fetchLoggedInUserId();
+        return expenseRepository.findAllParticularExpensesEachCategory(loggedInUserId, dateFrom, dateTo);
     }
 }

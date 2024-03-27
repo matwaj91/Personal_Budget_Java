@@ -101,7 +101,7 @@
                 <div class="mb-3 mt-0">
                     <h1 class="display-6 text-center p-0">Incomes</h1>
                 </div>
-                <table class="table text-center p-0 h5">
+                <table class="table text-center p-0">
                     <thead>
                     <tr class="h4">
                         <th>Category</th>
@@ -125,44 +125,54 @@
                         </div>
                             <tr class="font-weight-bold">
                                 <td>Total amount</td>
-                                <td id="sumOfIncome" th:text="${incomeSum} + 'zł'"></td>
+                                <td id='sumOfIncome' th:text="${incomeSum} + 'zł'"></td>
                             </tr>
                     </tbody>
                 </table>
-                <div id="incomesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
+                <div th:if="${incomeSum != 0}">
+                    <div id="incomesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
+                </div>
                 <div class="mb-3 mt-0">
                     <h1 class="display-6 text-center p-0">Expenses</h1>
                 </div>
                 <table class="table text-center p-0">
                     <thead>
                     <tr class="h4">
-                        <th colspan=' 2'>Category</th>
+                        <th>Category</th>
                         <th>Amount</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr data-toggle='collapse' data-target='#{{expense.name}}' role='button' aria-expanded='false' aria-controls='collapseExample' class="category font-weight-bold">
-                        <td colspan=' 2' class="bi bi-caret-down-fill ">
-                            </td>
-                        <td></td>
-                    </tr>
-                    <tr class='collapse' id='{{expense.name}}'>
-                        <td colspan=' 2'>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr class="font-weight-bold">
-                        <td colspan=' 2'>Total amount</td>
-                        <td id='sumOfExpense'></td>
-                    </tr>
+                        <div th:each="category: ${expenseCategoriesSum}">
+                            <tr data-toggle="collapse" th:attr="data-target='#expenseCategory'+${category.name}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
+                                <td th:text="${category.name}" class="bi bi-caret-down-fill" />
+                                <td th:text="${category.amount} + 'zł'" />
+                            </tr>
+                            <div th:each="particular: ${particularExpenses}">
+                                <div th:if="${#strings.equals(particular.name, category.name)}">
+                                    <tr class="collapse" th:id="expenseCategory+${category.name }">
+                                        <td th:text="${particular.expenseDate}">
+                                        <td th:text="${particular.amount} + 'zł'" />
+                                    </tr>
+                                </div>
+                            </div>
+                        </div>
+                            <tr class="font-weight-bold">
+                                <td>Total amount</td>
+                                <td id='sumOfExpense' th:text="${expenseSum} + 'zł'"></td>
+                            </tr>
                     </tbody>
                 </table>
-                <div id="expensesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
+                <div th:if="${expenseSum != 0}">
+                    <div id="expensesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
+                </div>
             </div>
         </div>
     </article>
     <footer th:replace = "~{base :: footer}"></footer>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="/js/showBalance.js"></script>
     <script type="text/javascript" th:inline="javascript">
 
         google.charts.load('current', {'packages':['corechart']});
@@ -176,7 +186,7 @@
             data.addColumn('string', 'Category');
             data.addColumn('number', 'Amount');
             data.addRows([
-                /*[# th:each="row : ${charData}"]*/
+                /*[# th:each="row : ${incomeChartData}"]*/
                 [[${row}]],
                 /*[/]*/
             ]);
@@ -185,6 +195,31 @@
                 chartArea: {width: '100%'}}
 
             var chart = new google.visualization.PieChart(document.getElementById('incomesPieChart'));
+            chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Category');
+            data.addColumn('number', 'Amount');
+            data.addRows([
+                /*[# th:each="row : ${expenseChartData}"]*/
+                [[${row}]],
+                /*[/]*/
+            ]);
+
+            var options = { is3D: true, 'fontSize': 14, 'legendFontSize': 14,
+                chartArea: {width: '100%'}, colors: ['#111111', '#AAAAAA', '#434343', '#505050', '##212180']}
+
+            var chart = new google.visualization.PieChart(document.getElementById('expensesPieChart'));
             chart.draw(data, options);
         }
     </script>

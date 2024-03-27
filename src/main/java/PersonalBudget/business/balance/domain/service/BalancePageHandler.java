@@ -1,8 +1,9 @@
 package PersonalBudget.business.balance.domain.service;
 
 import PersonalBudget.business.balance.domain.BalanceGateway;
-import PersonalBudget.business.income.dto.IncomeCategorySumDTO;
+import PersonalBudget.business.expense.dto.ExpenseParticularDTO;
 import PersonalBudget.business.income.dto.IncomeParticularDTO;
+import PersonalBudget.common.util.CategorySumDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -28,24 +29,31 @@ public class BalancePageHandler {
         String lastDayCurrentMonth = getLastDayCurrentMonth();
         LocalDate dateFrom = LocalDate.parse(currentYear + "-" + currentMonth + "-" + "01");
         LocalDate dateTo = LocalDate.parse(currentYear + "-" + currentMonth + "-" + lastDayCurrentMonth);
-        List<IncomeCategorySumDTO> incomeCategoriesSum  = balanceGateway.fetchUserIncomeCategoriesSums(dateFrom, dateTo);
-        List<List<Object>> chartData = mapToChartData(incomeCategoriesSum);
+        List<CategorySumDTO> incomeCategoriesSum  = balanceGateway.fetchUserIncomeCategoriesSums(dateFrom, dateTo);
+        List<CategorySumDTO> expenseCategoriesSum = balanceGateway.fetchUserExpenseCategoriesSums(dateFrom, dateTo);
+        List<List<Object>> incomeChartData = mapToChartData(incomeCategoriesSum);
+        List<List<Object>> expenseChartData = mapToChartData(expenseCategoriesSum);
         List<IncomeParticularDTO> particularIncomes = balanceGateway.fetchUserParticularsIncomeCategory(dateFrom, dateTo);
+        List<ExpenseParticularDTO> particularExpenses = balanceGateway.fetchUserParticularsExpenseCategory(dateFrom, dateTo);
         balanceTemplateService.addIncomeParticularAttribute(model, particularIncomes);
+        balanceTemplateService.addExpenseParticularAttribute(model, particularExpenses);
         balanceTemplateService.addIncomeSumAttribute(model, incomeCategoriesSum);
+        balanceTemplateService.addExpenseSumAttribute(model, expenseCategoriesSum);
         balanceTemplateService.addIncomeCategoriesSumAttribute(model, incomeCategoriesSum);
-        balanceTemplateService.addIncomeChartDataAttribute(model, chartData);
+        balanceTemplateService.addExpenseCategoriesSumAttribute(model, expenseCategoriesSum);
+        balanceTemplateService.addIncomeChartDataAttribute(model, incomeChartData);
+        balanceTemplateService.addExpenseChartDataAttribute(model, expenseChartData);
         return BALANCE_PAGE;
     }
 
-    private List<Object> mapSumDTONameAndAmountToList(IncomeCategorySumDTO incomeCategorySumDTO) {
+    private List<Object> mapSumDTONameAndAmountToList(CategorySumDTO incomeCategorySumDTO) {
         return List.of(
                 incomeCategorySumDTO.name(), incomeCategorySumDTO.amount()
         );
     }
 
-    private List<List<Object>> mapToChartData(List<IncomeCategorySumDTO> incomeCategoriesSums) {
-        return incomeCategoriesSums.stream()
+    private List<List<Object>> mapToChartData(List<CategorySumDTO> categoriesSum) {
+        return categoriesSum.stream()
                 .map(this::mapSumDTONameAndAmountToList)
                 .toList();
     }
