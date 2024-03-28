@@ -62,7 +62,7 @@
             </div>
         </nav>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-            <form action="/Menu/nonstandard" method="post" id="nonstandard">
+            <form th:action="@{/api/v1/menu/nonstandard}" th:object="${nonstandardDateDTO}" method="post" id="nonstandard">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -73,11 +73,11 @@
                         <div class="modal-body h5">
                             <div class="form-group mx-auto">
                                 <label for="dateFrom" class="font-weight-normal text-black">[[#{nonstandard.dateFrom}]]</label>
-                                <input type="date" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
+                                <input type="date" th:field="*{dateFrom}" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
                             </div>
                             <div class="form-group mx-auto">
                                 <label for="dateTo" class="font-weight-normal text-black">[[#{nonstandard.dateTo}]]</label>
-                                <input type="date" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
+                                <input type="date" th:field="*{dateTo}" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -117,7 +117,7 @@
                             <div th:each="particular: ${particularIncomes}">
                                 <div th:if="${#strings.equals(particular.name, category.name)}">
                                     <tr class="collapse" th:id="incomeCategory+${category.name }">
-                                        <td th:text="${particular.incomeDate}">
+                                        <td th:text="${particular.date}">
                                         <td th:text="${particular.amount} + 'zł'" />
                                     </tr>
                                 </div>
@@ -151,7 +151,7 @@
                             <div th:each="particular: ${particularExpenses}">
                                 <div th:if="${#strings.equals(particular.name, category.name)}">
                                     <tr class="collapse" th:id="expenseCategory+${category.name }">
-                                        <td th:text="${particular.expenseDate}">
+                                        <td th:text="${particular.date}">
                                         <td th:text="${particular.amount} + 'zł'" />
                                     </tr>
                                 </div>

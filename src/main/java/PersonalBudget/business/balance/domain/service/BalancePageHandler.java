@@ -2,6 +2,7 @@ package PersonalBudget.business.balance.domain.service;
 
 import PersonalBudget.business.balance.domain.BalanceGateway;
 import PersonalBudget.common.util.CategorySumDTO;
+import PersonalBudget.common.util.NonstandardDateDTO;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class BalancePageHandler {
     private final BalanceGateway balanceGateway;
     private final BalanceTemplateService balanceTemplateService;
     private static final String BALANCE_PAGE = "menu/balance";
+    private static final String MENU_PAGE = "menu/main";
 
 
     public String handleCurrentMonthBalancePage(Model model) {
@@ -45,6 +47,22 @@ public class BalancePageHandler {
         LocalDate dateTo = getLastDayCurrentYear();
         handleBalancePage(model, dateFrom, dateTo);
         return BALANCE_PAGE;
+    }
+
+    public String handleNonstandardBalancePage(NonstandardDateDTO nonstandardDateDTO, Model model) {
+        LocalDate dateFrom = nonstandardDateDTO.dateFrom();
+        LocalDate dateTo = nonstandardDateDTO.dateTo();
+        if(dateTo.isBefore(dateFrom)) {
+            balanceTemplateService.addTwoDatesComparisonAttribute(model);
+            return MENU_PAGE;
+        }
+        handleBalancePage(model, dateFrom, dateTo);
+        return BALANCE_PAGE;
+    }
+
+    public String handleNonstandardBalancePageWithoutDateRange(Model model) {
+        balanceTemplateService.addNoDateRangeAttribute(model);
+        return MENU_PAGE;
     }
 
     public void handleBalancePage(Model model, LocalDate dateFrom, LocalDate dateTo) {

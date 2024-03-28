@@ -53,4 +53,12 @@ public class BalanceTemplateService {
     public void addExpenseChartDataAttribute(Model model, List<List<Object>> expenseChartData) {
         model.addAttribute("expenseChartData", expenseChartData);
     }
+
+    public void addTwoDatesComparisonAttribute(Model model) {
+        model.addAttribute("wrongDateInput", true);
+    }
+
+    public void addNoDateRangeAttribute(Model model) {
+        model.addAttribute("isDateRange", false);
+    }
 }

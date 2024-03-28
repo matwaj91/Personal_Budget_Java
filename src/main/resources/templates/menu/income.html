@@ -62,7 +62,7 @@
       </div>
     </nav>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-      <form action="/Menu/nonstandard" method="post" id="nonstandard">
+      <form th:action="@{/api/v1/menu/nonstandard}" th:object="${nonstandardDateDTO}" method="post" id="nonstandard">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
