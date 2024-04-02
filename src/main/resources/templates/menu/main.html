@@ -91,7 +91,7 @@
 		</header>
 		<div th:if="${wrongDateInput == true}">
 			<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
-				The specified date range is not valid as first chosen date cannot be later than the second one!
+				[[#{balance.wrongDateInput}]]
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -99,7 +99,7 @@
 		</div>
 		<div th:if="${isDateRange == false}">
 			<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-informative">
-				Please specify a date range by clicking on Display Balance and afterward on Nonstandard.
+				[[#{balance.isDateRange}]]
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
