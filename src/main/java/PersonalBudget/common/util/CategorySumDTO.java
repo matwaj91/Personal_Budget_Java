@@ -5,5 +5,5 @@ import java.math.BigDecimal;
 public record CategorySumDTO(
 
     String name,
-    BigDecimal amount
+    BigDecimal totalAmount
 ) {}

@@ -9,7 +9,7 @@ public record ExpenseDTO(
         @NotNull(message = "{expense.amount.empty}")
         BigDecimal amount,
         @NotNull(message = "{expense.date.empty}")
-        LocalDate date,
+        LocalDate expenseDate,
         @NotNull(message = "{expense.payment.empty}")
         Long paymentMethodId,
         @NotNull(message = "{expense.category.empty}")

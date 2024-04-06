@@ -28,13 +28,13 @@ public class IncomeController {
     }
 
     @ModelAttribute("incomeDTO")
-    public IncomeDTO incomeDTO(BigDecimal amount, LocalDate date, Long incomeCategoryId, String incomeComment) {
-        return new IncomeDTO(amount, date, incomeCategoryId, incomeComment);
+    public IncomeDTO incomeDTO(BigDecimal amount, LocalDate incomeDate, Long incomeCategoryId, String incomeComment) {
+        return new IncomeDTO(amount, incomeDate, incomeCategoryId, incomeComment);
     }
 
     @PostMapping()
     public String getProperPageAfterAddingIncome(@Valid @ModelAttribute("incomeDTO") IncomeDTO incomeDTO,
-                                           BindingResult bindingResult, Model model) {
+                                                 BindingResult bindingResult, Model model) {
         return incomePageHandler.handleIncomePageAfterSubmit(bindingResult, model, incomeDTO);
     }
 

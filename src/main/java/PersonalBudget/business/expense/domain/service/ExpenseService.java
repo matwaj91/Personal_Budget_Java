@@ -34,12 +34,12 @@ public class ExpenseService {
 
     public List<ExpenseCategoryDTO> getUserExpenseCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseCategoryRepository.findAllExpenseCategoryByUserId(loggedInUserId);
+        return expenseCategoryRepository.findAllExpensesCategoriesByUserId(loggedInUserId);
     }
 
     public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return paymentMethodRepository.findAllPaymentMethodName(loggedInUserId);
+        return paymentMethodRepository.findAllPaymentMethodsNames(loggedInUserId);
     }
 
     public void addExpense(ExpenseDTO expenseDTO) {
@@ -80,11 +80,11 @@ public class ExpenseService {
 
     public List<CategorySumDTO> getUserExpenseCategoriesSums(LocalDate dateFrom, LocalDate dateTo) {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseRepository.findAllExpenseCategoriesSum(loggedInUserId, dateFrom, dateTo);
+        return expenseRepository.findAllExpensesCategoriesSums(loggedInUserId, dateFrom, dateTo);
     }
 
     public List<ParticularActivityDTO> getUserParticularsExpenseCategory(LocalDate dateFrom, LocalDate dateTo) {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseRepository.findAllParticularExpensesEachCategory(loggedInUserId, dateFrom, dateTo);
+        return expenseRepository.findAllUserParticularExpensesEachCategory(loggedInUserId, dateFrom, dateTo);
     }
 }

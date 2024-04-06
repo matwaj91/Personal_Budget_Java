@@ -110,8 +110,8 @@
         </div>
         <div class="form-group mx-auto">
           <label for="date" class="font-weight-normal text-black">[[#{income.form.date}]]</label>
-          <input type="date" th:field="*{date}" class="form-control font-weight-bold text-dark border-4" id="date" name="date" aria-describedby="date">
-          <div class="alert-negative" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+          <input type="date" th:field="*{incomeDate}" class="form-control font-weight-bold text-dark border-4" id="date" name="date" aria-describedby="date">
+          <div class="alert-negative" th:if="${#fields.hasErrors('incomeDate')}" th:errors="*{incomeDate}"></div>
         </div>
         <div class="form-group mx-auto">
           <label for="category" class="font-weight-normal text-black">[[#{income.form.category}]]</label>

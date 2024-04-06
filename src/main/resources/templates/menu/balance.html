@@ -132,7 +132,7 @@
                         <div th:each="category: ${incomeCategoriesSum}">
                             <tr data-toggle="collapse" th:attr="data-target='#incomeCategory'+${category.name}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
                                 <td th:text="${category.name}" class="bi bi-caret-down-fill" />
-                                <td><span th:text="${category.amount}"></span>[[#{balance.currency}]]</td>
+                                <td><span th:text="${category.totalAmount}"></span>[[#{balance.currency}]]</td>
                             </tr>
                             <div th:each="particular: ${particularIncomes}">
                                 <div th:if="${#strings.equals(particular.name, category.name)}">
@@ -166,7 +166,7 @@
                         <div th:each="category: ${expenseCategoriesSum}">
                             <tr data-toggle="collapse" th:attr="data-target='#expenseCategory'+${category.name}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
                                 <td th:text="${category.name}" class="bi bi-caret-down-fill" />
-                                <td><span th:text="${category.amount}"></span>[[#{balance.currency}]]</td>
+                                <td><span th:text="${category.totalAmount}"></span>[[#{balance.currency}]]</td>
                             </tr>
                             <div th:each="particular: ${particularExpenses}">
                                 <div th:if="${#strings.equals(particular.name, category.name)}">

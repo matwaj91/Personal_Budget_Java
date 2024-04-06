@@ -6,12 +6,14 @@ import java.time.YearMonth;
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
-public class Date {
+public class PersonalBudgetDateUtils {
 
-    private static final LocalDate localDate = LocalDate.now();
+    public static LocalDate getNowLocalDate() {
+        return LocalDate.now();
+    }
 
     public static LocalDate getFirstDayCurrentMonth() {
-        return localDate.withDayOfMonth(1);
+        return getNowLocalDate().withDayOfMonth(1);
     }
 
     public static LocalDate getLastDayCurrentMonth() {
@@ -19,7 +21,7 @@ public class Date {
     }
 
     public static LocalDate getFirstDayPreviousMonth() {
-        return localDate.minusMonths(1).withDayOfMonth(1);
+        return getNowLocalDate().minusMonths(1).withDayOfMonth(1);
     }
 
     public static LocalDate getLastDayPreviousMonth() {
@@ -27,10 +29,10 @@ public class Date {
     }
 
     public static LocalDate getFirstDayCurrentYear() {
-        return localDate.with(firstDayOfYear());
+        return getNowLocalDate().with(firstDayOfYear());
     }
 
     public static LocalDate getLastDayCurrentYear() {
-        return localDate.with(lastDayOfYear());
+        return getNowLocalDate().with(lastDayOfYear());
     }
 }

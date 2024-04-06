@@ -1,8 +1,9 @@
 package PersonalBudget.business.balance.domain.service;
 
 import PersonalBudget.business.balance.domain.BalanceGateway;
+import PersonalBudget.business.balance.domain.mapper.BalanceMapper;
 import PersonalBudget.common.util.CategorySumDTO;
-import PersonalBudget.common.util.NonstandardDateDTO;
+import PersonalBudget.common.util.TimePeriodDTO;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,12 @@ import org.springframework.ui.Model;
 import java.time.LocalDate;
 import java.util.List;
 
-import static PersonalBudget.common.util.Date.getFirstDayCurrentMonth;
-import static PersonalBudget.common.util.Date.getFirstDayCurrentYear;
-import static PersonalBudget.common.util.Date.getFirstDayPreviousMonth;
-import static PersonalBudget.common.util.Date.getLastDayCurrentMonth;
-import static PersonalBudget.common.util.Date.getLastDayCurrentYear;
-import static PersonalBudget.common.util.Date.getLastDayPreviousMonth;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentMonth;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentYear;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayPreviousMonth;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayCurrentMonth;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayCurrentYear;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayPreviousMonth;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +25,7 @@ public class BalancePageHandler {
 
     private final BalanceGateway balanceGateway;
     private final BalanceTemplateService balanceTemplateService;
+    private final BalanceMapper balanceMapper;
     private static final String BALANCE_PAGE = "menu/balance";
     private static final String MENU_PAGE = "menu/main";
 
@@ -31,47 +33,50 @@ public class BalancePageHandler {
     public String handleCurrentMonthBalancePage(Model model) {
         LocalDate dateFrom = getFirstDayCurrentMonth();
         LocalDate dateTo= getLastDayCurrentMonth();
-        handleBalancePage(model, dateFrom, dateTo);
-        return BALANCE_PAGE;
+        return handleBalancePage(model, dateFrom, dateTo);
     }
 
     public String handlePreviousMonthBalancePage(Model model) {
         LocalDate dateFrom = getFirstDayPreviousMonth();
         LocalDate dateTo = getLastDayPreviousMonth();
-        handleBalancePage(model, dateFrom, dateTo);
-        return BALANCE_PAGE;
+        return handleBalancePage(model, dateFrom, dateTo);
     }
 
     public String handleCurrentYearBalancePage(Model model) {
         LocalDate dateFrom = getFirstDayCurrentYear();
         LocalDate dateTo = getLastDayCurrentYear();
-        handleBalancePage(model, dateFrom, dateTo);
-        return BALANCE_PAGE;
+        return handleBalancePage(model, dateFrom, dateTo);
     }
 
-    public String handleNonstandardBalancePage(NonstandardDateDTO nonstandardDateDTO, Model model) {
-        LocalDate dateFrom = nonstandardDateDTO.dateFrom();
-        LocalDate dateTo = nonstandardDateDTO.dateTo();
+    public String handleTimeRangeBalancePage(TimePeriodDTO timePeriodDTO, Model model) {
+        LocalDate dateFrom = timePeriodDTO.dateFrom();
+        LocalDate dateTo = timePeriodDTO.dateTo();
         if(dateTo.isBefore(dateFrom)) {
             balanceTemplateService.addTwoDatesComparisonAttribute(model);
             return MENU_PAGE;
         }
-        handleBalancePage(model, dateFrom, dateTo);
-        return BALANCE_PAGE;
+        return handleBalancePage(model, dateFrom, dateTo);
     }
 
-    public String handleNonstandardBalancePageWithoutDateRange(Model model) {
+    public String handleTimeRangeBalancePageWithoutDateRange(Model model) {
         balanceTemplateService.addNoDateRangeAttribute(model);
         return MENU_PAGE;
     }
 
-    public void handleBalancePage(Model model, LocalDate dateFrom, LocalDate dateTo) {
+    public String handleBalancePage(Model model, LocalDate dateFrom, LocalDate dateTo) {
         List<CategorySumDTO> incomeCategoriesSum  = balanceGateway.fetchUserIncomeCategoriesSums(dateFrom, dateTo);
         List<CategorySumDTO> expenseCategoriesSum = balanceGateway.fetchUserExpenseCategoriesSums(dateFrom, dateTo);
-        List<List<Object>> incomeChartData = mapToChartData(incomeCategoriesSum);
-        List<List<Object>> expenseChartData = mapToChartData(expenseCategoriesSum);
+        List<List<Object>> incomeChartData = balanceMapper.mapToChartData(incomeCategoriesSum);
+        List<List<Object>> expenseChartData = balanceMapper.mapToChartData(expenseCategoriesSum);
         List<ParticularActivityDTO> particularIncomes = balanceGateway.fetchUserParticularsIncomeCategory(dateFrom, dateTo);
         List<ParticularActivityDTO> particularExpenses = balanceGateway.fetchUserParticularsExpenseCategory(dateFrom, dateTo);
+        handleTemplateServiceLogic(model, particularIncomes, particularExpenses, incomeCategoriesSum, expenseCategoriesSum, incomeChartData, expenseChartData);
+        return BALANCE_PAGE;
+    }
+
+    public void handleTemplateServiceLogic(Model model, List<ParticularActivityDTO> particularIncomes, List<ParticularActivityDTO> particularExpenses,
+                                           List<CategorySumDTO> incomeCategoriesSum, List<CategorySumDTO> expenseCategoriesSum,
+                                           List<List<Object>> incomeChartData, List<List<Object>> expenseChartData) {
         balanceTemplateService.addIncomeParticularAttribute(model, particularIncomes);
         balanceTemplateService.addExpenseParticularAttribute(model, particularExpenses);
         balanceTemplateService.addIncomeSumAttribute(model, incomeCategoriesSum);
@@ -80,17 +85,5 @@ public class BalancePageHandler {
         balanceTemplateService.addExpenseCategoriesSumAttribute(model, expenseCategoriesSum);
         balanceTemplateService.addIncomeChartDataAttribute(model, incomeChartData);
         balanceTemplateService.addExpenseChartDataAttribute(model, expenseChartData);
-    }
-
-    private List<Object> mapSumDTONameAndAmountToList(CategorySumDTO incomeCategorySumDTO) {
-        return List.of(
-                incomeCategorySumDTO.name(), incomeCategorySumDTO.amount()
-        );
-    }
-
-    private List<List<Object>> mapToChartData(List<CategorySumDTO> categoriesSum) {
-        return categoriesSum.stream()
-                .map(this::mapSumDTONameAndAmountToList)
-                .toList();
     }
 }

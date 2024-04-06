@@ -62,8 +62,8 @@ public class ExpenseEntity {
     private BigDecimal amount;
 
     @NotNull
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "expense_date")
+    private LocalDate expenseDate;
 
     @Column(name = "expense_comment")
     private String expenseComment;

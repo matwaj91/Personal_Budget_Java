@@ -28,13 +28,13 @@ public class ExpenseController {
     }
 
     @ModelAttribute("expenseDTO")
-    public ExpenseDTO expenseDTO(BigDecimal amount, LocalDate date, Long paymentMethodId, Long expenseCategoryId, String expenseComment) {
-        return new ExpenseDTO(amount, date, paymentMethodId, expenseCategoryId, expenseComment);
+    public ExpenseDTO expenseDTO(BigDecimal amount, LocalDate expenseDate, Long paymentMethodId, Long expenseCategoryId, String expenseComment) {
+        return new ExpenseDTO(amount, expenseDate, paymentMethodId, expenseCategoryId, expenseComment);
     }
 
     @PostMapping()
     public String getExpensePageAfterSubmit(@Valid @ModelAttribute("expenseDTO") ExpenseDTO expenseDTO,
-                                                 BindingResult bindingResult, Model model) {
+                                            BindingResult bindingResult, Model model) {
         return expensePageHandler.handleExpensePageAfterSubmit(bindingResult, model, expenseDTO);
     }
 

@@ -1,7 +1,7 @@
 package PersonalBudget.business.balance.domain.controller;
 
 import PersonalBudget.business.balance.domain.service.BalancePageHandler;
-import PersonalBudget.common.util.NonstandardDateDTO;
+import PersonalBudget.common.util.TimePeriodDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,19 +36,17 @@ public class BalanceController {
     }
 
     @ModelAttribute("nonstandardDateDTO")
-    public NonstandardDateDTO nonstandardDateDTO(LocalDate dateFrom, LocalDate dateTo) {
-        return new NonstandardDateDTO(dateFrom, dateTo);
+    public TimePeriodDTO nonstandardDateDTO(LocalDate dateFrom, LocalDate dateTo) {
+        return new TimePeriodDTO(dateFrom, dateTo);
     }
 
     @PostMapping(value = "/nonstandard")
-    public String getNonstandardBalancePage(@Valid @ModelAttribute("nonstandardDateDTO") NonstandardDateDTO nonstandardDateDTO, Model model) {
-        return balancePageHandler.handleNonstandardBalancePage(nonstandardDateDTO, model);
+    public String getTimeRangeBalancePage(@Valid @ModelAttribute("nonstandardDateDTO") TimePeriodDTO nonstandardDateDTO, Model model) {
+        return balancePageHandler.handleTimeRangeBalancePage(nonstandardDateDTO, model);
     }
 
     @GetMapping(value = "/nonstandard")
-    public String getNonstandardBalancePage(Model model) {
-        return balancePageHandler.handleNonstandardBalancePageWithoutDateRange(model);
+    public String getTimeRangeBalancePage(Model model) {
+        return balancePageHandler.handleTimeRangeBalancePageWithoutDateRange(model);
     }
-
-
 }

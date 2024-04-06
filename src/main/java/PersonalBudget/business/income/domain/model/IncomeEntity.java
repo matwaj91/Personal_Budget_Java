@@ -53,8 +53,8 @@ public class IncomeEntity {
     private BigDecimal amount;
 
     @NotNull
-    @Column(name = "date")
-    private LocalDate date;
+    @Column(name = "income_date")
+    private LocalDate incomeDate;
 
     @Column(name = "income_comment")
     private String incomeComment;

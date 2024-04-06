@@ -30,7 +30,7 @@ public class IncomeService {
 
     public List<IncomeCategoryDTO> getUserIncomeCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return incomeCategoryRepository.findAllIncomeCategoryByUserId(loggedInUserId);
+        return incomeCategoryRepository.findAllIncomesCategoriesByUserId(loggedInUserId);
     }
 
     public void addIncome(IncomeDTO incomeDTO) {
@@ -56,12 +56,12 @@ public class IncomeService {
 
     public List<CategorySumDTO> getUserIncomeCategoriesSums(LocalDate dateFrom, LocalDate dateTo) {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return incomeRepository.findAllIncomeCategoriesSum(loggedInUserId, dateFrom, dateTo);
+        return incomeRepository.findAllIncomesCategoriesSums(loggedInUserId, dateFrom, dateTo);
     }
 
     public List<ParticularActivityDTO> getUserParticularsIncomeCategory(LocalDate dateFrom, LocalDate dateTo) {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return incomeRepository.findAllParticularIncomesEachCategory(loggedInUserId, dateFrom, dateTo);
+        return incomeRepository.findAllUserParticularIncomesEachCategory(loggedInUserId, dateFrom, dateTo);
     }
 
 }

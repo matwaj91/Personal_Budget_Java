@@ -11,7 +11,7 @@ import java.util.List;
 public interface IncomeCategoryRepository extends JpaRepository<IncomeCategoryEntity, Long> {
 
     @Query(value = "select new PersonalBudget.business.income.dto.IncomeCategoryDTO(e.id, e.name) from IncomeCategoryEntity e where e.userId = :userId")
-    List<IncomeCategoryDTO> findAllIncomeCategoryByUserId(@Param("userId") Long userId);
+    List<IncomeCategoryDTO> findAllIncomesCategoriesByUserId(@Param("userId") Long userId);
 }
 
 

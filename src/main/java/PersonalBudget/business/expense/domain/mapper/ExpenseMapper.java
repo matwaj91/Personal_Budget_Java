@@ -13,7 +13,7 @@ public class ExpenseMapper {
                 .expenseCategoryId(expenseDTO.expenseCategoryId())
                 .expensePaymentMethodId(expenseDTO.paymentMethodId())
                 .amount(expenseDTO.amount())
-                .date(expenseDTO.date())
+                .expenseDate(expenseDTO.expenseDate())
                 .expenseComment(expenseDTO.expenseComment())
                 .build();
     }

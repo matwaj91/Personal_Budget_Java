@@ -21,7 +21,7 @@ public class BalanceTemplateService {
     public void addIncomeSumAttribute(Model model, List<CategorySumDTO> incomeCategoriesSum) {
         BigDecimal incomeSum = new BigDecimal(0);
         for(CategorySumDTO incomeCategorySum : incomeCategoriesSum) {
-            incomeSum = incomeSum.add(incomeCategorySum.amount());
+            incomeSum = incomeSum.add(incomeCategorySum.totalAmount());
         }
         model.addAttribute("incomeSum", incomeSum);
     }
@@ -41,7 +41,7 @@ public class BalanceTemplateService {
     public void addExpenseSumAttribute(Model model, List<CategorySumDTO> expenseCategoriesSum) {
         BigDecimal expenseSum = new BigDecimal(0);
         for(CategorySumDTO expenseCategorySum : expenseCategoriesSum) {
-           expenseSum = expenseSum.add(expenseCategorySum.amount());
+           expenseSum = expenseSum.add(expenseCategorySum.totalAmount());
         }
         model.addAttribute("expenseSum", expenseSum);
     }
