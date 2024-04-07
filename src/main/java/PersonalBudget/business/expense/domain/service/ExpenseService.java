@@ -13,7 +13,6 @@ import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseDTO;
 import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import PersonalBudget.business.user.domain.UserFacade;
-import PersonalBudget.common.util.CategorySumDTO;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -76,11 +75,6 @@ public class ExpenseService {
     public void addDefaultPaymentMethodsToUserAccount(Long userId) {
         List<ExpensePaymentMethodEntity> defaultPaymentMethods = buildDefaultPaymentMethods(userId);
         paymentMethodRepository.saveAll(defaultPaymentMethods);
-    }
-
-    public List<CategorySumDTO> getUserExpenseCategoriesSums(LocalDate dateFrom, LocalDate dateTo) {
-        Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseRepository.findAllExpensesCategoriesSums(loggedInUserId, dateFrom, dateTo);
     }
 
     public List<ParticularActivityDTO> getUserParticularsExpenseCategory(LocalDate dateFrom, LocalDate dateTo) {

@@ -9,7 +9,6 @@ import PersonalBudget.business.income.domain.repository.IncomeRepository;
 import PersonalBudget.business.income.dto.IncomeCategoryDTO;
 import PersonalBudget.business.income.dto.IncomeDTO;
 import PersonalBudget.business.user.domain.UserFacade;
-import PersonalBudget.common.util.CategorySumDTO;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,11 +51,6 @@ public class IncomeService {
     public void addDefaultIncomeCategoriesToUserAccount(Long userId) {
         List<IncomeCategoryEntity> defaultCategories = buildDefaultCategories(userId);
         incomeCategoryRepository.saveAll(defaultCategories);
-    }
-
-    public List<CategorySumDTO> getUserIncomeCategoriesSums(LocalDate dateFrom, LocalDate dateTo) {
-        Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return incomeRepository.findAllIncomesCategoriesSums(loggedInUserId, dateFrom, dateTo);
     }
 
     public List<ParticularActivityDTO> getUserParticularsIncomeCategory(LocalDate dateFrom, LocalDate dateTo) {

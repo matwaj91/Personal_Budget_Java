@@ -90,8 +90,8 @@
         </div>
     </header>
     <article>
-        <div th:switch="true" th:with="result=${incomeSum} - ${expenseSum}">
-            <div th:case="${(incomeSum == 0) && (expenseSum == 0)}">
+        <div th:switch="true" th:with="result=${incomesSum} - ${expensesSum}">
+            <div th:case="${(incomesSum == 0) && (expensesSum == 0)}">
                 <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert alert-dismissible fade show" role="alert">
                     [[#{balance.neutral}]]
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -99,7 +99,7 @@
                     </button>
                 </div>
             </div>
-            <div th:case="${incomeSum >= expenseSum}">
+            <div th:case="${incomesSum >= expensesSum}">
                 <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive fade show" role="alert">
                     [[#{balance.balance}]]: <span th:text="${result}"></span>[[#{balance.currency}]] [[#{balance.positive}]]
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -107,7 +107,7 @@
                     </button>
                 </div>
             </div>
-            <div th:case="${incomeSum < expenseSum}">
+            <div th:case="${incomesSum < expensesSum}">
                 <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative fade show" role="alert">
                     [[#{balance.balance}]]: <span th:text="${result}"></span>[[#{balance.currency}]] [[#{balance.negative}]]
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -130,26 +130,26 @@
                     </thead>
                     <tbody>
                         <div th:each="category: ${incomeCategoriesSum}">
-                            <tr data-toggle="collapse" th:attr="data-target='#incomeCategory'+${category.name}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
-                                <td th:text="${category.name}" class="bi bi-caret-down-fill" />
-                                <td><span th:text="${category.totalAmount}"></span>[[#{balance.currency}]]</td>
-                            </tr>
-                            <div th:each="particular: ${particularIncomes}">
-                                <div th:if="${#strings.equals(particular.name, category.name)}">
-                                    <tr class="collapse" th:id="incomeCategory+${category.name }">
-                                        <td th:text="${particular.date}">
-                                        <td><span th:text="${particular.amount}"></span>[[#{balance.currency}]]</td>
-                                    </tr>
+                                <tr data-toggle="collapse" th:attr="data-target='#incomeCategory'+${category[0]}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
+                                    <td th:text="${category[0]}" class="bi bi-caret-down-fill" />
+                                    <td><span th:text="${category[1]}"></span>[[#{balance.currency}]]</td>
+                                </tr>
+                                <div th:each="particular: ${particularIncomes}">
+                                    <div th:if="${#strings.equals(particular.name, category[0])}">
+                                        <tr class="collapse" th:id="incomeCategory+${category[0]}">
+                                            <td th:text="${particular.date}">
+                                            <td><span th:text="${particular.amount}"></span>[[#{balance.currency}]]</td>
+                                        </tr>
+                                    </div>
                                 </div>
-                            </div>
                         </div>
                             <tr class="font-weight-bold">
                                 <td>[[#{balance.totalAmount}]]</td>
-                                <td><span th:text="${incomeSum}"></span>[[#{balance.currency}]]</td>
+                                <td><span th:text="${incomesSum}"></span>[[#{balance.currency}]]</td>
                             </tr>
                     </tbody>
                 </table>
-                <div th:if="${incomeSum != 0}">
+                <div th:if="${incomesSum != 0}">
                     <div id="incomesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
                 </div>
                 <div class="mb-3 mt-0">
@@ -164,13 +164,13 @@
                     </thead>
                     <tbody>
                         <div th:each="category: ${expenseCategoriesSum}">
-                            <tr data-toggle="collapse" th:attr="data-target='#expenseCategory'+${category.name}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
-                                <td th:text="${category.name}" class="bi bi-caret-down-fill" />
-                                <td><span th:text="${category.totalAmount}"></span>[[#{balance.currency}]]</td>
+                            <tr data-toggle="collapse" th:attr="data-target='#expenseCategory'+${category[0]}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
+                                <td th:text="${category[0]}" class="bi bi-caret-down-fill" />
+                                <td><span th:text="${category[1]}"></span>[[#{balance.currency}]]</td>
                             </tr>
                             <div th:each="particular: ${particularExpenses}">
-                                <div th:if="${#strings.equals(particular.name, category.name)}">
-                                    <tr class="collapse" th:id="expenseCategory+${category.name }">
+                                <div th:if="${#strings.equals(particular.name, category[0])}">
+                                    <tr class="collapse" th:id="expenseCategory+${category[0]}">
                                         <td th:text="${particular.date}">
                                         <td><span th:text="${particular.amount}"></span>[[#{balance.currency}]]</td>
                                     </tr>
@@ -179,11 +179,11 @@
                         </div>
                             <tr class="font-weight-bold">
                                 <td>[[#{balance.totalAmount}]]</td>
-                                <td><span th:text="${expenseSum}"></span>[[#{balance.currency}]]</td>
+                                <td><span th:text="${expensesSum}"></span>[[#{balance.currency}]]</td>
                             </tr>
                     </tbody>
                 </table>
-                <div th:if="${expenseSum != 0}">
+                <div th:if="${expensesSum != 0}">
                     <div id="expensesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
                 </div>
             </div>
@@ -205,7 +205,7 @@
             data.addColumn('string', 'Category');
             data.addColumn('number', 'Amount');
             data.addRows([
-                /*[# th:each="row : ${incomeChartData}"]*/
+                /*[# th:each="row : ${incomeCategoriesSum}"]*/
                 [[${row}]],
                 /*[/]*/
             ]);
@@ -230,7 +230,7 @@
             data.addColumn('string', 'Category');
             data.addColumn('number', 'Amount');
             data.addRows([
-                /*[# th:each="row : ${expenseChartData}"]*/
+                /*[# th:each="row : ${expenseCategoriesSum}"]*/
                 [[${row}]],
                 /*[/]*/
             ]);

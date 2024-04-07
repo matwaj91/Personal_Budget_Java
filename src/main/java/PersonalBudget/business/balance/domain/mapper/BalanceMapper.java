@@ -1,22 +1,28 @@
 package PersonalBudget.business.balance.domain.mapper;
 
-import PersonalBudget.common.util.CategorySumDTO;
+import PersonalBudget.common.util.ParticularActivityDTO;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BalanceMapper {
 
-    public List<Object> mapSumDTONameAndAmountToList(CategorySumDTO categorySumDTO) {
-        return List.of(
-                categorySumDTO.name(), categorySumDTO.totalAmount()
-        );
+    public List<List<Object>> mapParticularActivityDTOToNameAndTotalAmountList(List<ParticularActivityDTO> particularActivities) {
+        return particularActivities.stream()
+                .collect(Collectors.groupingBy(ParticularActivityDTO::name,
+                        Collectors.reducing(BigDecimal.ZERO, ParticularActivityDTO::amount, BigDecimal::add)))
+                .entrySet()
+                .stream()
+                .map(map -> mapNameAndTotalAmountToList(map.getKey(), map.getValue()))
+                .toList();
     }
 
-    public List<List<Object>> mapToChartData(List<CategorySumDTO> categoriesSum) {
-        return categoriesSum.stream()
-                .map(this::mapSumDTONameAndAmountToList)
-                .toList();
+    public List<Object> mapNameAndTotalAmountToList(String name, BigDecimal totalAmount) {
+        return List.of(
+                name, totalAmount
+        );
     }
 }

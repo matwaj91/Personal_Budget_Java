@@ -1,6 +1,5 @@
 package PersonalBudget.business.balance.domain.service;
 
-import PersonalBudget.common.util.CategorySumDTO;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,44 +13,28 @@ import java.util.List;
 @Service
 public class BalanceTemplateService {
 
-    public void addIncomeCategoriesSumAttribute(Model model, List<CategorySumDTO> incomeCategoriesSum) {
+    public void addIncomeCategoriesSumAttribute(Model model, List<List<Object>> incomeCategoriesSum) {
         model.addAttribute("incomeCategoriesSum", incomeCategoriesSum);
     }
 
-    public void addIncomeSumAttribute(Model model, List<CategorySumDTO> incomeCategoriesSum) {
-        BigDecimal incomeSum = new BigDecimal(0);
-        for(CategorySumDTO incomeCategorySum : incomeCategoriesSum) {
-            incomeSum = incomeSum.add(incomeCategorySum.totalAmount());
-        }
-        model.addAttribute("incomeSum", incomeSum);
+    public void addIncomeSumAttribute(Model model, BigDecimal incomesSum) {
+        model.addAttribute("incomesSum", incomesSum);
     }
 
     public void addIncomeParticularAttribute(Model model, List<ParticularActivityDTO> particularIncomes) {
         model.addAttribute("particularIncomes", particularIncomes);
     }
 
-    public void addIncomeChartDataAttribute(Model model, List<List<Object>> incomeChartData) {
-        model.addAttribute("incomeChartData", incomeChartData);
-    }
-
     public void addExpenseParticularAttribute(Model model, List<ParticularActivityDTO> particularExpenses) {
         model.addAttribute("particularExpenses", particularExpenses);
     }
 
-    public void addExpenseSumAttribute(Model model, List<CategorySumDTO> expenseCategoriesSum) {
-        BigDecimal expenseSum = new BigDecimal(0);
-        for(CategorySumDTO expenseCategorySum : expenseCategoriesSum) {
-           expenseSum = expenseSum.add(expenseCategorySum.totalAmount());
-        }
-        model.addAttribute("expenseSum", expenseSum);
+    public void addExpenseSumAttribute(Model model, BigDecimal expensesSum) {
+        model.addAttribute("expensesSum", expensesSum);
     }
 
-    public void addExpenseCategoriesSumAttribute(Model model, List<CategorySumDTO> expenseCategoriesSum) {
+    public void addExpenseCategoriesSumAttribute(Model model, List<List<Object>> expenseCategoriesSum) {
         model.addAttribute("expenseCategoriesSum", expenseCategoriesSum);
-    }
-
-    public void addExpenseChartDataAttribute(Model model, List<List<Object>> expenseChartData) {
-        model.addAttribute("expenseChartData", expenseChartData);
     }
 
     public void addTwoDatesComparisonAttribute(Model model) {
