@@ -1,14 +1,11 @@
 package PersonalBudget.business.balance.domain.service;
 
-import PersonalBudget.business.balance.domain.BalanceGateway;
-import PersonalBudget.business.balance.domain.mapper.BalanceMapper;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import PersonalBudget.common.util.TimePeriodDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,9 +20,8 @@ import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayPrevi
 @Service
 public class BalancePageHandler {
 
-    private final BalanceGateway balanceGateway;
     private final BalanceTemplateService balanceTemplateService;
-    private final BalanceMapper balanceMapper;
+    private final BalanceService balanceService;
     private static final String BALANCE_PAGE = "menu/balance";
     private static final String MENU_PAGE = "menu/main";
 
@@ -52,7 +48,7 @@ public class BalancePageHandler {
         LocalDate dateFrom = timePeriodDTO.dateFrom();
         LocalDate dateTo = timePeriodDTO.dateTo();
         if(dateTo.isBefore(dateFrom)) {
-            balanceTemplateService.addTwoDatesComparisonAttribute(model);
+            balanceTemplateService.addWrongDateInputAttribute(model);
             return MENU_PAGE;
         }
         return handleBalancePage(model, dateFrom, dateTo);
@@ -64,31 +60,14 @@ public class BalancePageHandler {
     }
 
     public String handleBalancePage(Model model, LocalDate dateFrom, LocalDate dateTo) {
-        List<ParticularActivityDTO> particularIncomes = balanceGateway.fetchUserParticularsIncomeCategory(dateFrom, dateTo);
-        List<ParticularActivityDTO> particularExpenses = balanceGateway.fetchUserParticularsExpenseCategory(dateFrom, dateTo);
-        List<List<Object>> incomeCategoriesSum = balanceMapper.mapParticularActivityDTOToNameAndTotalAmountList(particularIncomes);
-        List<List<Object>> expenseCategoriesSum = balanceMapper.mapParticularActivityDTOToNameAndTotalAmountList(particularExpenses);
-        BigDecimal incomesSum = getTotalSum(incomeCategoriesSum);
-        BigDecimal expensesSum = getTotalSum(expenseCategoriesSum);
-        handleTemplateServiceLogic(model, particularIncomes, particularExpenses, incomesSum, expensesSum, incomeCategoriesSum, expenseCategoriesSum);
-        return BALANCE_PAGE;
-    }
-
-    private BigDecimal getTotalSum(List<List<Object>> categoriesSum) {
-        BigDecimal totalSum = new BigDecimal(0);
-        for(List<Object> categorySum : categoriesSum) {
-            totalSum = totalSum.add((BigDecimal) categorySum.get(1));
-        }
-        return totalSum;
-    }
-
-    public void handleTemplateServiceLogic(Model model, List<ParticularActivityDTO> particularIncomes, List<ParticularActivityDTO> particularExpenses,
-                                           BigDecimal incomesSum, BigDecimal expensesSum, List<List<Object>> incomeCategoriesSum, List<List<Object>> expenseCategoriesSum) {
+        List<ParticularActivityDTO> particularIncomes = balanceService.getUserParticularsIncomeCategory(dateFrom, dateTo);
+        List<ParticularActivityDTO> particularExpenses = balanceService.getUserParticularsExpensesCategory(dateFrom, dateTo);
         balanceTemplateService.addIncomeParticularAttribute(model, particularIncomes);
         balanceTemplateService.addExpenseParticularAttribute(model, particularExpenses);
-        balanceTemplateService.addIncomeSumAttribute(model, incomesSum);
-        balanceTemplateService.addExpenseSumAttribute(model, expensesSum);
-        balanceTemplateService.addIncomeCategoriesSumAttribute(model, incomeCategoriesSum);
-        balanceTemplateService.addExpenseCategoriesSumAttribute(model, expenseCategoriesSum);
+        balanceTemplateService.addIncomeSumAttribute(model, particularIncomes);
+        balanceTemplateService.addExpenseSumAttribute(model, particularExpenses);
+        balanceTemplateService.addIncomeCategoriesSumAttribute(model, particularIncomes);
+        balanceTemplateService.addExpenseCategoriesSumAttribute(model, particularExpenses);
+        return BALANCE_PAGE;
     }
 }

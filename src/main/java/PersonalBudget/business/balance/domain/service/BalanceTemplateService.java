@@ -13,13 +13,7 @@ import java.util.List;
 @Service
 public class BalanceTemplateService {
 
-    public void addIncomeCategoriesSumAttribute(Model model, List<List<Object>> incomeCategoriesSum) {
-        model.addAttribute("incomeCategoriesSum", incomeCategoriesSum);
-    }
-
-    public void addIncomeSumAttribute(Model model, BigDecimal incomesSum) {
-        model.addAttribute("incomesSum", incomesSum);
-    }
+    private final BalanceService balanceService;
 
     public void addIncomeParticularAttribute(Model model, List<ParticularActivityDTO> particularIncomes) {
         model.addAttribute("particularIncomes", particularIncomes);
@@ -29,15 +23,27 @@ public class BalanceTemplateService {
         model.addAttribute("particularExpenses", particularExpenses);
     }
 
-    public void addExpenseSumAttribute(Model model, BigDecimal expensesSum) {
+    public void addIncomeSumAttribute(Model model, List<ParticularActivityDTO> particularIncomes) {
+        BigDecimal incomesSum = balanceService.calculateTotalSum(particularIncomes);
+        model.addAttribute("incomesSum", incomesSum);
+    }
+
+    public void addExpenseSumAttribute(Model model, List<ParticularActivityDTO> particularExpenses) {
+        BigDecimal expensesSum = balanceService.calculateTotalSum(particularExpenses);
         model.addAttribute("expensesSum", expensesSum);
     }
 
-    public void addExpenseCategoriesSumAttribute(Model model, List<List<Object>> expenseCategoriesSum) {
+    public void addIncomeCategoriesSumAttribute(Model model, List<ParticularActivityDTO> particularIncomes) {
+        List<List<Object>> incomeCategoriesSum = balanceService.getCategoriesSum(particularIncomes);
+        model.addAttribute("incomeCategoriesSum", incomeCategoriesSum);
+    }
+
+    public void addExpenseCategoriesSumAttribute(Model model, List<ParticularActivityDTO> particularExpenses) {
+        List<List<Object>> expenseCategoriesSum = balanceService.getCategoriesSum(particularExpenses);
         model.addAttribute("expenseCategoriesSum", expenseCategoriesSum);
     }
 
-    public void addTwoDatesComparisonAttribute(Model model) {
+    public void addWrongDateInputAttribute(Model model) {
         model.addAttribute("wrongDateInput", true);
     }
 

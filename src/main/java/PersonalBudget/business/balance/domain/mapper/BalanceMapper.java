@@ -16,13 +16,7 @@ public class BalanceMapper {
                         Collectors.reducing(BigDecimal.ZERO, ParticularActivityDTO::amount, BigDecimal::add)))
                 .entrySet()
                 .stream()
-                .map(map -> mapNameAndTotalAmountToList(map.getKey(), map.getValue()))
+                .map(map -> List.of((Object)map.getKey(), map.getValue()))
                 .toList();
-    }
-
-    public List<Object> mapNameAndTotalAmountToList(String name, BigDecimal totalAmount) {
-        return List.of(
-                name, totalAmount
-        );
     }
 }
