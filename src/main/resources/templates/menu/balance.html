@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "~{base :: head}">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-white navbar-expand-md">
+            <a class="navbar-brand " href="#"></a>
+            <button class="navbar-toggler order-first " type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="navigation">
+                <span class="navbar-toggler-icon opacity-75"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-left " id="mainMenu">
+                <ul class=" navbar-nav h5 p-0 mr-2">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/api/v1/menu">[[#{main.home}]]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/v1/menu/income">[[#{main.addIncome}]]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/v1/menu/expense">[[#{main.addExpense}]]</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
+                        <ul class="dropdown-menu" aria-labelledby="subMenu">
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/current-month">[[#{displayBalance.currentMonth}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/previous-month">[[#{displayBalance.previousMonth}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/current-year">[[#{displayBalance.currentYear}]]</a>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="subMenu" aria-haspopup="true">[[#{main.settings}]]</a>
+                        <ul class="dropdown-menu" aria-labelledby="subMenu">
+                            <li>
+                                <a class="dropdown-item h5" href="/income/changeCategory">[[#{settings.categoriesIncome}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/expense/changeCategory">[[#{settings.categoriesExpense}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/setting/changeCategory">[[#{settings.paymentMethods}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/setting/changeAccount">[[#{settings.user}]]</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/api/v1/logout}">[[#{main.logOut}]]</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+            <form th:action="@{/api/v1/menu/nonstandard}" th:object="${nonstandardDateDTO}" method="post" id="nonstandard">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{nonstandard.dateRange}]]
+                            </h5>
+                            <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body h5">
+                            <div class="form-group mx-auto">
+                                <label for="dateFrom" class="font-weight-normal text-black">[[#{nonstandard.dateFrom}]]</label>
+                                <input type="date" th:field="*{dateFrom}" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
+                            </div>
+                            <div class="form-group mx-auto">
+                                <label for="dateTo" class="font-weight-normal text-black">[[#{nonstandard.dateTo}]]</label>
+                                <input type="date" th:field="*{dateTo}" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetNonstandard()">[[#{nonstandard.closeButton}]]</button>
+                            <button type="submit" class="greenButton btn text-white">[[#{nonstandard.checkBalanceButton}]]</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </header>
+    <article>
+        <div th:switch="true" th:with="result=${incomesSum} - ${expensesSum}">
+            <div th:case="${(incomesSum == 0) && (expensesSum == 0)}">
+                <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert alert-dismissible fade show" role="alert">
+                    [[#{balance.neutral}]]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div th:case="${incomesSum >= expensesSum}">
+                <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive fade show" role="alert">
+                    [[#{balance.balance}]]: <span th:text="${result}"></span>[[#{balance.currency}]] [[#{balance.positive}]]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div th:case="${incomesSum < expensesSum}">
+                <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative fade show" role="alert">
+                    [[#{balance.balance}]]: <span th:text="${result}"></span>[[#{balance.currency}]] [[#{balance.negative}]]
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-2 p-2 h5 mx-auto">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-11 col-sm-10 col-md-8 col-lg-7 col-xl-7 col-xxl-6">
+                <div class="mb-3 mt-0">
+                    <h1 class="display-6 text-center p-0">[[#{balance.incomes}]]</h1>
+                </div>
+                <table class="table text-center p-0">
+                    <thead>
+                    <tr class="h4">
+                        <th>[[#{balance.category}]]</th>
+                        <th>[[#{balance.amount}]]</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <div th:each="category: ${incomeCategoriesSum}">
+                                <tr data-toggle="collapse" th:attr="data-target='#incomeCategory'+${category[0]}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
+                                    <td th:text="${category[0]}" class="bi bi-caret-down-fill" />
+                                    <td><span th:text="${category[1]}"></span>[[#{balance.currency}]]</td>
+                                </tr>
+                                <div th:each="particular: ${particularIncomes}">
+                                    <div th:if="${#strings.equals(particular.name, category[0])}">
+                                        <tr class="collapse" th:id="incomeCategory+${category[0]}">
+                                            <td th:text="${particular.date}">
+                                            <td><span th:text="${particular.amount}"></span>[[#{balance.currency}]]</td>
+                                        </tr>
+                                    </div>
+                                </div>
+                        </div>
+                            <tr class="font-weight-bold">
+                                <td>[[#{balance.totalAmount}]]</td>
+                                <td><span th:text="${incomesSum}"></span>[[#{balance.currency}]]</td>
+                            </tr>
+                    </tbody>
+                </table>
+                <div th:if="${incomesSum != 0}">
+                    <div id="incomesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
+                </div>
+                <div class="mb-3 mt-0">
+                    <h1 class="display-6 text-center p-0">[[#{balance.expenses}]]</h1>
+                </div>
+                <table class="table text-center p-0">
+                    <thead>
+                    <tr class="h4">
+                        <th>[[#{balance.category}]]</th>
+                        <th>[[#{balance.amount}]]</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <div th:each="category: ${expenseCategoriesSum}">
+                            <tr data-toggle="collapse" th:attr="data-target='#expenseCategory'+${category[0]}" role="button" aria-expanded='false' aria-controls="collapseExample" class="category font-weight-bold">
+                                <td th:text="${category[0]}" class="bi bi-caret-down-fill" />
+                                <td><span th:text="${category[1]}"></span>[[#{balance.currency}]]</td>
+                            </tr>
+                            <div th:each="particular: ${particularExpenses}">
+                                <div th:if="${#strings.equals(particular.name, category[0])}">
+                                    <tr class="collapse" th:id="expenseCategory+${category[0]}">
+                                        <td th:text="${particular.date}">
+                                        <td><span th:text="${particular.amount}"></span>[[#{balance.currency}]]</td>
+                                    </tr>
+                                </div>
+                            </div>
+                        </div>
+                            <tr class="font-weight-bold">
+                                <td>[[#{balance.totalAmount}]]</td>
+                                <td><span th:text="${expensesSum}"></span>[[#{balance.currency}]]</td>
+                            </tr>
+                    </tbody>
+                </table>
+                <div th:if="${expensesSum != 0}">
+                    <div id="expensesPieChart" class="mx-auto mt-0 text-center" style="width: 385px; height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+    </article>
+    <footer th:replace = "~{base :: footer}"></footer>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Category');
+            data.addColumn('number', 'Amount');
+            data.addRows([
+                /*[# th:each="row : ${incomeCategoriesSum}"]*/
+                [[${row}]],
+                /*[/]*/
+            ]);
+
+            var options = { is3D: true, 'fontSize': 14, 'legendFontSize': 14,
+                chartArea: {width: '100%'}}
+
+            var chart = new google.visualization.PieChart(document.getElementById('incomesPieChart'));
+            chart.draw(data, options);
+        }
+    </script>
+    <script type="text/javascript" th:inline="javascript">
+
+        google.charts.load('current', {'packages':['corechart']});
+
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Category');
+            data.addColumn('number', 'Amount');
+            data.addRows([
+                /*[# th:each="row : ${expenseCategoriesSum}"]*/
+                [[${row}]],
+                /*[/]*/
+            ]);
+
+            var options = { is3D: true, 'fontSize': 14, 'legendFontSize': 14,
+                chartArea: {width: '100%'}, colors: ['#111111', '#AAAAAA', '#434343', '#505050', '##212180']}
+
+            var chart = new google.visualization.PieChart(document.getElementById('expensesPieChart'));
+            chart.draw(data, options);
+        }
+    </script>
+</body>
+</html>

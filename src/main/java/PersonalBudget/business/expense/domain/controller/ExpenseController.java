@@ -34,7 +34,7 @@ public class ExpenseController {
 
     @PostMapping()
     public String getExpensePageAfterSubmit(@Valid @ModelAttribute("expenseDTO") ExpenseDTO expenseDTO,
-                                                 BindingResult bindingResult, Model model) {
+                                            BindingResult bindingResult, Model model) {
         return expensePageHandler.handleExpensePageAfterSubmit(bindingResult, model, expenseDTO);
     }
 

@@ -34,7 +34,7 @@ public class IncomeController {
 
     @PostMapping()
     public String getProperPageAfterAddingIncome(@Valid @ModelAttribute("incomeDTO") IncomeDTO incomeDTO,
-                                           BindingResult bindingResult, Model model) {
+                                                 BindingResult bindingResult, Model model) {
         return incomePageHandler.handleIncomePageAfterSubmit(bindingResult, model, incomeDTO);
     }
 

@@ -11,5 +11,5 @@ import java.util.List;
 public interface ExpensePaymentMethodRepository extends JpaRepository<ExpensePaymentMethodEntity, Long> {
 
     @Query(value = "select new PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO(e.id, e.name) from ExpensePaymentMethodEntity e where e.userId = :userId")
-    List<ExpensePaymentMethodDTO> findAllPaymentMethodName(@Param("userId") Long userId);
+    List<ExpensePaymentMethodDTO> findAllPaymentMethodsNames(@Param("userId") Long userId);
 }

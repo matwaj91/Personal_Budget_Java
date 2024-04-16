@@ -25,13 +25,13 @@
             <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
             <ul class="dropdown-menu" aria-labelledby="subMenu">
               <li>
-                <a class="dropdown-item h5" href="/Menu/currentMonth">[[#{displayBalance.currentMonth}]]</a>
+                <a class="dropdown-item h5" href="/api/v1/menu/current-month">[[#{displayBalance.currentMonth}]]</a>
               </li>
               <li>
-                <a class="dropdown-item h5" href="/Menu/previousMonth">[[#{displayBalance.previousMonth}]]</a>
+                <a class="dropdown-item h5" href="/api/v1/menu/previous-month">[[#{displayBalance.previousMonth}]]</a>
               </li>
               <li>
-                <a class="dropdown-item h5" href="/Menu/currentYear">[[#{displayBalance.currentYear}]]</a>
+                <a class="dropdown-item h5" href="/api/v1/menu/current-year">[[#{displayBalance.currentYear}]]</a>
               </li>
               <li>
                 <button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
@@ -62,7 +62,7 @@
       </div>
     </nav>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-      <form action="/Menu/nonstandard" method="post" id="nonstandard">
+      <form th:action="@{/api/v1/menu/nonstandard}" th:object="${nonstandardDateDTO}" method="post" id="nonstandard">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -125,7 +125,7 @@
         </div>
         <div class="form-group mx-auto">
           <label for="comment" class="font-weight-normal text-black">[[#{income.form.comment}]]</label>
-          <textarea id="comment" name="comment" placeholder="Type something here. . . " rows="2" class="form-control font-weight-bold text-black border-4"></textarea>
+          <textarea id="comment" name="comment" rows="2" class="form-control font-weight-bold text-black border-4"></textarea>
         </div>
         <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{expense.form.add}]]
         </button>

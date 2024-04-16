@@ -9,9 +9,11 @@ import PersonalBudget.business.income.domain.repository.IncomeRepository;
 import PersonalBudget.business.income.dto.IncomeCategoryDTO;
 import PersonalBudget.business.income.dto.IncomeDTO;
 import PersonalBudget.business.user.domain.UserFacade;
+import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -27,7 +29,7 @@ public class IncomeService {
 
     public List<IncomeCategoryDTO> getUserIncomeCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return incomeCategoryRepository.findAllIncomeCategoryByUserId(loggedInUserId);
+        return incomeCategoryRepository.findAllIncomesCategoriesByUserId(loggedInUserId);
     }
 
     public void addIncome(IncomeDTO incomeDTO) {
@@ -50,4 +52,10 @@ public class IncomeService {
         List<IncomeCategoryEntity> defaultCategories = buildDefaultCategories(userId);
         incomeCategoryRepository.saveAll(defaultCategories);
     }
+
+    public List<ParticularActivityDTO> getUserParticularsIncomeCategory(LocalDate dateFrom, LocalDate dateTo) {
+        Long loggedInUserId = userFacade.fetchLoggedInUserId();
+        return incomeRepository.findAllUserParticularIncomesEachCategory(loggedInUserId, dateFrom, dateTo);
+    }
+
 }

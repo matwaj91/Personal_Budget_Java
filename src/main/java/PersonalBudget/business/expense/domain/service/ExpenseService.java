@@ -13,9 +13,11 @@ import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseDTO;
 import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import PersonalBudget.business.user.domain.UserFacade;
+import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -31,12 +33,12 @@ public class ExpenseService {
 
     public List<ExpenseCategoryDTO> getUserExpenseCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return expenseCategoryRepository.findAllExpenseCategoryByUserId(loggedInUserId);
+        return expenseCategoryRepository.findAllExpensesCategoriesByUserId(loggedInUserId);
     }
 
     public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        return paymentMethodRepository.findAllPaymentMethodName(loggedInUserId);
+        return paymentMethodRepository.findAllPaymentMethodsNames(loggedInUserId);
     }
 
     public void addExpense(ExpenseDTO expenseDTO) {
@@ -73,5 +75,10 @@ public class ExpenseService {
     public void addDefaultPaymentMethodsToUserAccount(Long userId) {
         List<ExpensePaymentMethodEntity> defaultPaymentMethods = buildDefaultPaymentMethods(userId);
         paymentMethodRepository.saveAll(defaultPaymentMethods);
+    }
+
+    public List<ParticularActivityDTO> getUserParticularsExpenseCategory(LocalDate dateFrom, LocalDate dateTo) {
+        Long loggedInUserId = userFacade.fetchLoggedInUserId();
+        return expenseRepository.findAllUserParticularExpensesEachCategory(loggedInUserId, dateFrom, dateTo);
     }
 }

@@ -25,13 +25,13 @@
 								<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
 								<ul class="dropdown-menu" aria-labelledby="subMenu">
 									<li>
-										<a class="dropdown-item h5" href="/Menu/currentMonth">[[#{displayBalance.currentMonth}]]</a>
+										<a class="dropdown-item h5" href="/api/v1/menu/current-month">[[#{displayBalance.currentMonth}]]</a>
 									</li>
 									<li>
-										<a class="dropdown-item h5" href="/Menu/previousMonth">[[#{displayBalance.previousMonth}]]</a>
+										<a class="dropdown-item h5" href="/api/v1/menu/previous-month">[[#{displayBalance.previousMonth}]]</a>
 									</li>
 									<li>
-										<a class="dropdown-item h5" href="/Menu/currentYear">[[#{displayBalance.currentYear}]]</a>
+										<a class="dropdown-item h5" href="/api/v1/menu/current-year">[[#{displayBalance.currentYear}]]</a>
 									</li>
 									<li>
 										<button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
@@ -62,7 +62,7 @@
 					</div>
 				</nav>
 				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-					<form action="/Menu/nonstandard" method="post" id="nonstandard">
+					<form th:action="@{/api/v1/menu/nonstandard}" th:object="${nonstandardDateDTO}" method="post" id="nonstandard">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -89,11 +89,22 @@
 					</form>
 				</div>
 		</header>
-		<!--<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible  alert-{{ message.type }}">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-		</div>!-->
+		<div th:if="${wrongDateInput == true}">
+			<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+				[[#{balance.wrongDateInput}]]
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
+		<div th:if="${isDateRange == false}">
+			<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-informative">
+				[[#{balance.isDateRange}]]
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+		</div>
 		<div class="container-fluid my-2 p-2 h4 mx-auto">
 			<div class="bg-white mt-4 rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-5">
 				<div class="mb-4">
