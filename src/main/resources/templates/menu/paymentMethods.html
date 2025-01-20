@@ -91,103 +91,68 @@
         </header>
         <article>
             <div class="container mt-2 p-2 h5 mx-auto">
-                <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-7 col-xl-6 col-xxl-8">
+                <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-9">
                     <div class="mb-3 mt-0">
-                        <h1 class="display-6 text-center p-0">[[#{settings.categoriesExpense}]]</h1>
+                        <h1 class="display-6 text-center p-0">[[#{settings.paymentMethods}]]</h1>
                     </div>
                     <table class="table text-center p-0 h5">
                         <thead></thead>
                         <tbody id="tableBody"></tbody>
                     </table>
-                    <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#set">[[#{settings.setSpendingLimit}]]</button>
-                    <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#add" id="myBtn">[[#{settings.categoriesExpense.addNewCategory}]]</button>
-                    <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#delete">[[#{settings.categoriesExpense.deleteCategory}]]</button>
-                    <a href="/Menu/main" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.categoriesExpense.cancel}]]</a>
+                    <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#add" id="myBtn">[[#{settings.addNewPaymentMethod}]]</button>
+                    <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#delete">[[#{settings.paymentMethod.deletePaymentMethod}]]</button>
+                    <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.PaymentMethod.cancel}]]</a>
                 </div>
                 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/expense/addCategory" method="post" id="modalForm">
+                    <form action="/setting/addPaymentMethod" method="post" id="modalForm">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesExpense.nameNewCategory}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.PaymentMethod.nameNewPaymentMethod}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body h5 mb-4">
                                     <div class="form-group mx-auto my-auto">
-                                        <label for="category" class="font-weight-normal text-black my-auto"></label>
-                                        <input type="text" class="form-control" pattern="[a-zA-Z]+" id="category" name="category" required>
+                                        <label for="payment" class="font-weight-normal text-black my-auto"></label>
+                                        <input type="text" class="form-control" pattern="[a-zA-Z]+" id="payment" name="payment">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal()">[[#{settings.categoriesExpense.close}]]</button>
-                                    <button type="submit" class="greenButton btn text-white">[[#{settings.categoriesExpense.add}]]</button>
+                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal()">Close</button>
+                                    <button type="submit" class="greenButton btn text-white">[[#{settings.PaymentMethod.add}]]</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/expense/deleteCategory" method="post" id="modalForm2">
+                    <form action="/setting/deletePaymentMethod" method="post" id="modalForm2">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesExpense.deleteCategory}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.paymentMethod.deletePaymentMethod}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body h5">
                                     <div class="form-group mx-auto my-auto">
-                                        <select class="form-control text-dark border-4 font-weight-bold my-auto" id="category" size="1" name="category" aria-describedby="category" required>
-                                            <option value="">--Please choose the category--</option>
-                                            {% for expenseCategory in expenseCategories %}
-                                            {% if expenseCategory.name != "Another" %}
-                                            <option value="{{expenseCategory.name}}">{{expenseCategory.name}}</option>
-                                            {% endif %}
+                                        <select class="form-control text-dark border-4 font-weight-bold my-auto" id="payment" size="1" name="payment" aria-describedby="category" required>
+                                            <option value="">--Please choose the payment method--</option>
+                                            {% for paymentMethod in paymentMethods %}
+                                            <option value="{{paymentMethod.name}}">{{paymentMethod.name}}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal2()">[[#{settings.categoriesExpense.close}]]</button>
-                                    <button type="submit" class="redButton btn text-white">[[#{settings.categoriesExpense.deleteCategory}]]</button>
+                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal2()">[[#{settings.paymentMethod.close}]]</button>
+                                    <button type="submit" class="redButton btn text-white">[[#{settings.paymentMethod.delete}]]</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
-            <div class="modal fade" id="set" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                <form action="/expense/setLimit" method="post" id="modalForm3">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.setSpendingLimit}]]
-                                </h5>
-                                <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body h6">
-                                <div class=" mx-auto mb-4">
-                                    <select class="form-control text-dark border-4 font-weight-bold my-auto p-1" id="category" size="1" name="category" aria-describedby="category" required>
-                                        <option value="">--Please choose the category--</option>
-                                        {% for expenseCategory in expenseCategories %}
-                                        {% if expenseCategory.name != "Another" %}
-                                        <option value="{{expenseCategory.name}}">{{expenseCategory.name}}</option>
-                                        {% endif %}
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div>
-                                    <input type="number" min="1" max="100000" step="1" class="myinput form-control font-weight-bold text-dark border-4" id="limitAmount" name="limitAmount" placeholder="Please provide monthly limit" aria-describedby="limitAmount" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal3()">[[#{settings.categoriesExpense.close}]]</button>
-                                <button type="submit" class="greenButton btn text-white">[[#{settings.set}]]</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </article>
         <footer th:replace = "~{base :: footer}"></footer>

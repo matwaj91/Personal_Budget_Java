@@ -47,4 +47,9 @@ public class ExpenseController {
     public String getExpenseCategoriesPage(Model model) {
         return expensePageHandler.handleExpenseCategoriesPage(model);
     }
+
+    @GetMapping(value = "/payment-methods")
+    public String getPaymentMethodsPage(Model model) {
+        return expensePageHandler.handlePaymentMethodsPage(model);
+    }
 }
