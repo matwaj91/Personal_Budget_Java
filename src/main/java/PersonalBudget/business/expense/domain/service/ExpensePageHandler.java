@@ -15,6 +15,7 @@ public class ExpensePageHandler {
     private static final String EXPENSE_PAGE = "menu/expense";
     private static final String EXPENSE_SUCCESS_PAGE = "expense/success";
     private static final String REDIRECT_EXPENSE_SUCCESS_PAGE  = "redirect:" + EXPENSE_SUCCESS_PAGE;
+    private static final String EXPENSE_CATEGORIES_PAGE = "menu/expenseCategories";
 
     public String handleExpensePage(Model model) {
         expenseTemplateService.addPaymentMethodsAttribute(model);
@@ -35,5 +36,9 @@ public class ExpensePageHandler {
         }
         expenseService.addExpense(expenseDTO);
         return REDIRECT_EXPENSE_SUCCESS_PAGE;
+    }
+
+    public String handleExpenseCategoriesPage(Model model) {
+        return EXPENSE_CATEGORIES_PAGE;
     }
 }

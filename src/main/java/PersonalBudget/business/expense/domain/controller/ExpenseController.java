@@ -42,4 +42,9 @@ public class ExpenseController {
     public String getExpenseSuccessPage(Model model) {
         return expensePageHandler.handleExpenseSuccessPage(model);
     }
+
+    @GetMapping(value = "/expense-categories")
+    public String getExpenseCategoriesPage(Model model) {
+        return expensePageHandler.handleExpenseCategoriesPage(model);
+    }
 }
