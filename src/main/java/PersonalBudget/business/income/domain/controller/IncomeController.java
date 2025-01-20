@@ -42,4 +42,9 @@ public class IncomeController {
     public String getIncomeSuccessPage(Model model) {
         return incomePageHandler.handleExpenseSuccessPage(model);
     }
+
+    @GetMapping(value = "/income-categories")
+    public String getIncomeCategoriesPage(Model model) {
+        return  incomePageHandler.handleIncomeCategoriesPage(model);
+    }
 }

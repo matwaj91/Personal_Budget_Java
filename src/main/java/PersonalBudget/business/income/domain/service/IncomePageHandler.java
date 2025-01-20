@@ -15,6 +15,7 @@ public class IncomePageHandler {
     private static final String INCOME_PAGE = "menu/income";
     private static final String INCOME_SUCCESS_PAGE = "income/success";
     private static final String REDIRECT_INCOME_SUCCESS_PAGE  = "redirect:" + INCOME_SUCCESS_PAGE;
+    private static final String INCOME_CATEGORIES_PAGE = "menu/incomeCategories";
 
 
     public String handleIncomePage(Model model) {
@@ -35,5 +36,9 @@ public class IncomePageHandler {
         incomeTemplateService.addIncomeSuccessAttribute(model);
         incomeTemplateService.addIncomeCategoriesAttribute(model);
         return INCOME_PAGE;
+    }
+
+    public String handleIncomeCategoriesPage(Model model) {
+        return INCOME_CATEGORIES_PAGE;
     }
 }

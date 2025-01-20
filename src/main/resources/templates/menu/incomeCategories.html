@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "~{base :: head}">
+</head>
+    <body>
+    <header>
+        <nav class="navbar navbar-light bg-white navbar-expand-md">
+            <a class="navbar-brand " href="#"></a>
+            <button class="navbar-toggler order-first " type="button" data-toggle="collapse" data-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="navigation">
+                <span class="navbar-toggler-icon opacity-75"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-left " id="mainMenu">
+                <ul class=" navbar-nav h5 p-0 mr-2">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/api/v1/menu">[[#{main.home}]]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/v1/menu/income">[[#{main.addIncome}]]</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/v1/menu/expense">[[#{main.addExpense}]]</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"  aria-haspopup="true">[[#{main.displayBalance}]]</a>
+                        <ul class="dropdown-menu" aria-labelledby="subMenu">
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/current-month">[[#{displayBalance.currentMonth}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/previous-month">[[#{displayBalance.previousMonth}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/current-year">[[#{displayBalance.currentYear}]]</a>
+                            </li>
+                            <li>
+                                <button type="button" class="dropdown-item h5" data-toggle="modal" data-target="#exampleModal">[[#{displayBalance.nonstandard}]]</button>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="subMenu" aria-haspopup="true">[[#{main.settings}]]</a>
+                        <ul class="dropdown-menu" aria-labelledby="subMenu">
+                            <li>
+                                <a class="dropdown-item h5" href="/api/v1/menu/income/income-categories">[[#{settings.categoriesIncome}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/expense/changeCategory">[[#{settings.categoriesExpense}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/setting/changeCategory">[[#{settings.paymentMethods}]]</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item h5" href="/setting/changeAccount">[[#{settings.user}]]</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/api/v1/logout}">[[#{main.logOut}]]</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+            <form th:action="@{/api/v1/menu/nonstandard}" th:object="${nonstandardDateDTO}" method="post" id="nonstandard">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{nonstandard.dateRange}]]
+                            </h5>
+                            <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body h5">
+                            <div class="form-group mx-auto">
+                                <label for="dateFrom" class="font-weight-normal text-black">[[#{nonstandard.dateFrom}]]</label>
+                                <input type="date" class="form-control text-dark border-4" id="dateFrom" aria-describedby="dateFrom" name="dateFrom" required>
+                            </div>
+                            <div class="form-group mx-auto">
+                                <label for="dateTo" class="font-weight-normal text-black">[[#{nonstandard.dateTo}]]</label>
+                                <input type="date" class="form-control text-dark border-4" id="dateTo" aria-describedby="dateTo" name="dateTo" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetNonstandard()">[[#{nonstandard.closeButton}]]</button>
+                            <button type="submit" class="greenButton btn text-white">[[#{nonstandard.checkBalanceButton}]]</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </header>
+        <article>
+            <div class="container mt-2 p-2 h5 mx-auto">
+                <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-9">
+                    <div class="mb-3 mt-0">
+                        <h1 class="display-6 text-center p-0">[[#{settings.categoriesIncome}]]</h1>
+                    </div>
+                    <table class="table text-center p-0 h5">
+                        <thead></thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                    <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#add" id="myBtn">[[#{settings.categoriesIncome.addNewCategory}]]</button>
+                    <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#delete">[[#{settings.categoriesIncome.deleteCategory}]]</button>
+                    <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.categoriesIncome.cancel}]]</a>
+                </div>
+                <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+                    <form action="/income/addCategory" method="post" id="modalForm">
+                        <div class="modal-dialog text-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesIncome.nameNewCategory}]]
+                                    </h5>
+                                    <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body h5 mb-4">
+                                    <div class="form-group mx-auto my-auto">
+                                        <label for="category" class="font-weight-normal text-black my-auto"></label>
+                                        <input type="text" name="category" class="form-control my-auto" pattern="[a-zA-Z]+" id="category" required>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal()">[[#{settings.categoriesIncome.close}]]</button>
+                                    <button type="submit" class="greenButton btn text-white">[[#{settings.categoriesIncome.add}]]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+                    <form action="/income/deleteCategory" method="post" id="modalForm2">
+                        <div class="modal-dialog text-center">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesIncome.deleteCategory}]]
+                                    </h5>
+                                    <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body h5">
+                                    <div class="form-group mx-auto my-auto">
+                                        <select class="form-control text-dark border-4 font-weight-bold mx-auto my-auto" id="category" size="1" name="category" aria-describedby="category" required>
+                                            <option value="">--Please choose the category--</option>
+                                            {% for incomeCategory in incomeCategories %}
+                                            {% if incomeCategory.name != "Another" %}
+                                            <option value="{{incomeCategory.name}}">{{incomeCategory.name}}</option>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal2()">[[#{settings.categoriesIncome.close}]]</button>
+                                    <button type="submit" class="redButton btn text-white">[[#{settings.categoriesIncome.delete}]]</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </article>
+        <footer th:replace = "~{base :: footer}"></footer>
+        <script src="/js/incomeCategories.js"></script>
+    </body>
+</html>
