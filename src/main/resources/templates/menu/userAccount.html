@@ -51,7 +51,7 @@
                                     <a class="dropdown-item h5" href="/api/v1/menu/expense/payment-methods">[[#{settings.paymentMethods}]]</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item h5" href=/api/v1/menu/user-account>[[#{settings.user}]]</a>
+                                    <a class="dropdown-item h5" href="/api/v1/menu/user-account">[[#{settings.user}]]</a>
                                 </li>
                             </ul>
                         </li>
@@ -90,64 +90,55 @@
             </div>
         </header>
         <article>
-            <div class="container mt-2 p-2 h5 mx-auto">
-                <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-9">
-                    <div class="mb-3 mt-0">
-                        <h1 class="display-6 text-center p-0">[[#{settings.paymentMethods}]]</h1>
+            <div class="container-fluid mt-2 p-2 h5 mx-auto">
+                <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+                    <div class="mb-2">
+                        <h1 class="display-6 text-center p-0">[[#{settings.user.account}]]</h1>
                     </div>
-                    <table class="table text-center p-0 h5">
-                        <thead></thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
-                    <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#add" id="myBtn">[[#{settings.addNewPaymentMethod}]]</button>
-                    <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#delete">[[#{settings.paymentMethod.deletePaymentMethod}]]</button>
-                    <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.PaymentMethod.cancel}]]</a>
+                    <a href="/api/v1/menu/user-account/profile " class="text-decoration-none greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.user.editAccountDetails}]]</a>
+                    <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#transactions">[[#{settings.user.deleteAllIncomeAndExpenses}]]</button>
+                    <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#account">[[#{settings.user.deleteAccount}]]</button>
+                    <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.user.cancel}]]</a>
                 </div>
-                <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/setting/addPaymentMethod" method="post" id="modalForm">
+                <div class="modal fade" id="transactions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+                    <form action="/setting/deleteTransactions" method="post">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.PaymentMethod.nameNewPaymentMethod}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.user.deleteAllIncomeAndExpenses}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body h5 mb-4">
-                                    <div class="form-group mx-auto my-auto">
-                                        <label for="payment" class="font-weight-normal text-black my-auto"></label>
-                                        <input type="text" class="form-control" pattern="[a-zA-Z]+" id="payment" name="payment">
+                                <div class="modal-body h5 ">
+                                    <div class="form-group mx-auto my-auto ">
+                                        <label class="justified-text font-weight-normal text-black my-auto">[[#{settings.user.askDeleteAllTransactions}]] </label>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal()">Close</button>
-                                    <button type="submit" class="greenButton btn text-white">[[#{settings.PaymentMethod.add}]]</button>
+                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="redButton btn text-white">Delete</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/setting/deletePaymentMethod" method="post" id="modalForm2">
+                <div class="modal fade" id="account" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+                    <form action="/setting/deleteAccount" method="post">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.paymentMethod.deletePaymentMethod}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.user.deleteAccount}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body h5">
                                     <div class="form-group mx-auto my-auto">
-                                        <select class="form-control text-dark border-4 font-weight-bold my-auto" id="payment" size="1" name="payment" aria-describedby="category" required>
-                                            <option value="">--Please choose the payment method--</option>
-                                            {% for paymentMethod in paymentMethods %}
-                                            <option value="{{paymentMethod.name}}">{{paymentMethod.name}}</option>
-                                            {% endfor %}
-                                        </select>
+                                        <label class="font-weight-normal text-black my-auto ">[[#{settings.user.askDeleteAccount}]]</label>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal" onclick="resetModal2()">[[#{settings.paymentMethod.close}]]</button>
-                                    <button type="submit" class="redButton btn text-white">[[#{settings.paymentMethod.delete}]]</button>
+                                    <button type="button" class="blackButton text-white btn" data-dismiss="modal">[[#{settings.user.close}]]</button>
+                                    <button type="submit" class="redButton btn text-white">[[#{settings.user.delete}]]</button>
                                 </div>
                             </div>
                         </div>
