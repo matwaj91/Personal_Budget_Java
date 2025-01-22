@@ -139,7 +139,7 @@
                                 <div class="modal-body h5">
                                     <div class="form-group mx-auto my-auto">
                                         <select class="form-control text-dark border-4 font-weight-bold my-auto" id="category" size="1" name="category" aria-describedby="category" required>
-                                            <option value="">--Please choose the category--</option>
+                                            <option value="">[[#{settings.categoriesExpense.chooseCategory}]]</option>
                                             {% for expenseCategory in expenseCategories %}
                                             {% if expenseCategory.name != "Another" %}
                                             <option value="{{expenseCategory.name}}">{{expenseCategory.name}}</option>
@@ -169,7 +169,7 @@
                             <div class="modal-body h6">
                                 <div class=" mx-auto mb-4">
                                     <select class="form-control text-dark border-4 font-weight-bold my-auto p-1" id="category" size="1" name="category" aria-describedby="category" required>
-                                        <option value="">--Please choose the category--</option>
+                                        <option value="">[[#{settings.categoriesIncome.chooseCategory}]]</option>
                                         {% for expenseCategory in expenseCategories %}
                                         {% if expenseCategory.name != "Another" %}
                                         <option value="{{expenseCategory.name}}">{{expenseCategory.name}}</option>

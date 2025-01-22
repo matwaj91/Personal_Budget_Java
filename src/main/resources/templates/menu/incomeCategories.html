@@ -138,7 +138,7 @@
                                 <div class="modal-body h5">
                                     <div class="form-group mx-auto my-auto">
                                         <select class="form-control text-dark border-4 font-weight-bold mx-auto my-auto" id="category" size="1" name="category" aria-describedby="category" required>
-                                            <option value="">--Please choose the category--</option>
+                                            <option value="">[[#{settings.categoriesIncome.chooseCategory}]]</option>
                                             {% for incomeCategory in incomeCategories %}
                                             {% if incomeCategory.name != "Another" %}
                                             <option value="{{incomeCategory.name}}">{{incomeCategory.name}}</option>

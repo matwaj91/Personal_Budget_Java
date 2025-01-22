@@ -46,6 +46,4 @@ public class ExpensePageHandler {
     public String handlePaymentMethodsPage(Model model) {
         return PAYMENT_METHODS_PAGE;
     }
-
-
 }
