@@ -1,5 +1,6 @@
 package PersonalBudget.business.income.domain.service;
 
+import PersonalBudget.business.income.domain.mapper.IncomeCategoryMapper;
 import PersonalBudget.business.income.domain.mapper.IncomeMapper;
 import PersonalBudget.business.income.domain.model.IncomeCategoryEntity;
 import PersonalBudget.business.income.domain.model.IncomeDefaultCategory;
@@ -8,6 +9,7 @@ import PersonalBudget.business.income.domain.repository.IncomeCategoryRepository
 import PersonalBudget.business.income.domain.repository.IncomeRepository;
 import PersonalBudget.business.income.dto.IncomeCategoryDTO;
 import PersonalBudget.business.income.dto.IncomeDTO;
+import PersonalBudget.business.income.dto.IncomeNewCategoryDTO;
 import PersonalBudget.business.user.domain.UserFacade;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class IncomeService {
     private final IncomeCategoryRepository incomeCategoryRepository;
     private final IncomeRepository incomeRepository;
     private final IncomeMapper incomeMapper;
+    private final IncomeCategoryMapper incomeCategoryMapper;
     private final UserFacade userFacade;
 
     public List<IncomeCategoryDTO> getUserIncomeCategories() {
@@ -58,4 +61,10 @@ public class IncomeService {
         return incomeRepository.findAllUserParticularIncomesEachCategory(loggedInUserId, dateFrom, dateTo);
     }
 
+    public void addIncomeCategory(IncomeNewCategoryDTO incomeNewCategoryDTO) {
+        Long userId = userFacade.fetchLoggedInUserId();
+        System.out.println(userId);
+        IncomeCategoryEntity incomeCategoryEntity = incomeCategoryMapper.mapIncomeCategoryDTOToIncomeCategoryEntity(incomeNewCategoryDTO, userId);
+        incomeCategoryRepository.save(incomeCategoryEntity);
+    }
 }

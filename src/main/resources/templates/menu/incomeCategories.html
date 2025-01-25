@@ -103,19 +103,19 @@
                     <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#delete">[[#{settings.categoriesIncome.deleteCategory}]]</button>
                     <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.categoriesIncome.cancel}]]</a>
                 </div>
-                <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/income/addCategory" method="post" id="modalForm">
+                <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true" style="display: none;">
+                    <form th:action="@{/api/v1/menu/income/income-categories}" th:object="${incomeNewCategoryDTO}" method="post" id="modalForm">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesIncome.nameNewCategory}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel1">[[#{settings.categoriesIncome.nameNewCategory}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body h5 mb-4">
                                     <div class="form-group mx-auto my-auto">
-                                        <label for="category" class="font-weight-normal text-black my-auto"></label>
-                                        <input type="text" name="category" class="form-control my-auto" pattern="[a-zA-Z]+" id="category" required>
+                                        <label for="name" class="font-weight-normal text-black my-auto"></label>
+                                        <input type="text" th:field="*{name}" name="name" class="form-control my-auto" pattern="[a-zA-Z]+" id="name" required >
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -126,12 +126,12 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true" style="display: none;">
                     <form action="/income/deleteCategory" method="post" id="modalForm2">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesIncome.deleteCategory}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel2">[[#{settings.categoriesIncome.deleteCategory}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>

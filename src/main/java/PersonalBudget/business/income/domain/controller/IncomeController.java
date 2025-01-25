@@ -1,7 +1,10 @@
 package PersonalBudget.business.income.domain.controller;
 
+import PersonalBudget.business.income.domain.service.IncomeCategoryPageHandler;
 import PersonalBudget.business.income.domain.service.IncomePageHandler;
+import PersonalBudget.business.income.dto.IncomeCategoryDTO;
 import PersonalBudget.business.income.dto.IncomeDTO;
+import PersonalBudget.business.income.dto.IncomeNewCategoryDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +24,7 @@ import java.time.LocalDate;
 public class IncomeController {
 
     private final IncomePageHandler incomePageHandler;
+    private final IncomeCategoryPageHandler incomeCategoryPageHandler;
 
     @GetMapping()
     public String getIncomePage(Model model) {
@@ -40,11 +44,22 @@ public class IncomeController {
 
     @GetMapping(value = "/success")
     public String getIncomeSuccessPage(Model model) {
-        return incomePageHandler.handleExpenseSuccessPage(model);
+        return incomePageHandler.handleIncomeSuccessPage(model);
     }
 
     @GetMapping(value = "/income-categories")
     public String getIncomeCategoriesPage(Model model) {
-        return  incomePageHandler.handleIncomeCategoriesPage(model);
+       return  incomeCategoryPageHandler.handleIncomeCategoriesPage(model);
+    }
+
+    @ModelAttribute("incomeNewCategoryDTO")
+    public IncomeNewCategoryDTO incomeNewCategoryDTO(String name) {
+        return new IncomeNewCategoryDTO(name);
+    }
+
+    @PostMapping(value = "/income-categories")
+    public String getProperPageAfterAddingNewIncomeCategory(@Valid @ModelAttribute("incomeNewCategoryDTO") IncomeNewCategoryDTO incomeNewCategoryDTO,
+                                                            BindingResult bindingResult, Model model) {
+        return incomeCategoryPageHandler.handleIncomeCategoriesPageAfterSubmit(bindingResult, model, incomeNewCategoryDTO);
     }
 }

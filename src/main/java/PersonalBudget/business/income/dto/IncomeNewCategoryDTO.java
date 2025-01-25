@@ -2,8 +2,7 @@ package PersonalBudget.business.income.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 
-public record IncomeCategoryDTO(
+public record IncomeNewCategoryDTO(
 
-        Long id,
-        String incomeCategory
+        String name
 ) {}
