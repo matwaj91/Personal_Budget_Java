@@ -21,4 +21,20 @@ public class IncomeTemplateService {
     public void addIncomeSuccessAttribute(Model model) {
         model.addAttribute("addedIncome", true);
     }
+
+    public void addIncomeCategoriesSuccessAttribute(Model model) {
+        model.addAttribute("addedIncomeCategory", true);
+    }
+
+    public void addIncomeCategoriesFailureAttribute(Model model) {
+        model.addAttribute("additionFailureIncomeCategory", true);
+    }
+
+    public void addIncomeCategoriesDeletionSuccessAttribute(Model model) {
+        model.addAttribute("deletedIncomeCategory", true);
+    }
+
+    public void addIncomeCategoriesDeletionFailureAttribute(Model model) {
+        model.addAttribute("deletionFailureIncomeCategory", true);
+    }
 }

@@ -57,9 +57,41 @@ public class IncomeController {
         return new IncomeNewCategoryDTO(name);
     }
 
-    @PostMapping(value = "/income-categories")
+    @PostMapping(value = "/income-categories/addition")
     public String getProperPageAfterAddingNewIncomeCategory(@Valid @ModelAttribute("incomeNewCategoryDTO") IncomeNewCategoryDTO incomeNewCategoryDTO,
                                                             BindingResult bindingResult, Model model) {
         return incomeCategoryPageHandler.handleIncomeCategoriesPageAfterSubmit(bindingResult, model, incomeNewCategoryDTO);
+    }
+
+    @GetMapping(value = "/income-categories/addition/success")
+    public String getIncomeCategorySuccessPage(Model model) {
+        return incomeCategoryPageHandler.handleIncomeCategoriesSuccessPage(model);
+    }
+
+    @GetMapping(value = "/income-categories/addition/failure")
+    public String getIncomeCategoryFailurePage(Model model) {
+        return incomeCategoryPageHandler.handleIncomeCategoriesFailurePage(model);
+    }
+
+
+    @ModelAttribute("incomeCategoryDTO")
+    public IncomeCategoryDTO incomeNewCategoryDTO(Long id, String incomeCategory) {
+        return new IncomeCategoryDTO(id, incomeCategory);
+    }
+
+    @PostMapping(value = "/income-categories/deletion")
+    public String getProperPageAfterDeletingIncomeCategory(@Valid @ModelAttribute("incomeCategoryDTO") IncomeCategoryDTO incomeCategoryDTO,
+                                                            BindingResult bindingResult, Model model) {
+        return incomeCategoryPageHandler.handleIncomeDeletionCategoriesPageAfterSubmit(bindingResult, model, incomeCategoryDTO);
+    }
+
+    @GetMapping(value = "/income-categories/deletion/success")
+    public String getIncomeCategoryDeletionSuccessPage(Model model) {
+        return incomeCategoryPageHandler.handleIncomeCategoriesDeletionSuccessPage(model);
+    }
+
+    @GetMapping(value = "/income-categories/deletion/failure")
+    public String getIncomeCategoryDeletionFailurePage(Model model) {
+        return incomeCategoryPageHandler.handleIncomeCategoriesDeletionFailurePage(model);
     }
 }

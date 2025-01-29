@@ -63,8 +63,24 @@ public class IncomeService {
 
     public void addIncomeCategory(IncomeNewCategoryDTO incomeNewCategoryDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
-        System.out.println(userId);
         IncomeCategoryEntity incomeCategoryEntity = incomeCategoryMapper.mapIncomeCategoryDTOToIncomeCategoryEntity(incomeNewCategoryDTO, userId);
         incomeCategoryRepository.save(incomeCategoryEntity);
+    }
+
+    public void deleteIncomeCategory(IncomeCategoryDTO incomeCategoryDTO) {
+        Long userId = userFacade.fetchLoggedInUserId();
+        Long id = incomeCategoryDTO.id();
+        incomeCategoryRepository.deleteParticularIncomeCategory(userId, id);
+    }
+
+    boolean checkIfIncomeCategoriesStored(IncomeCategoryDTO incomeCategoryDTO) {
+        Long id = incomeCategoryDTO.id();
+        return incomeRepository.findRelatedIncomeByCategoryId(id);
+    }
+
+    boolean checkIfCategoryNameAlreadyExists(IncomeNewCategoryDTO incomeNewCategoryDTO) {
+        List<IncomeCategoryDTO> incomeCategories = getUserIncomeCategories();
+        return incomeCategories.stream()
+                .anyMatch(category -> (incomeNewCategoryDTO.name()).equalsIgnoreCase(category.incomeCategory()));
     }
 }

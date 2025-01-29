@@ -89,6 +89,38 @@
                 </form>
             </div>
         </header>
+        <div th:if="${addedIncomeCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+                [[#{settings.categoriesIncome.success}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div th:if="${deletedIncomeCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+                [[#{settings.categoriesIncome.delete.success}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div th:if="${deletionFailureIncomeCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+                [[#{settings.categoriesIncome.delete.failure}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div th:if="${additionFailureIncomeCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+                [[#{settings.categoriesIncome.failure}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <article>
             <div class="container mt-2 p-2 h5 mx-auto">
                 <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-9">
@@ -104,7 +136,7 @@
                     <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.categoriesIncome.cancel}]]</a>
                 </div>
                 <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true" style="display: none;">
-                    <form th:action="@{/api/v1/menu/income/income-categories}" th:object="${incomeNewCategoryDTO}" method="post" id="modalForm">
+                    <form th:action="@{/api/v1/menu/income/income-categories/addition}" th:object="${incomeNewCategoryDTO}" method="post" id="modalForm">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -127,7 +159,7 @@
                     </form>
                 </div>
                 <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true" style="display: none;">
-                    <form action="/income/deleteCategory" method="post" id="modalForm2">
+                    <form th:action="@{/api/v1/menu/income/income-categories/deletion}" th:object="${incomeCategoryDTO}" method="post" id="modalForm2">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -137,14 +169,13 @@
                                 </div>
                                 <div class="modal-body h5">
                                     <div class="form-group mx-auto my-auto">
-                                        <select class="form-control text-dark border-4 font-weight-bold mx-auto my-auto" id="category" size="1" name="category" aria-describedby="category" required>
-                                            <option value="">[[#{settings.categoriesIncome.chooseCategory}]]</option>
-                                            {% for incomeCategory in incomeCategories %}
-                                            {% if incomeCategory.name != "Another" %}
-                                            <option value="{{incomeCategory.name}}">{{incomeCategory.name}}</option>
-                                            {% endif %}
-                                            {% endfor %}
+                                        <select th:field="*{id}" class="form-control text-dark border-4 font-weight-bold mx-auto my-auto" id="category" size="1" name="category" aria-describedby="category" required>
+                                            <option value="">[[#{income.form.category.choice}]]</option>
+                                            <option th:each="category : ${incomeCategories}"
+                                                    th:text="${category.incomeCategory}"
+                                                    th:value="${category.id}">
                                         </select>
+
                                     </div>
                                 </div>
                                 <div class="modal-footer">
