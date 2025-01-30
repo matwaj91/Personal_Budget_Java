@@ -31,7 +31,7 @@ public class IncomeTemplateService {
     }
 
     public void addIncomeCategoriesDeletionSuccessAttribute(Model model) {
-        model.addAttribute("deletedIncomeCategory", true);
+        model.addAttribute("deletionIncomeCategory", true);
     }
 
     public void addIncomeCategoriesDeletionFailureAttribute(Model model) {

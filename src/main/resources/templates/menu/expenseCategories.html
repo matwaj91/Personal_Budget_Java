@@ -89,6 +89,38 @@
                 </form>
             </div>
         </header>
+        <div th:if="${addedExpenseCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+                [[#{settings.categoriesExpense.success}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div th:if="${deletionExpenseCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+                [[#{settings.categoriesExpense.delete.success}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div th:if="${deletionFailureExpenseCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+                [[#{settings.categoriesExpense.delete.failure}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+        <div th:if="${additionFailureExpenseCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+                [[#{settings.categoriesExpense.failure}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <article>
             <div class="container mt-2 p-2 h5 mx-auto">
                 <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-7 col-xl-6 col-xxl-8">
@@ -102,21 +134,21 @@
                     <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#set">[[#{settings.setSpendingLimit}]]</button>
                     <button type="button" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#add" id="myBtn">[[#{settings.categoriesExpense.addNewCategory}]]</button>
                     <button type="button" class="redButton my-3 p-1 d-block text-white btn btn-block mx-auto" data-toggle="modal" data-target="#delete">[[#{settings.categoriesExpense.deleteCategory}]]</button>
-                    <a href="/Menu/main" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.categoriesExpense.cancel}]]</a>
+                    <a href="/api/v1/menu" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{settings.categoriesExpense.cancel}]]</a>
                 </div>
-                <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/expense/addCategory" method="post" id="modalForm">
+                <div class="modal fade" id="add" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true" style="display: none;">
+                    <form th:action="@{/api/v1/menu/expense/expense-categories/addition}" th:object="${expenseNewCategoryDTO}" method="post" id="modalForm">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesExpense.nameNewCategory}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel1">[[#{settings.categoriesExpense.nameNewCategory}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body h5 mb-4">
                                     <div class="form-group mx-auto my-auto">
-                                        <label for="category" class="font-weight-normal text-black my-auto"></label>
-                                        <input type="text" class="form-control" pattern="[a-zA-Z]+" id="category" name="category" required>
+                                        <label for="name" class="font-weight-normal text-black my-auto"></label>
+                                        <input type="text" th:field="*{name}" class="form-control" pattern="[a-zA-Z]+" id="name" name="name" required>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -127,24 +159,22 @@
                         </div>
                     </form>
                 </div>
-                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
-                    <form action="/expense/deleteCategory" method="post" id="modalForm2">
+                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true" style="display: none;">
+                    <form th:action="@{/api/v1/menu/expense/expense-categories/deletion}" th:object="${expenseCategoryDTO}" method="post" id="modalForm2">
                         <div class="modal-dialog text-center">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.categoriesExpense.deleteCategory}]]
+                                    <h5 class="modal-title font-weight-bold" id="exampleModalLabel2">[[#{settings.categoriesExpense.deleteCategory}]]
                                     </h5>
                                     <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body h5">
                                     <div class="form-group mx-auto my-auto">
-                                        <select class="form-control text-dark border-4 font-weight-bold my-auto" id="category" size="1" name="category" aria-describedby="category" required>
-                                            <option value="">[[#{settings.categoriesExpense.chooseCategory}]]</option>
-                                            {% for expenseCategory in expenseCategories %}
-                                            {% if expenseCategory.name != "Another" %}
-                                            <option value="{{expenseCategory.name}}">{{expenseCategory.name}}</option>
-                                            {% endif %}
-                                            {% endfor %}
+                                        <select th:field="*{id}" class="form-control text-dark border-4 font-weight-bold mx-auto my-auto" id="category" size="1" name="category" aria-describedby="category" required>
+                                            <option value="">[[#{expense.form.category.choice}]]</option>
+                                            <option th:each="category : ${expenseCategories}"
+                                                    th:text="${category.expenseCategory}"
+                                                    th:value="${category.id}">
                                         </select>
                                     </div>
                                 </div>
@@ -157,18 +187,18 @@
                     </form>
                 </div>
             </div>
-            <div class="modal fade" id="set" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal fade" id="set" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true" style="display: none;">
                 <form action="/expense/setLimit" method="post" id="modalForm3">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title font-weight-bold" id="exampleModalLabel">[[#{settings.setSpendingLimit}]]
+                                <h5 class="modal-title font-weight-bold" id="exampleModalLabel3">[[#{settings.setSpendingLimit}]]
                                 </h5>
                                 <button type="button" class="btn-close " data-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body h6">
                                 <div class=" mx-auto mb-4">
-                                    <select class="form-control text-dark border-4 font-weight-bold my-auto p-1" id="category" size="1" name="category" aria-describedby="category" required>
+                                    <select class="form-control text-dark border-4 font-weight-bold my-auto p-1" id="category1" size="1" name="category1" aria-describedby="category1" required>
                                         <option value="">[[#{settings.categoriesIncome.chooseCategory}]]</option>
                                         {% for expenseCategory in expenseCategories %}
                                         {% if expenseCategory.name != "Another" %}

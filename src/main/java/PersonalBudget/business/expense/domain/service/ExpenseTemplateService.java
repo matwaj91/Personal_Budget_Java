@@ -24,7 +24,19 @@ public class ExpenseTemplateService {
         model.addAttribute("paymentMethods", paymentMethods);
     }
 
-    public void addExpenseSuccessAttribute(Model model) {
-        model.addAttribute("addedExpense", true);
+    public void addExpenseCategoriesSuccessAttribute(Model model) {
+        model.addAttribute("addedExpenseCategory", true);
+    }
+
+    public void addExpenseCategoriesFailureAttribute(Model model) {
+        model.addAttribute("additionFailureExpenseCategory", true);
+    }
+
+    public void addExpenseCategoriesDeletionSuccessAttribute(Model model) {
+        model.addAttribute("deletionExpenseCategory", true);
+    }
+
+    public void addExpenseCategoriesDeletionFailureAttribute(Model model) {
+        model.addAttribute("deletionFailureExpenseCategory", true);
     }
 }

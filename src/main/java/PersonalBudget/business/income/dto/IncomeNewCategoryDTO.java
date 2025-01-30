@@ -1,6 +1,6 @@
 package PersonalBudget.business.income.dto;
 
-public record IncomeNewCategoryDTO(
+public record IncomeNewCategoryDTO (
 
         String name
 ) {}

@@ -14,4 +14,7 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
     @Query(value = "select new PersonalBudget.common.util.ParticularActivityDTO(f.amount, f.expenseDate, e.name) from ExpenseEntity f " +
                     "inner join ExpenseCategoryEntity e on f.expenseCategoryId  = e.id where f.userId = :userId and f.expenseDate between :dateFrom and :dateTo")
     List<ParticularActivityDTO> findAllUserParticularExpensesEachCategory(@Param("userId") Long userId, @Param("dateFrom") LocalDate dateFrom, @Param("dateTo") LocalDate dateTo);
+
+    @Query(value = "SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM expense e WHERE e.expense_category_id = :id", nativeQuery = true)
+    boolean findRelatedExpenseByCategoryId(@Param("id") Long id);
 }
