@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,6 +25,10 @@ public class ExpenseTemplateService {
         model.addAttribute("paymentMethods", paymentMethods);
     }
 
+    public void addExpenseSuccessAttribute(Model model) {
+        model.addAttribute("addedExpense", true);
+    }
+
     public void addExpenseCategoriesSuccessAttribute(Model model) {
         model.addAttribute("addedExpenseCategory", true);
     }
@@ -38,5 +43,9 @@ public class ExpenseTemplateService {
 
     public void addExpenseCategoriesDeletionFailureAttribute(Model model) {
         model.addAttribute("deletionFailureExpenseCategory", true);
+    }
+
+    public void addSettingLimitSuccessAttribute(Model model) {
+        model.addAttribute("settingLimitCategory", true);
     }
 }

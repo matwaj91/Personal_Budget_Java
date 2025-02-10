@@ -1,7 +1,10 @@
 package PersonalBudget.business.expense.dto;
 
+import java.math.BigDecimal;
+
 public record ExpenseCategoryDTO (
 
         Long id,
-        String expenseCategory
+        String expenseCategory,
+        BigDecimal limitAmount
 ) {}

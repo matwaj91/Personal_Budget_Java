@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -17,4 +18,8 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 
     @Query(value = "SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM expense e WHERE e.expense_category_id = :id", nativeQuery = true)
     boolean findRelatedExpenseByCategoryId(@Param("id") Long id);
+
+    @Query(value = "SELECT SUM(amount) AS sum FROM expense e WHERE e.expense_category_id = :selectedExpenseCategory and e.expense_date between :dateFrom and :dateTo", nativeQuery = true)
+    BigDecimal findCurrentMonthExpenseSum(Long selectedExpenseCategory, LocalDate dateFrom, LocalDate dateTo);
+
 }

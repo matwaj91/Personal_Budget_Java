@@ -5,18 +5,18 @@ import PersonalBudget.business.expense.domain.service.ExpensePageHandler;
 import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseDTO;
 import PersonalBudget.business.expense.dto.ExpenseNewCategoryDTO;
+import PersonalBudget.common.util.Request;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -34,6 +34,16 @@ public class ExpenseController {
     @ModelAttribute("expenseDTO")
     public ExpenseDTO expenseDTO(BigDecimal amount, LocalDate expenseDate, Long paymentMethodId, Long expenseCategoryId, String expenseComment) {
         return new ExpenseDTO(amount, expenseDate, paymentMethodId, expenseCategoryId, expenseComment);
+    }
+
+    @PostMapping(value = "/selectedExpenseCategory")
+    @ResponseBody
+    public Map<String, Object> getResponseAfterSelectingExpenseCategoryOption(@RequestBody Request request) {
+        Long selectedExpenseCategory = request.getOption();
+        BigDecimal expenseSum = expensePageHandler.handleExpensePageAfterSelectingCategory(selectedExpenseCategory);
+        Map<String, Object> response = new HashMap<>();
+        response.put("expenseSum", expenseSum);
+        return response;
     }
 
     @PostMapping()
@@ -74,8 +84,8 @@ public class ExpenseController {
     }
 
     @ModelAttribute("expenseCategoryDTO")
-    public ExpenseCategoryDTO expenseNewCategoryDTO(Long id, String expenseCategory) {
-        return new ExpenseCategoryDTO(id, expenseCategory);
+    public ExpenseCategoryDTO expenseNewCategoryDTO(Long id, String expenseCategory, BigDecimal limitAmount) {
+        return new ExpenseCategoryDTO(id, expenseCategory, limitAmount);
     }
 
     @PostMapping(value = "/expense-categories/deletion")
@@ -92,6 +102,17 @@ public class ExpenseController {
     @GetMapping(value = "/expense-categories/deletion/failure")
     public String getExpenseCategoryDeletionFailurePage(Model model) {
         return expenseCategoryPageHandler.handleExpenseCategoriesDeletionFailurePage(model);
+    }
+
+    @PostMapping(value = "/spending-limit")
+    public String getProperPageAfterSettingSpendingLimit(@Valid @ModelAttribute("expenseCategoryLimitDTO") ExpenseCategoryDTO expenseCategoryDTO,
+                                                            BindingResult bindingResult, Model model) {
+        return expenseCategoryPageHandler.handleSpendingLimitPageAfterSubmit(bindingResult, model, expenseCategoryDTO);
+    }
+
+    @GetMapping(value = "/spending-limit/success")
+    public String getSettingLimitSuccessPage(Model model) {
+        return expenseCategoryPageHandler.handleSettingLimitSuccessPage(model);
     }
 
     //    @GetMapping(value = "/payment-methods")

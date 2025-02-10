@@ -97,6 +97,15 @@
         </button>
     </div>
 </div>
+<div class="d-inline d-flex flex-row align-items-center text-center bg-white rounded-lg opacity-75 shadow-lg h5 p-1 mx-auto my-auto text-center font-weight-bold alert alert-dismissible" id="box">
+    <div class="d-inline m-1 p-1 w-25 alert">[[#{expense.limit}]]<span id="limit"></span></div>
+    <div class="d-inline m-1 p-1 w-25 alert">[[#{expense.sumExpenses}]]<span id="expenses"></span></div>
+    <div class="d-inline m-1 p-1 w-25 alert">[[#{expense.difference}]]<span id="diff"></span></div>
+    <div class="d-inline m-1 p-1 w-25 alert">[[#{expense.amountSum}]]<span id="sum"></span></div>
+</div>
+<script>
+    document.getElementById("box").style.visibility = "hidden";
+</script>
 <article>
     <div class="container mt-2 p-2 h5 mx-auto">
         <form method="post" id="formIncome"  th:action="@{/api/v1/menu/expense}" th:object="${expenseDTO}" class="bg-white mt-4 rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4 ">
@@ -125,11 +134,12 @@
             </div>
             <div class="form-group mx-auto">
                 <label for="category" class="font-weight-normal text-black">[[#{expense.form.category}]]</label>
-                <select th:field="*{expenseCategoryId}" class="form-control text-dark border-4 font-weight-bold" id="category" name="category" size="1" aria-describedby="category">
+                <select th:field="*{expenseCategoryId}" class="form-control text-dark border-4 font-weight-bold" id="category" name="category" size="1" onchange="sendValue()" aria-describedby="category">
                     <option value="">[[#{expense.form.category.choice}]]</option>
                     <option th:each="category : ${expenseCategories}"
-                            th:text="${category.expenseCategory}"
-                            th:value="${category.id}">
+                            th:text="${category.expenseCategory} + ' '+ ${category.limitAmount != null ? '- limit: ' + #numbers.formatDecimal(category.limitAmount, 0, 0) + '$' : ''}"
+                            th:value="${category.id}"
+                            th:attr="limitAmount=${category.limitAmount}">
                 </select>
                 <div class="alert-negative" th:if="${#fields.hasErrors('expenseCategoryId')}" th:errors="*{expenseCategoryId}"></div>
             </div>
@@ -145,5 +155,6 @@
 </article>
 <footer th:replace = "~{base :: footer}"></footer>
 <script src="/js/setTodayDate.js"></script>
+<script src="/js/limit.js"></script>
 </body>
 </html>

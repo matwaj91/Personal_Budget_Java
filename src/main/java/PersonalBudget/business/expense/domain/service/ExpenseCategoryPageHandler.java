@@ -23,6 +23,9 @@ public class ExpenseCategoryPageHandler {
     private static final String REDIRECT_EXPENSE_CATEGORY_DELETION_FAILURE_PAGE  = "redirect:" + EXPENSE_CATEGORY_DELETION_FAILURE_PAGE;
     private static final String EXPENSE_CATEGORY_FAILURE_PAGE  = "addition/failure";
     private static final String REDIRECT_EXPENSE_CATEGORY_FAILURE_PAGE  = "redirect:" + EXPENSE_CATEGORY_FAILURE_PAGE;
+    private static final String EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE  = "spending-limit/success";
+    private static final String REDIRECT_EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE = "redirect:" + EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE;
+
     //private static final String PAYMENT_METHODS_PAGE = "menu/paymentMethods";
 
     public String handleExpenseCategoriesPage(Model model) {
@@ -76,6 +79,21 @@ public class ExpenseCategoryPageHandler {
 
     public String handleExpenseCategoriesDeletionFailurePage(Model model) {
         expenseTemplateService.addExpenseCategoriesDeletionFailureAttribute(model);
+        expenseTemplateService.addExpenseCategoriesAttribute(model);
+        return EXPENSE_CATEGORIES_PAGE;
+    }
+
+    public String handleSpendingLimitPageAfterSubmit(BindingResult bindingResult, Model model,
+                                                     @Valid ExpenseCategoryDTO expenseCategoryDTO) {
+        if (bindingResult.hasErrors()) {
+            return EXPENSE_CATEGORIES_PAGE;
+        }
+        expenseService.setSpendingLimit(expenseCategoryDTO);
+        return REDIRECT_EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE;
+    }
+
+    public String handleSettingLimitSuccessPage(Model model) {
+        expenseTemplateService.addSettingLimitSuccessAttribute(model);
         expenseTemplateService.addExpenseCategoriesAttribute(model);
         return EXPENSE_CATEGORIES_PAGE;
     }

@@ -121,6 +121,14 @@
                 </button>
             </div>
         </div>
+        <div th:if="${settingLimitCategory == true}">
+            <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+                [[#{settings.setSpendingLimit.success}]]
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
         <article>
             <div class="container mt-2 p-2 h5 mx-auto">
                 <div class="mt-4 bg-white rounded-lg opacity-75 shadow-lg p-4 mx-auto col-10 col-sm-9 col-md-7 col-lg-7 col-xl-6 col-xxl-8">
@@ -188,7 +196,7 @@
                 </div>
             </div>
             <div class="modal fade" id="set" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true" style="display: none;">
-                <form action="/expense/setLimit" method="post" id="modalForm3">
+                <form th:action="@{/api/v1/menu/expense/spending-limit}" th:object="${expenseCategoryDTO}" method="post" id="modalForm3">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -198,17 +206,15 @@
                             </div>
                             <div class="modal-body h6">
                                 <div class=" mx-auto mb-4">
-                                    <select class="form-control text-dark border-4 font-weight-bold my-auto p-1" id="category1" size="1" name="category1" aria-describedby="category1" required>
-                                        <option value="">[[#{settings.categoriesIncome.chooseCategory}]]</option>
-                                        {% for expenseCategory in expenseCategories %}
-                                        {% if expenseCategory.name != "Another" %}
-                                        <option value="{{expenseCategory.name}}">{{expenseCategory.name}}</option>
-                                        {% endif %}
-                                        {% endfor %}
+                                    <select  th:field="*{id}" class="form-control text-dark border-4 font-weight-bold mx-auto my-auto" id="category" size="1" name="category" aria-describedby="category" required>
+                                        <option value="">[[#{expense.form.category.choice}]]</option>
+                                        <option th:each="category : ${expenseCategories}"
+                                                th:text="${category.expenseCategory}"
+                                                th:value="${category.id}">
                                     </select>
                                 </div>
                                 <div>
-                                    <input type="number" min="1" max="100000" step="1" class="myinput form-control font-weight-bold text-dark border-4" id="limitAmount" name="limitAmount" placeholder="Please provide monthly limit" aria-describedby="limitAmount" required>
+                                    <input  th:field="*{limitAmount}" type="number" min="1" max="100000" step="1" class="myinput form-control font-weight-bold text-dark border-4" id="limitAmount" name="limitAmount" th:placeholder="#{settings.setSpendingLimit.placeholder}" aria-describedby="limitAmount" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -221,6 +227,5 @@
             </div>
         </article>
         <footer th:replace = "~{base :: footer}"></footer>
-        <script src="/js/expenseCategories.js"></script>
     </body>
 </html>

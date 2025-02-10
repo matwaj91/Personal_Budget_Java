@@ -6,19 +6,22 @@ import PersonalBudget.business.expense.domain.model.*;
 import PersonalBudget.business.expense.domain.repository.ExpenseCategoryRepository;
 import PersonalBudget.business.expense.domain.repository.ExpensePaymentMethodRepository;
 import PersonalBudget.business.expense.domain.repository.ExpenseRepository;
-import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
-import PersonalBudget.business.expense.dto.ExpenseDTO;
-import PersonalBudget.business.expense.dto.ExpenseNewCategoryDTO;
-import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
+import PersonalBudget.business.expense.dto.*;
 import PersonalBudget.business.user.domain.UserFacade;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
+
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentMonth;
+import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayCurrentMonth;
 
 @RequiredArgsConstructor
 @Service
@@ -34,6 +37,12 @@ public class ExpenseService {
     public List<ExpenseCategoryDTO> getUserExpenseCategories() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
         return expenseCategoryRepository.findAllExpensesCategoriesByUserId(loggedInUserId);
+    }
+
+    public BigDecimal getCurrentMonthExpenseSum(Long selectedExpenseCategory) {
+        LocalDate dateFrom = getFirstDayCurrentMonth();
+        LocalDate dateTo = getLastDayCurrentMonth();
+        return expenseRepository.findCurrentMonthExpenseSum(selectedExpenseCategory,dateFrom, dateTo);
     }
 
     public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
@@ -103,5 +112,11 @@ public class ExpenseService {
         Long userId = userFacade.fetchLoggedInUserId();
         Long id = expenseCategoryDTO.id();
         expenseCategoryRepository.deleteParticularExpenseCategory(userId, id);
+    }
+
+    public void setSpendingLimit(@Valid ExpenseCategoryDTO expenseCategoryLimitDTO) {
+        Long id = expenseCategoryLimitDTO.id();
+        BigDecimal amountLimit = expenseCategoryLimitDTO.limitAmount();
+        expenseCategoryRepository.setExpenseCategoryLimit(id, amountLimit);
     }
 }

@@ -1,12 +1,12 @@
 package PersonalBudget.business.expense.domain.service;
 
 import PersonalBudget.business.expense.dto.ExpenseDTO;
-import PersonalBudget.business.expense.dto.ExpenseNewCategoryDTO;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
+import java.math.BigDecimal;
 
 @RequiredArgsConstructor
 @Service
@@ -25,7 +25,7 @@ public class ExpensePageHandler {
     }
 
     public String handleExpenseSuccessPage(Model model) {
-        expenseTemplateService.addExpenseCategoriesSuccessAttribute(model);
+        expenseTemplateService.addExpenseSuccessAttribute(model);
         return handleExpensePage(model);
     }
 
@@ -37,5 +37,9 @@ public class ExpensePageHandler {
         }
         expenseService.addExpense(expenseDTO);
         return REDIRECT_EXPENSE_SUCCESS_PAGE;
+    }
+
+    public BigDecimal handleExpensePageAfterSelectingCategory(Long selectedExpenseCategory) {
+        return expenseService.getCurrentMonthExpenseSum(selectedExpenseCategory);
     }
 }

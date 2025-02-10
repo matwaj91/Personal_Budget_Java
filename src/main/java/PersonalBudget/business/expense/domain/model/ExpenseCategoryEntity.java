@@ -16,6 +16,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -41,4 +43,7 @@ public class ExpenseCategoryEntity {
     @NotEmpty
     @Column(name = "name")
     private String name;
+
+    @Column(name = "limit_amount")
+    private BigDecimal limitAmount;
 }
