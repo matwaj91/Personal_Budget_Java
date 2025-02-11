@@ -19,6 +19,9 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
     @Query(value = "SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM expense e WHERE e.expense_category_id = :id", nativeQuery = true)
     boolean findRelatedExpenseByCategoryId(@Param("id") Long id);
 
+    @Query(value = "SELECT CASE WHEN COUNT(h) > 0 THEN true ELSE false END FROM expense h WHERE h.payment_method_id = :id", nativeQuery = true)
+    boolean findRelatedExpenseByPaymentMethodId(@Param("id") Long id);
+
     @Query(value = "SELECT SUM(amount) AS sum FROM expense e WHERE e.expense_category_id = :selectedExpenseCategory and e.expense_date between :dateFrom and :dateTo", nativeQuery = true)
     BigDecimal findCurrentMonthExpenseSum(Long selectedExpenseCategory, LocalDate dateFrom, LocalDate dateTo);
 

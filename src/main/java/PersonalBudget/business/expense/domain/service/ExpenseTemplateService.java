@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,11 +17,6 @@ public class ExpenseTemplateService {
     public void addExpenseCategoriesAttribute(Model model) {
         List<ExpenseCategoryDTO> expenseCategories = expenseService.getUserExpenseCategories();
         model.addAttribute("expenseCategories", expenseCategories);
-    }
-
-    public void addPaymentMethodsAttribute(Model model) {
-        List<ExpensePaymentMethodDTO> paymentMethods = expenseService.getUserPaymentMethods();
-        model.addAttribute("paymentMethods", paymentMethods);
     }
 
     public void addExpenseSuccessAttribute(Model model) {
@@ -47,5 +41,26 @@ public class ExpenseTemplateService {
 
     public void addSettingLimitSuccessAttribute(Model model) {
         model.addAttribute("settingLimitCategory", true);
+    }
+
+    public void addPaymentMethodsAttribute(Model model) {
+        List<ExpensePaymentMethodDTO> expensePaymentMethods = expenseService.getUserPaymentMethods();
+        model.addAttribute("expensePaymentMethods", expensePaymentMethods);
+    }
+
+    public void addExpensePaymentMethodSuccessAttribute(Model model) {
+        model.addAttribute("addedExpensePaymentMethod", true);
+    }
+
+    public void addExpensePaymentMethodFailureAttribute(Model model) {
+        model.addAttribute("additionFailureExpensePaymentMethod", true);
+    }
+
+    public void addExpensePaymentMethodDeletionSuccessAttribute(Model model) {
+        model.addAttribute("deletionExpensePaymentMethod", true);
+    }
+
+    public void addExpensePaymentMethodDeletionFailureAttribute(Model model) {
+        model.addAttribute("deletionFailureExpensePaymentMethod", true);
     }
 }

@@ -26,8 +26,6 @@ public class ExpenseCategoryPageHandler {
     private static final String EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE  = "spending-limit/success";
     private static final String REDIRECT_EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE = "redirect:" + EXPENSE_CATEGORY_LIMIT_SUCCESS_PAGE;
 
-    //private static final String PAYMENT_METHODS_PAGE = "menu/paymentMethods";
-
     public String handleExpenseCategoriesPage(Model model) {
         expenseTemplateService.addExpenseCategoriesAttribute(model);
         return EXPENSE_CATEGORIES_PAGE;

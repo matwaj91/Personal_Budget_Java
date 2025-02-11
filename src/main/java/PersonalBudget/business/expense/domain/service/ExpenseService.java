@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentMonth;
@@ -99,7 +97,7 @@ public class ExpenseService {
 
     public void addExpenseCategory(@Valid ExpenseNewCategoryDTO expenseNewCategoryDTO) {
         Long userId = userFacade.fetchLoggedInUserId();
-        ExpenseCategoryEntity expenseCategoryEntity = expenseCategoryMapper.mapExpenseCategoryDTOToIncomeCategoryEntity(expenseNewCategoryDTO, userId);
+        ExpenseCategoryEntity expenseCategoryEntity = expenseCategoryMapper.mapExpenseCategoryDTOToExpenseCategoryEntity(expenseNewCategoryDTO, userId);
         expenseCategoryRepository.save(expenseCategoryEntity);
     }
 
@@ -118,5 +116,28 @@ public class ExpenseService {
         Long id = expenseCategoryLimitDTO.id();
         BigDecimal amountLimit = expenseCategoryLimitDTO.limitAmount();
         expenseCategoryRepository.setExpenseCategoryLimit(id, amountLimit);
+    }
+
+    boolean checkIfPaymentMethodNameAlreadyExists(ExpenseNewPaymentMethodDTO expenseNewPaymentMethodDTO) {
+        List<ExpensePaymentMethodDTO> expensePaymentMethods = getUserPaymentMethods();
+        return expensePaymentMethods.stream()
+                .anyMatch(paymentMethod -> (expenseNewPaymentMethodDTO.name()).equalsIgnoreCase(paymentMethod.expensePaymentMethod()));
+    }
+
+    public void addExpensePaymentMethod(@Valid ExpenseNewPaymentMethodDTO expenseNewPaymentMethodDTO) {
+        Long userId = userFacade.fetchLoggedInUserId();
+        ExpensePaymentMethodEntity expensePaymentMethodEntity = expenseCategoryMapper.mapExpensePaymentMethodDTOToExpensePaymentMethodEntity(expenseNewPaymentMethodDTO, userId);
+        paymentMethodRepository.save(expensePaymentMethodEntity);
+    }
+
+    public void deleteExpensePaymentMethod(@Valid ExpensePaymentMethodDTO expensePaymentMethodDTO) {
+        Long userId = userFacade.fetchLoggedInUserId();
+        Long id = expensePaymentMethodDTO.id();
+        paymentMethodRepository.deleteParticularExpensePaymentMethod(userId, id);
+    }
+
+    public boolean checkIfExpensePaymentMethodsStored(@Valid ExpensePaymentMethodDTO expensePaymentMethodDTO) {
+        Long id = expensePaymentMethodDTO.id();
+        return expenseRepository.findRelatedExpenseByPaymentMethodId(id);
     }
 }

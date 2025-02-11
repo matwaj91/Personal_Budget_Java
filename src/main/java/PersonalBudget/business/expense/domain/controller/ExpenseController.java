@@ -2,9 +2,8 @@ package PersonalBudget.business.expense.domain.controller;
 
 import PersonalBudget.business.expense.domain.service.ExpenseCategoryPageHandler;
 import PersonalBudget.business.expense.domain.service.ExpensePageHandler;
-import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
-import PersonalBudget.business.expense.dto.ExpenseDTO;
-import PersonalBudget.business.expense.dto.ExpenseNewCategoryDTO;
+import PersonalBudget.business.expense.domain.service.ExpensePaymentMethodPageHandler;
+import PersonalBudget.business.expense.dto.*;
 import PersonalBudget.common.util.Request;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,7 @@ public class ExpenseController {
 
     private final ExpensePageHandler expensePageHandler;
     private final ExpenseCategoryPageHandler expenseCategoryPageHandler;
+    private final ExpensePaymentMethodPageHandler expensePaymentMethodPageHandler;
 
     @GetMapping()
     public String getExpensePage(Model model) {
@@ -115,8 +115,50 @@ public class ExpenseController {
         return expenseCategoryPageHandler.handleSettingLimitSuccessPage(model);
     }
 
-    //    @GetMapping(value = "/payment-methods")
-//    public String getPaymentMethodsPage(Model model) {
-//        return expenseCategoryPageHandler.handlePaymentMethodsPage(model);
-//    }
+    @GetMapping(value = "/payment-methods")
+    public String getPaymentMethodsPage(Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodsPage(model);
+    }
+
+    @ModelAttribute("expenseNewPaymentMethodDTO")
+    public ExpenseNewPaymentMethodDTO expenseNewPaymentMethodDTO(String name) {
+        return new ExpenseNewPaymentMethodDTO(name);
+    }
+
+    @PostMapping(value = "/payment-methods/addition")
+    public String getProperPageAfterAddingNewExpensePaymentMethod(@Valid @ModelAttribute("expenseNewPaymentMethodDTO") ExpenseNewPaymentMethodDTO expenseNewPaymentMethodDTO,
+                                                             BindingResult bindingResult, Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodPageAfterSubmit(bindingResult, model, expenseNewPaymentMethodDTO);
+    }
+
+    @GetMapping(value = "/payment-methods/addition/success")
+    public String getExpensePaymentMethodSuccessPage(Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodSuccessPage(model);
+    }
+
+    @GetMapping(value = "/payment-methods/addition/failure")
+    public String getExpensePaymentMethodFailurePage(Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodFailurePage(model);
+    }
+
+    @ModelAttribute("expensePaymentMethodDTO")
+    public ExpensePaymentMethodDTO expensePaymentMethodDTO(Long id, String expenseCategory) {
+        return new ExpensePaymentMethodDTO(id, expenseCategory);
+    }
+
+    @PostMapping(value = "/payment-methods/deletion")
+    public String getProperPageAfterDeletingExpensePaymentMethod(@Valid @ModelAttribute("expensePaymentMethodDTO") ExpensePaymentMethodDTO expensePaymentMethodDTO,
+                                                            BindingResult bindingResult, Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodDeletionPageAfterSubmit(bindingResult, model, expensePaymentMethodDTO);
+    }
+
+    @GetMapping(value = "/payment-methods/deletion/success")
+    public String getExpensePaymentMethodDeletionSuccessPage(Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodDeletionSuccessPage(model);
+    }
+
+    @GetMapping(value = "/payment-methods/deletion/failure")
+    public String getExpensePaymentMethodDeletionFailurePage(Model model) {
+        return expensePaymentMethodPageHandler.handleExpensePaymentMethodDeletionFailurePage(model);
+    }
 }
