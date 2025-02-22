@@ -5,6 +5,7 @@ import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
 import PersonalBudget.business.user.domain.service.exception.UserNotFoundException;
 import PersonalBudget.business.user.dto.UserDTO;
+import PersonalBudget.business.user.dto.UserProfileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,6 +50,30 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email).orElseThrow(() ->
                 new UsernameNotFoundException("User not found"));
+    }
+
+    public UserProfileDTO getUserProfileDetails() {
+        Long loggedInUserId = getCurrentLoggedInUserId();
+        return userRepository.findUserProfileDetailsByUserId(loggedInUserId);
+    }
+
+    public void updateUserName(UserProfileDTO userProfileDTO) {
+        Long loggedInUserId = getCurrentLoggedInUserId();
+        String name = userProfileDTO.name();
+        userRepository.setUserName(loggedInUserId, name);
+    }
+
+    public void updateUserPassword(UserProfileDTO userProfileDTO) {
+        Long loggedInUserId = getCurrentLoggedInUserId();
+        String encodedPassword = bCryptPasswordEncoder.encode(userProfileDTO.password());
+        userRepository.setUserPassword(loggedInUserId, encodedPassword);
+    }
+
+    public void updateUserNameAndPassword(UserProfileDTO userProfileDTO) {
+        Long loggedInUserId = getCurrentLoggedInUserId();
+        String name = userProfileDTO.name();
+        String encodedPassword = bCryptPasswordEncoder.encode(userProfileDTO.password());
+        userRepository.setUserNameAndPassword(loggedInUserId, name, encodedPassword);
     }
 }
 
