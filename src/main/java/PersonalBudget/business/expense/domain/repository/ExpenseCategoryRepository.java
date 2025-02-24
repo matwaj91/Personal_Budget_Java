@@ -25,4 +25,9 @@ public interface ExpenseCategoryRepository extends JpaRepository<ExpenseCategory
     @Transactional
     @Query(value = "update expense_category set limit_amount = :limit_Amount where id = :id", nativeQuery = true)
     void setExpenseCategoryLimit(@Param("id") Long id, @Param("limit_Amount") BigDecimal limitAmount);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from expense_category f where f.user_id = :userId", nativeQuery = true)
+    void deleteExpenseCategoriesByUserId(@Param("userId") Long userId);
 }

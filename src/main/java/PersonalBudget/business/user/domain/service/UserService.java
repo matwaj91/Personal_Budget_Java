@@ -1,5 +1,7 @@
 package PersonalBudget.business.user.domain.service;
 
+import PersonalBudget.business.expense.domain.ExpenseFacade;
+import PersonalBudget.business.income.domain.IncomeFacade;
 import PersonalBudget.business.user.domain.mapper.UserMapper;
 import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
@@ -74,6 +76,10 @@ public class UserService implements UserDetailsService {
         String name = userProfileDTO.name();
         String encodedPassword = bCryptPasswordEncoder.encode(userProfileDTO.password());
         userRepository.setUserNameAndPassword(loggedInUserId, name, encodedPassword);
+    }
+
+    public void deleteUserAccount(Long userId) {
+        userRepository.deleteById(userId);
     }
 }
 

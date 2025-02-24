@@ -11,7 +11,6 @@ public record UserDTO (
         @Email(message = "{email.valid}")
         @NotEmpty(message = "{email.empty}")
         String email,
-        @Size(min = 1, message = "{password.six}")
-        @NotEmpty(message = "{password.empty}")
+        @Size(min = 6, message = "{password.six}")
         String password) {
 }

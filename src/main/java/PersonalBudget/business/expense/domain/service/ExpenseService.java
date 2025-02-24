@@ -145,4 +145,12 @@ public class ExpenseService {
     public void deleteUserExpenses(Long userId) {
         expenseRepository.deleteAllExpensesByUserId(userId);
     }
+
+    public void deleteUserExpenseCategories(Long userId) {
+        expenseCategoryRepository.deleteExpenseCategoriesByUserId(userId);
+    }
+
+    public void deleteUserPaymentMethods(Long userId) {
+        paymentMethodRepository.deletePaymentMethodsByUserId(userId);
+    }
 }

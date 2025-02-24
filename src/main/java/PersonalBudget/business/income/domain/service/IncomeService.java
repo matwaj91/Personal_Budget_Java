@@ -87,4 +87,8 @@ public class IncomeService {
     public void deleteUserIncomes(Long userId) {
         incomeRepository.deleteAllIncomesByUserId(userId);
     }
+
+    public void deleteUserIncomeCategories(Long userId) {
+        incomeCategoryRepository.deleteIncomeCategoriesById(userId);
+    }
 }

@@ -17,4 +17,8 @@ public class IncomeFacade {
     public void deleteIncomesForUser(Long userId) {
         incomeService.deleteUserIncomes(userId);
     }
+
+    public void deleteIncomeCategoriesForUser(Long userId) {
+        incomeService.deleteUserIncomeCategories(userId);
+    }
 }

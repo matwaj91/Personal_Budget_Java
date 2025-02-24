@@ -19,4 +19,9 @@ public interface ExpensePaymentMethodRepository extends JpaRepository<ExpensePay
     @Transactional
     @Query(value = "delete from payment_method f where f.user_id = :userId and f.id = :id", nativeQuery = true)
     void deleteParticularExpensePaymentMethod(@Param("userId") Long userId, @Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from payment_method f where f.user_id = :userId", nativeQuery = true)
+    void deletePaymentMethodsByUserId(@Param("userId") Long userId);
 }

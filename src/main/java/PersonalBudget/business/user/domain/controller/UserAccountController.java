@@ -45,12 +45,22 @@ public class UserAccountController {
     }
 
     @PostMapping(value = "/transactions")
-    public String getProperPageAfterSignUp(Model model) {
-        return userAccountPageHandler.handleUserTransactionsPageAfterSubmit(model);
+    public String getProperPageAfterSignUp() {
+        return userAccountPageHandler.handleUserTransactionsPageAfterSubmit();
     }
 
     @GetMapping(value = "/transactions/success")
     public String getUserTransactionsSuccessPage(Model model) {
         return userAccountPageHandler.handleUserTransactionsSuccessPage(model);
+    }
+
+    @PostMapping(value = "/deletion")
+    public String getProperPageAfterAccountDeletion() {
+        return userAccountPageHandler.handleUserAccountDeletionPageAfterSubmit();
+    }
+
+    @GetMapping(value = "/deletion/success")
+    public String getUserAccountDeletionSuccessPage(Model model) {
+        return userAccountPageHandler.handleUserAccountDeletionSuccessPage(model);
     }
 }

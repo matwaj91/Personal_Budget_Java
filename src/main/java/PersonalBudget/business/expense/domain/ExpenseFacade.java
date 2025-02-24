@@ -21,4 +21,12 @@ public class ExpenseFacade {
     public void deleteExpensesForUser(Long userId) {
         expenseService.deleteUserExpenses(userId);
     }
+
+    public void deleteExpenseCategoriesForUser(Long userId) {
+        expenseService.deleteUserExpenseCategories(userId);
+    }
+
+    public void deletePaymentMethodsForUser(Long userId) {
+        expenseService.deleteUserPaymentMethods(userId);
+    }
 }

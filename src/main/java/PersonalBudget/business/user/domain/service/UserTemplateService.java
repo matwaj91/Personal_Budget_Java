@@ -21,5 +21,7 @@ public class UserTemplateService {
         model.addAttribute("isTransactionDeleted", true);
     }
 
-
+    public void deleteUserAccountAttribute(Model model) {
+        model.addAttribute("isAccountDeleted", true);
+    }
 }

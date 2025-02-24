@@ -19,6 +19,11 @@ public interface IncomeCategoryRepository extends JpaRepository<IncomeCategoryEn
     @Transactional
     @Query(value = "delete from income_category f where f.user_id = :userId and f.id = :id", nativeQuery = true)
     void deleteParticularIncomeCategory(@Param("userId") Long userId, @Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from income_category f where f.user_id = :userId", nativeQuery = true)
+    void deleteIncomeCategoriesById(Long userId);
 }
 
 
