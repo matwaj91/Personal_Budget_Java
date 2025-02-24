@@ -16,4 +16,10 @@ public class UserTemplateService {
     public void addProfileDetailsAttribute(Model model) {
         model.addAttribute("isProfileUpdated", true);
     }
+
+    public void deleteTransactionsAttribute(Model model) {
+        model.addAttribute("isTransactionDeleted", true);
+    }
+
+
 }

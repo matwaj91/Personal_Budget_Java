@@ -19,13 +19,13 @@ public class UserAccountController {
     private final UserProfilePageHandler userProfilePageHandler;
 
     @GetMapping()
-    public String getUserAccountPage(Model model) {
-        return userAccountPageHandler.handleUserAccountPage(model);
+    public String getUserAccountPage() {
+        return userAccountPageHandler.handleUserAccountPage();
     }
 
     @GetMapping(value = "/profile")
-    public String getUserProfilePage(Model model) {
-        return userProfilePageHandler.handleUserProfilePage(model);
+    public String getUserProfilePage() {
+        return userProfilePageHandler.handleUserProfilePage();
     }
 
     @ModelAttribute("userProfileDTO")
@@ -44,5 +44,13 @@ public class UserAccountController {
         return userProfilePageHandler.handleUserProfileSuccessPage(model);
     }
 
+    @PostMapping(value = "/transactions")
+    public String getProperPageAfterSignUp(Model model) {
+        return userAccountPageHandler.handleUserTransactionsPageAfterSubmit(model);
+    }
 
+    @GetMapping(value = "/transactions/success")
+    public String getUserTransactionsSuccessPage(Model model) {
+        return userAccountPageHandler.handleUserTransactionsSuccessPage(model);
+    }
 }

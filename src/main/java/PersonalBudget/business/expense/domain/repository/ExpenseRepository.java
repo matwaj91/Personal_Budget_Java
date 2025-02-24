@@ -3,8 +3,10 @@ package PersonalBudget.business.expense.domain.repository;
 import PersonalBudget.business.expense.domain.model.ExpenseEntity;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,5 +26,10 @@ public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 
     @Query(value = "SELECT SUM(amount) AS sum FROM expense e WHERE e.expense_category_id = :selectedExpenseCategory and e.expense_date between :dateFrom and :dateTo", nativeQuery = true)
     BigDecimal findCurrentMonthExpenseSum(Long selectedExpenseCategory, LocalDate dateFrom, LocalDate dateTo);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from expense f where f.user_id = :userId", nativeQuery = true)
+    void deleteAllExpensesByUserId(@Param("userId") Long userId);
 
 }

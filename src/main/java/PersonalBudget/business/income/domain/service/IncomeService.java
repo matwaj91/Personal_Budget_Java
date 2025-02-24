@@ -83,4 +83,8 @@ public class IncomeService {
         return incomeCategories.stream()
                 .anyMatch(category -> (incomeNewCategoryDTO.name()).equalsIgnoreCase(category.incomeCategory()));
     }
+
+    public void deleteUserIncomes(Long userId) {
+        incomeRepository.deleteAllIncomesByUserId(userId);
+    }
 }

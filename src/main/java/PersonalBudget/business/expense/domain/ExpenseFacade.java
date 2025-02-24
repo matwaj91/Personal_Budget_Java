@@ -17,4 +17,8 @@ public class ExpenseFacade {
     public void addDefaultPaymentMethodsForUser(Long userId) {
         expenseService.addDefaultPaymentMethodsToUserAccount(userId);
     }
+
+    public void deleteExpensesForUser(Long userId) {
+        expenseService.deleteUserExpenses(userId);
+    }
 }

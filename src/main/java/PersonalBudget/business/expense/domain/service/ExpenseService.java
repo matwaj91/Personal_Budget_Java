@@ -45,6 +45,7 @@ public class ExpenseService {
 
     public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
+        paymentMethodRepository.findAllPaymentMethodsNames(loggedInUserId);
         return paymentMethodRepository.findAllPaymentMethodsNames(loggedInUserId);
     }
 
@@ -139,5 +140,9 @@ public class ExpenseService {
     public boolean checkIfExpensePaymentMethodsStored(@Valid ExpensePaymentMethodDTO expensePaymentMethodDTO) {
         Long id = expensePaymentMethodDTO.id();
         return expenseRepository.findRelatedExpenseByPaymentMethodId(id);
+    }
+
+    public void deleteUserExpenses(Long userId) {
+        expenseRepository.deleteAllExpensesByUserId(userId);
     }
 }

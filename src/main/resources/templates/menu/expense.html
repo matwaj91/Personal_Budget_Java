@@ -126,7 +126,7 @@
                 <label for="payment" class="font-weight-normal text-black">[[#{expense.form.payment}]]</label>
                 <select th:field="*{paymentMethodId}" class="form-control text-dark border-4 font-weight-bold" id="payment" size="1" name="payment" aria-describedby="payment">
                     <option value="">[[#{expense.form.payment.choice}]]</option>
-                    <option th:each="paymentMethod : ${paymentMethods}"
+                    <option th:each="paymentMethod : ${expensePaymentMethods}"
                             th:text="${paymentMethod.expensePaymentMethod}"
                             th:value="${paymentMethod.id}">
                 </select>

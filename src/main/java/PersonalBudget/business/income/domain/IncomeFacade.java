@@ -13,4 +13,8 @@ public class IncomeFacade {
     public void addDefaultIncomeCategoriesForUser(Long id) {
         incomeService.addDefaultIncomeCategoriesToUserAccount(id);
     }
+
+    public void deleteIncomesForUser(Long userId) {
+        incomeService.deleteUserIncomes(userId);
+    }
 }

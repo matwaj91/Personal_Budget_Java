@@ -17,7 +17,7 @@ public class UserProfilePageHandler {
     private static final String USER_PROFILE_SUCCESS_PAGE = "profile/success";
     private static final String REDIRECT_USER_PROFILE_SUCCESS_PAGE  = "redirect:" + USER_PROFILE_SUCCESS_PAGE;
 
-    public String handleUserProfilePage(Model model) {
+    public String handleUserProfilePage() {
         return USER_PROFILE_PAGE;
     }
 
@@ -37,6 +37,6 @@ public class UserProfilePageHandler {
 
     public String handleUserProfileSuccessPage(Model model) {
         userTemplateService.addProfileDetailsAttribute(model);
-        return handleUserProfilePage(model);
+        return handleUserProfilePage();
     }
 }
