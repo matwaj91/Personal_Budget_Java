@@ -24,4 +24,9 @@ public class UserTemplateService {
     public void deleteUserAccountAttribute(Model model) {
         model.addAttribute("isAccountDeleted", true);
     }
+
+    public void addConfirmationEmailAttribute(Model model, String name, String link) {
+        model.addAttribute("name", name);
+        model.addAttribute("link", link);
+    }
 }

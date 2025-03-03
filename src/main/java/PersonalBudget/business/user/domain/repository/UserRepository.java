@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<UserAccountEntity, Long> {
     Optional<UserAccountEntity> findUserByEmail(String email);
 
     @Query(value = "select e.id from UserAccountEntity e where e.email = :email")
-    Optional<Long> findIdByEmail (@Param("email") String email);
+    Optional<Long> findIdByEmail(@Param("email") String email);
 
     @Query("select new PersonalBudget.business.user.dto.UserProfileDTO(f.name, f.email, f.password) from UserAccountEntity f where f.id = :userId")
     UserProfileDTO findUserProfileDetailsByUserId(@Param("userId") Long userId);
@@ -38,4 +38,12 @@ public interface UserRepository extends JpaRepository<UserAccountEntity, Long> {
     @Transactional
     @Query(value = "update user_account set name = :name, password = :password where id = :userId", nativeQuery = true)
     void setUserNameAndPassword(@Param("userId") Long userId, @Param("name") String name, @Param("password") String password);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update user_account set enabled = true where email = :email", nativeQuery = true)
+    void enableUserAccount(@Param("email") String email);
+
+    @Query(value = "select * from user_account where token = :token", nativeQuery = true)
+    Optional<UserAccountEntity> findUserByToken(@Param("token") String token);
 }

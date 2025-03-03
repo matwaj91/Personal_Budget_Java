@@ -23,11 +23,10 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                     .authorizeHttpRequests(http -> http.requestMatchers("/",
                             URL + "/login",
-                            URL + "/signup",
+                            URL + "/signup/**",
                             "/css/**",
                             "/js/**",
                             "/img/**",
-                            URL + "/signup/success",
                             URL + "/password/forgot")
                             .permitAll()
                             .anyRequest().authenticated()

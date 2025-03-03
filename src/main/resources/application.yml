@@ -9,11 +9,22 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: personal.budget.java.app@gmail.com
+    password: fxzd jcpb wfpl kbpw
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 # Tomcat
 server:

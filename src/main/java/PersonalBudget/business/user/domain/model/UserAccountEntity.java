@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,6 +41,13 @@ public class UserAccountEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @NotEmpty
+    @Column(name="token")
+    private String token;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
@@ -72,7 +80,7 @@ public class UserAccountEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

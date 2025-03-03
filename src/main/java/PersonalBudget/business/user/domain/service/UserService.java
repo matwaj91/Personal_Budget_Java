@@ -1,10 +1,10 @@
 package PersonalBudget.business.user.domain.service;
 
-import PersonalBudget.business.expense.domain.ExpenseFacade;
-import PersonalBudget.business.income.domain.IncomeFacade;
 import PersonalBudget.business.user.domain.mapper.UserMapper;
 import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
+import PersonalBudget.business.user.domain.service.exception.EmailAlreadyConfirmedException;
+import PersonalBudget.business.user.domain.service.exception.TokenNotFoundException;
 import PersonalBudget.business.user.domain.service.exception.UserNotFoundException;
 import PersonalBudget.business.user.dto.UserDTO;
 import PersonalBudget.business.user.dto.UserProfileDTO;
@@ -16,6 +16,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,17 +33,23 @@ public class UserService implements UserDetailsService {
         return userRepository.existsByEmail(userDTO.email());
     }
 
-    public Long addNewUser(UserDTO userDTO) {
-        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder);
-        return userRepository.save(userEntity).getId();
+    public UserAccountEntity addNewUser(UserDTO userDTO) {
+        String token = UUID.randomUUID().toString();
+        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder, token);
+        userRepository.save(userEntity);
+        return userEntity;
     }
 
-    /**
-     * retrieve the currently logged-in user details
-     *
-     * @return id of currently logged-in user
-     * @throws UserNotFoundException if user id will not be found
-     */
+    @Transactional
+    public void enableUserAccount(String token) {
+        UserAccountEntity userAccount = userRepository.findUserByToken(token).orElseThrow(() ->
+                new TokenNotFoundException("Token not found"));
+        if (userAccount.isEnabled()) {
+            throw new EmailAlreadyConfirmedException("Email already confirmed");
+        }
+        userRepository.enableUserAccount(userAccount.getEmail());
+    }
+
     public Long getCurrentLoggedInUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
