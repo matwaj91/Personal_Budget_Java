@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace = "~{base :: head}">
+<body>
+  <main>
+    <div th:if="${isPasswordReset == true}">
+      <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-positive">
+        [[#{haslo zresetowane}]]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div th:if="${isPasswordReset == false}">
+      <div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+        [[#{haslo nie zresetowane}]]
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="container p-3 h5 mx-auto">
+      <form action="/api/v1/password/reset" th:object="${userPasswordDTO}"method="post" id="formPassword" class="bg-white rounded-lg opacity-75 shadow-lg p-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+        <h2 class="p-1 m-1 text-center">[[#{password.forgot.reset.provide}]]</h2>
+        <div class="form-group mx-auto">
+          <label for="password" class="font-weight-normal text-black"></label>
+          <input type="password" th:field="*{password}" class="form-control font-weight-bold text-dark border-4 error" id="password" name="password">
+          <div class="alert-negative" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+        <div class="h6">
+          <label class="font-weight-normal text-black">[[#{password.show}]]</label>
+          <i>
+            <span class="bi bi-eye-slash" id="togglePassword"></span>
+          </i>
+        </div>
+        <button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{password.forgot.reset}]]
+        </button>
+        <a href="/api/v1/login" class="text-decoration-none blackButton my-1 p-1 d-block text-white btn btn-block mx-auto">[[#{signup.backLogin}]]</a>
+      </form>
+    </div>
+  </main>
+  <script src="/js/hideShowPassword.js"></script>
+  <script src="/js/validatePassword.js"></script>
+</body>
+</html>

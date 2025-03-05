@@ -1,5 +1,7 @@
-package PersonalBudget.business.user.domain.service;
+package PersonalBudget.business.user.domain.service.pageHandler;
 
+import PersonalBudget.business.user.domain.service.UserService;
+import PersonalBudget.business.user.domain.service.UserTemplateService;
 import PersonalBudget.business.user.dto.UserProfileDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,8 @@ public class UserProfilePageHandler {
         return USER_PROFILE_PAGE;
     }
 
-    public String handleUserProfilePageAfterSubmit(BindingResult bindingResult, Model model, @Valid UserProfileDTO userProfileDTO) {
+    public String handleUserProfilePageAfterSubmit(BindingResult bindingResult, Model model,
+                                                   @Valid UserProfileDTO userProfileDTO) {
         if (bindingResult.hasErrors()) {
             return USER_PROFILE_PAGE;
         }

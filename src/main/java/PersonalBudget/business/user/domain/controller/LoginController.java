@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
+    private static final String LOGIN_PAGE = "index";
+
     @GetMapping(value = {"/", "/api/v1/login"})
     public String getLoginPage() {
-        return "index";
+        return LOGIN_PAGE;
     }
 }
 

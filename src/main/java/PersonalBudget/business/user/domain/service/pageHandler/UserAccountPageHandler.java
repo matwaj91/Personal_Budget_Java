@@ -1,7 +1,9 @@
-package PersonalBudget.business.user.domain.service;
+package PersonalBudget.business.user.domain.service.pageHandler;
 
 import PersonalBudget.business.expense.domain.ExpenseFacade;
 import PersonalBudget.business.income.domain.IncomeFacade;
+import PersonalBudget.business.user.domain.service.UserService;
+import PersonalBudget.business.user.domain.service.UserTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;

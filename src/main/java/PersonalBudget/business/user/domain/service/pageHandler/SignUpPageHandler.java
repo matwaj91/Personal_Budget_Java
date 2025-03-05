@@ -1,8 +1,11 @@
-package PersonalBudget.business.user.domain.service;
+package PersonalBudget.business.user.domain.service.pageHandler;
 
 import PersonalBudget.business.expense.domain.ExpenseFacade;
 import PersonalBudget.business.income.domain.IncomeFacade;
 import PersonalBudget.business.user.domain.model.UserAccountEntity;
+import PersonalBudget.business.user.domain.service.EmailService;
+import PersonalBudget.business.user.domain.service.UserService;
+import PersonalBudget.business.user.domain.service.UserTemplateService;
 import PersonalBudget.business.user.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,11 +30,12 @@ public class SignUpPageHandler {
         return SIGNUP_PAGE;
     }
 
-    public String handleSignUpPageAfterSubmit(BindingResult bindingResult, Model model, UserDTO userDTO) {
+    public String handleSignUpPageAfterSubmit(BindingResult bindingResult, Model model,
+                                              UserDTO userDTO) {
         if (bindingResult.hasErrors()) {
             return SIGNUP_PAGE;
         }
-        if(userService.isEmail(userDTO)) {
+        if(userService.isEmail(userDTO.email())) {
             userTemplateService.addEmailVerificationAttribute(model);
             return SIGNUP_PAGE;
         }
@@ -41,8 +45,8 @@ public class SignUpPageHandler {
         incomeFacade.addDefaultIncomeCategoriesForUser(id);
         expenseFacade.addDefaultExpenseCategoriesForUser(id);
         expenseFacade.addDefaultPaymentMethodsForUser(id);
-        String emailMessage = emailService.buildConfirmationEmail(userEntity);
-        String subject = emailService.buildConfirmationSubject();
+        String emailMessage = emailService.buildConfirmationAccountEmail(userEntity);
+        String subject = emailService.buildConfirmationAccountSubject();
         emailService.sendEmail(emailMessage, recipient, subject);
         return REDIRECT_SIGNUP_SUCCESS_PAGE;
     }

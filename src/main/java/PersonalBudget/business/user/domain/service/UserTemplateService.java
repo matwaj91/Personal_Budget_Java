@@ -1,6 +1,5 @@
 package PersonalBudget.business.user.domain.service;
 
-import PersonalBudget.business.user.dto.UserProfileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -25,8 +24,11 @@ public class UserTemplateService {
         model.addAttribute("isAccountDeleted", true);
     }
 
-    public void addConfirmationEmailAttribute(Model model, String name, String link) {
-        model.addAttribute("name", name);
-        model.addAttribute("link", link);
+    public void addMissingEmailAttribute(Model model) {
+        model.addAttribute("isUserAlreadyRegistered", false);
+    }
+
+    public void addNoResetPasswordAttribute(Model model) {
+        model.addAttribute("isPasswordReset", false);
     }
 }

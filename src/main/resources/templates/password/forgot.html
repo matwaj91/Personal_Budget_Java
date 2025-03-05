@@ -1,14 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 	<head th:replace = "~{base :: head}">
 	<body>
 		<main>
+			<div th:if="${isUserAlreadyRegistered == false}">
+				<div class="bg-white rounded-lg opacity-75 shadow-lg h5 p-3 mx-auto text-center font-weight-bold alert-dismissible alert alert-negative">
+					[[#{password.forgot.email.missing}]]
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			</div>
 			<div class="container mx-auto">
-				<form action="#" method="post" id="formReset" class="bg-white rounded-lg opacity-75 shadow-lg p-3 m-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-5">
+				<form th:action="@{/api/v1/password/forgot}"  th:object="${userEmailDTO}" method="post" id="formReset" class="bg-white rounded-lg opacity-75 shadow-lg p-3 m-3 mx-auto col-10 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-5">
 					<div>
 						<h3 class="text-justify">[[#{password.forgot.description}]]</h3>
 						<div class="h5">
-							<input type="email" class="form-control font-weight-bold text-dark border-4 rounded-3" id="email" name="email" aria-describedby="email" required>
+							<label for="email" class="font-weight-normal text-black"></label>
+							<input type="text" th:field="*{email}" class="form-control font-weight-bold text-dark border-4 error" id="email" name="email" aria-describedby="email" value="">
+							<div class="alert-negative" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 						</div>
 						<button type="submit" class="greenButton my-3 p-1 d-block text-white btn btn-block mx-auto">[[#{password.forgot.button}]]</button>
 						<a href="/api/v1/login" class="text-decoration-none d-block blackButton p-1  text-white btn  mx-auto">[[#{signup.backLogin}]]</a>

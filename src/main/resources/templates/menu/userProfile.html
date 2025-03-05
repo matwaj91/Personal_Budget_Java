@@ -118,6 +118,7 @@
                     <div class="form-group mx-auto">
                         <label for="password" class="font-weight-normal text-black">[[#{settings.profile.password}]]</label>
                         <input type="password" th:field="*{password}" class="form-control font-weight-bold text-dark border-4 error" id="password" name="password" th:placeholder="#{settings.profile.placeholder.password}">
+                        <div class="alert-negative" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                     </div>
                     <div class="h6">
                         <label class="font-weight-normal text-black">[[#{settings.profile.showPassword}]]</label>
@@ -133,6 +134,5 @@
         <footer th:replace = "~{base :: footer}"></footer>
         <script src="/js/hideShowPassword.js"></script>
         <script src="/js/validateProfile.js"></script>
-        <script src="/js/validatePassword.js"></script>
     </body>
 </html>

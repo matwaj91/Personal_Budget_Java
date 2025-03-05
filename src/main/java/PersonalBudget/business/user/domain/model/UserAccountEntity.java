@@ -42,8 +42,11 @@ public class UserAccountEntity implements UserDetails {
     private String password;
 
     @NotEmpty
-    @Column(name="token")
-    private String token;
+    @Column(name="account_confirmation_token")
+    private String accountConfirmationToken;
+
+    @Column(name="password_reset_token")
+    private String passwordResetToken;
 
     @Column(name = "enabled")
     private boolean enabled;

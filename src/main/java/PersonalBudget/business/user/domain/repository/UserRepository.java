@@ -44,6 +44,19 @@ public interface UserRepository extends JpaRepository<UserAccountEntity, Long> {
     @Query(value = "update user_account set enabled = true where email = :email", nativeQuery = true)
     void enableUserAccount(@Param("email") String email);
 
-    @Query(value = "select * from user_account where token = :token", nativeQuery = true)
+    @Query(value = "select * from user_account where account_confirmation_token = :token", nativeQuery = true)
     Optional<UserAccountEntity> findUserByToken(@Param("token") String token);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update user_account set password_reset_token = :passwordResetToken where email = :email", nativeQuery = true)
+    void setPasswordResetToken(@Param("email") String email, @Param("passwordResetToken") String passwordResetToken);
+
+    @Query(value = "select email from user_account where password_reset_token = :token", nativeQuery = true)
+    Optional<String> existsByToken(@Param("token") String token);
+
+    @Modifying
+    @Transactional
+    @Query(value = "update user_account set password = :password where email = :email", nativeQuery = true)
+    void setUserPasswordAfterReset(@Param("email") String email, @Param("password") String password);
 }

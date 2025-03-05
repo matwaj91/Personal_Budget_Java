@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 @Component
 public record UserMapper() {
 
-    public UserAccountEntity mapUserDTOToUserEntity(UserDTO userDTO, BCryptPasswordEncoder bCryptPasswordEncoder, String token) {
+    public UserAccountEntity mapUserDTOToUserEntity(UserDTO userDTO, BCryptPasswordEncoder bCryptPasswordEncoder, String generatedToken) {
         String encodedPassword = bCryptPasswordEncoder.encode(userDTO.password());
         return UserAccountEntity.builder()
                 .name(userDTO.name())
                 .email(userDTO.email())
                 .password(encodedPassword)
-                .token(token)
+                .accountConfirmationToken(generatedToken)
                 .build();
     }
 }

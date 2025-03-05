@@ -7,6 +7,7 @@ import PersonalBudget.business.user.domain.service.exception.EmailAlreadyConfirm
 import PersonalBudget.business.user.domain.service.exception.TokenNotFoundException;
 import PersonalBudget.business.user.domain.service.exception.UserNotFoundException;
 import PersonalBudget.business.user.dto.UserDTO;
+import PersonalBudget.business.user.dto.UserEmailDTO;
 import PersonalBudget.business.user.dto.UserProfileDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
+import static PersonalBudget.common.util.TokenGenerator.getGeneratedToken;
+
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -29,13 +32,12 @@ public class UserService implements UserDetailsService {
     private final UserMapper userMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public boolean isEmail(UserDTO userDTO) {
-        return userRepository.existsByEmail(userDTO.email());
+    public boolean isEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     public UserAccountEntity addNewUser(UserDTO userDTO) {
-        String token = UUID.randomUUID().toString();
-        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder, token);
+        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder, getGeneratedToken());
         userRepository.save(userEntity);
         return userEntity;
     }
@@ -91,5 +93,18 @@ public class UserService implements UserDetailsService {
     public void deleteUserAccount(Long userId) {
         userRepository.deleteById(userId);
     }
-}
 
+    public void updatePasswordResetToken(UserEmailDTO userEmailDTO, String passwordResetToken) {
+        String email = userEmailDTO.email();
+        userRepository.setPasswordResetToken(email, passwordResetToken);
+    }
+
+    public Optional<String> isAccount(String token) {
+        return userRepository.existsByToken(token);
+    }
+
+    public void resetPassword(String email, String password) {
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        userRepository.setUserPasswordAfterReset(email, encodedPassword);
+    }
+}

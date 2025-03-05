@@ -2,9 +2,10 @@ package PersonalBudget.business.user.dto;
 
 import jakarta.validation.constraints.Size;
 
-public record UserProfileDTO (
+public record UserPasswordDTO (
 
-        String name,
         @Size(min = 6, message = "{password.six}")
         String password) {
 }
+
+

@@ -1,7 +1,7 @@
 package PersonalBudget.business.user.domain.controller;
 
-import PersonalBudget.business.user.domain.service.UserAccountPageHandler;
-import PersonalBudget.business.user.domain.service.UserProfilePageHandler;
+import PersonalBudget.business.user.domain.service.pageHandler.UserAccountPageHandler;
+import PersonalBudget.business.user.domain.service.pageHandler.UserProfilePageHandler;
 import PersonalBudget.business.user.dto.UserProfileDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

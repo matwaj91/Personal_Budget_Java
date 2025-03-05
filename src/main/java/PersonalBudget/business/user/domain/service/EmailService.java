@@ -20,9 +20,14 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private static final String VERIFICATION_LINK = "http://localhost:8080/api/v1/signup/confirmation?token=";
-    public static final String CONFIRMATION_SUBJECT_IN_POLISH = "Potwierdzenie konta użytkownika";
-    public static final String CONFIRMATION_SUBJECT_IN_GERMAN = "Benutzerkonto Bestätigung";
-    public static final String CONFIRMATION_SUBJECT_IN_ENGLISH = "User account confirmation";
+    private static final String RESET_LINK = "http://localhost:8080/api/v1/password/reset?token=";
+    private static final String CONFIRMATION_SUBJECT_IN_POLISH = "Budżet Osobisty - Potwierdzenie konta użytkownika";
+    private static final String CONFIRMATION_SUBJECT_IN_GERMAN = "Persönliches Budget - Benutzerkonto Bestätigung";
+    private static final String CONFIRMATION_SUBJECT_IN_ENGLISH = "Personal Budget - User account confirmation";
+    private static final String RESET_SUBJECT_IN_POLISH = "Budżet Osobisty - Reset hasła";
+    private static final String RESET_SUBJECT_IN_GERMAN = "Persönliches Budget - Zurücksetzung des Passworts";
+    private static final String RESET_SUBJECT_IN_ENGLISH = "Personal Budget - Password Reset";
+
 
     @Async
     public void sendEmail(String emailMessage, String recipient, String subject) {
@@ -40,7 +45,7 @@ public class EmailService {
         }
     }
 
-    public String buildConfirmationSubject() {
+    public String buildConfirmationAccountSubject() {
         String language = LocaleContextHolder.getLocale().getLanguage();
 
         return switch (language) {
@@ -50,9 +55,9 @@ public class EmailService {
         };
     }
 
-    public String buildConfirmationEmail(UserAccountEntity userAccount) {
-        String name  = userAccount.getName();
-        String token = userAccount.getToken();
+    public String buildConfirmationAccountEmail(UserAccountEntity userAccount) {
+        String name = userAccount.getName();
+        String token = userAccount.getAccountConfirmationToken();
         String link = VERIFICATION_LINK + token;
 
         String language = LocaleContextHolder.getLocale().getLanguage();
@@ -61,6 +66,28 @@ public class EmailService {
             case "pl" -> prepareConfirmationEmailMessageInPolish(name, link);
             case "de" -> prepareConfirmationEmailMessageInGerman(name, link);
             default -> prepareConfirmationEmailMessageInEnglish(name, link);
+        };
+    }
+
+    public String buildResetPasswordSubject() {
+        String language = LocaleContextHolder.getLocale().getLanguage();
+
+        return switch (language) {
+            case "pl" -> RESET_SUBJECT_IN_POLISH;
+            case "de" -> RESET_SUBJECT_IN_GERMAN;
+            default -> RESET_SUBJECT_IN_ENGLISH;
+        };
+    }
+
+    public String buildResetPasswordEmail(String token) {
+        String link = RESET_LINK + token;
+
+        String language = LocaleContextHolder.getLocale().getLanguage();
+
+        return switch (language) {
+            case "pl" -> preparePasswordResetEmailMessageInPolish(link);
+            case "de" -> preparePasswordResetEmailMessageInGerman(link);
+            default -> preparePasswordResetEmailMessageInEnglish(link);
         };
     }
 
@@ -83,5 +110,23 @@ public class EmailService {
                 "<p>We're excited to have you on board!</p>" +
                 "<p>To complete your registration, kindly click on the following link to verify your email address!</p>" +
                 "<p>" + link + "</p>";
+    }
+
+    public String preparePasswordResetEmailMessageInPolish(String link) {
+        return "<p>Aby zresetować hasło, kliknij w poniższy link:</p>" +
+                "<p>" + link + "</p>" +
+                "<p>Jeśli nie zażądałeś resetu hasła, prosimy o zignorowanie tej wiadomości!</p>";
+    }
+
+    public String preparePasswordResetEmailMessageInGerman(String link) {
+        return "<p>Um Ihr Passwort zurückzusetzen, klicken Sie bitte auf den folgenden Link:</p>" +
+                "<p>" + link + "</p>" +
+                "<p>Wenn Sie keine Zurücksetzung des Passworts angefordert haben, ignorieren Sie bitte diese E-Mail!</p>";
+    }
+
+    public String preparePasswordResetEmailMessageInEnglish(String link) {
+        return "<p>To reset your password, please click on the following link:</p>" +
+                "<p>" + link + "</p>" +
+                "<p>If you did not request a password reset, please ignore this email!</p>";
     }
 }
