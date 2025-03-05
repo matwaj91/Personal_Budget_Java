@@ -29,6 +29,6 @@ spring:
 # Tomcat
 server:
   error:
-    include-exception: true
-    include-message: always
-    include-stacktrace: always
+    path: /error
+    whitelabel:
+      enabled: false
