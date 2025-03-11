@@ -50,6 +50,6 @@ public class PasswordController {
     @PostMapping(value = "/password/reset")
     public String getProperPageAfterResetPasswordSubmit(@Valid @ModelAttribute("userPasswordDTO") @RequestBody UserPasswordDTO userPasswordDTO,
                                            BindingResult bindingResult, Model model, HttpSession session) {
-        return resetPasswordPageHandler.handleResetPasswordPageAfterSubmit(bindingResult, model, userPasswordDTO,session);
+        return resetPasswordPageHandler.handleResetPasswordPageAfterSubmit(bindingResult, model, userPasswordDTO, session);
     }
 }
