@@ -9,12 +9,12 @@ import org.springframework.ui.Model;
 import java.time.LocalDate;
 import java.util.List;
 
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentMonth;
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentYear;
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayPreviousMonth;
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayCurrentMonth;
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayCurrentYear;
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayPreviousMonth;
+import static PersonalBudget.common.util.DateUtils.getFirstDayCurrentMonth;
+import static PersonalBudget.common.util.DateUtils.getFirstDayCurrentYear;
+import static PersonalBudget.common.util.DateUtils.getFirstDayPreviousMonth;
+import static PersonalBudget.common.util.DateUtils.getLastDayCurrentMonth;
+import static PersonalBudget.common.util.DateUtils.getLastDayCurrentYear;
+import static PersonalBudget.common.util.DateUtils.getLastDayPreviousMonth;
 
 @RequiredArgsConstructor
 @Service

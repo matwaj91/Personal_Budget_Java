@@ -6,7 +6,7 @@ import java.time.YearMonth;
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
-public class PersonalBudgetDateUtils {
+public class DateUtils {
 
     public static LocalDate getNowLocalDate() {
         return LocalDate.now();

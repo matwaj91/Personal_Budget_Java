@@ -37,7 +37,8 @@ public class UserService implements UserDetailsService {
     }
 
     public UserAccountEntity addNewUser(UserDTO userDTO) {
-        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, bCryptPasswordEncoder, getGeneratedToken());
+        String encodedPassword = bCryptPasswordEncoder.encode(userDTO.password());
+        UserAccountEntity userEntity = userMapper.mapUserDTOToUserEntity(userDTO, encodedPassword, getGeneratedToken());
         userRepository.save(userEntity);
         return userEntity;
     }

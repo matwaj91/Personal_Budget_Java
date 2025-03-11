@@ -18,8 +18,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getFirstDayCurrentMonth;
-import static PersonalBudget.common.util.PersonalBudgetDateUtils.getLastDayCurrentMonth;
+import static PersonalBudget.common.util.DateUtils.getFirstDayCurrentMonth;
+import static PersonalBudget.common.util.DateUtils.getLastDayCurrentMonth;
 
 @RequiredArgsConstructor
 @Service
