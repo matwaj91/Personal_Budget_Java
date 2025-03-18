@@ -34,7 +34,7 @@ public class UserAccountController {
     }
 
     @PostMapping(value = "/profile")
-    public String getProperPageAfterSignUp(@Valid @ModelAttribute("userProfileDTO") @RequestBody UserProfileDTO userProfileDTO,
+    public String getProperPageAfterProfilePageSubmit(@Valid @ModelAttribute("userProfileDTO") @RequestBody UserProfileDTO userProfileDTO,
                                            BindingResult bindingResult, Model model) {
         return userProfilePageHandler.handleUserProfilePageAfterSubmit(bindingResult, model, userProfileDTO);
     }

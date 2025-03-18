@@ -49,7 +49,8 @@ class PasswordControllerTest {
 
     @Test
     public void userEmailDTOTest() throws Exception {
-        mockMvc.perform(get("/api/v1/password/forgot").param("email", "test@example.com"))
+        mockMvc.perform(get("/api/v1/password/forgot")
+                .param("email", "test@example.com"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("userEmailDTO"))
                 .andExpect(model().attribute("userEmailDTO", new UserEmailDTO("test@example.com")));
@@ -57,13 +58,15 @@ class PasswordControllerTest {
 
     @Test
     public void getProperPageAfterForgotPasswordTest() throws Exception {
-        mockMvc.perform(post("/api/v1/password/forgot").param("email", "test@example.com"))
+        mockMvc.perform(post("/api/v1/password/forgot")
+                .param("email", "test@example.com"))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void getProperPageAfterResetLinkSubmitTest() throws Exception {
-        mockMvc.perform(get("/api/v1/password/reset").param("token", "123456789"))
+        mockMvc.perform(get("/api/v1/password/reset")
+                .param("token", "123456789"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(anyOf(is(PASSWORD_RESET_PAGE), is(LOGIN_PAGE))));
     }
@@ -74,7 +77,8 @@ class PasswordControllerTest {
         session.setAttribute("email", optionalEmail.get());
         assertEquals("test@example.com", session.getAttribute("email"));
 
-        mockMvc.perform(post("/api/v1/password/reset").param("password", "testPass1973!"))
+        mockMvc.perform(post("/api/v1/password/reset")
+                .param("password", "testPass1973!"))
                 .andExpect(status().isOk())
                 .andExpect(view().name(anyOf(is(PASSWORD_RESET_PAGE), is(PASSWORD_RESET_SUCCESS_PAGE))));
     }
