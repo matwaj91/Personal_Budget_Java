@@ -3,6 +3,7 @@ package PersonalBudget.business.balance.domain.service;
 import PersonalBudget.common.util.ParticularActivityDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.verify;
 @AutoConfigureMockMvc
 class BalanceTemplateServiceTest {
 
-    @Mock
+    @InjectMocks
     private BalanceTemplateService balanceTemplateService;
 
     @Mock

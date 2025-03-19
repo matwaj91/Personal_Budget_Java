@@ -4,6 +4,7 @@ import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,7 +25,7 @@ class ExpenseTemplateServiceTest {
     @Mock
     private ExpenseService expenseService;
 
-    @Mock
+    @InjectMocks
     private ExpenseTemplateService expenseTemplateService;
 
     @BeforeEach

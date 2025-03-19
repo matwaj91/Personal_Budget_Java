@@ -25,7 +25,6 @@ public class BalancePageHandler {
     private static final String BALANCE_PAGE = "menu/balance";
     private static final String MENU_PAGE = "menu/main";
 
-
     public String handleCurrentMonthBalancePage(Model model) {
         LocalDate dateFrom = getFirstDayCurrentMonth();
         LocalDate dateTo= getLastDayCurrentMonth();
