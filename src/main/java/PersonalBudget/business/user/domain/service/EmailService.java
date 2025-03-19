@@ -28,7 +28,6 @@ public class EmailService {
     private static final String RESET_SUBJECT_IN_GERMAN = "Persönliches Budget - Zurücksetzung des Passworts";
     private static final String RESET_SUBJECT_IN_ENGLISH = "Personal Budget - Password Reset";
 
-
     @Async
     public void sendEmail(String emailMessage, String recipient, String subject) {
         try {
