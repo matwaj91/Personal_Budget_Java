@@ -1,6 +1,5 @@
 package PersonalBudget.business.user.domain.service.pageHandler;
 
-import PersonalBudget.business.balance.domain.service.BalancePageHandler;
 import PersonalBudget.business.user.domain.service.EmailService;
 import PersonalBudget.business.user.domain.service.UserService;
 import PersonalBudget.business.user.domain.service.UserTemplateService;
@@ -13,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
