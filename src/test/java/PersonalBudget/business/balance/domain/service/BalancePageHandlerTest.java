@@ -4,7 +4,6 @@ import PersonalBudget.common.util.TimePeriodDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -15,7 +14,7 @@ import java.time.Month;
 
 import static PersonalBudget.common.util.DateUtils.getFirstDayCurrentMonth;
 import static PersonalBudget.common.util.DateUtils.getLastDayCurrentMonth;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
