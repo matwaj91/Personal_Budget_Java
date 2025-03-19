@@ -21,7 +21,6 @@ class ForgotPasswordPageHandlerTest {
 
     private final UserEmailDTO userEmailDTO = new UserEmailDTO("example@com");
     private static final String FORGOT_PASSWORD_PAGE = "password/forgot";
-    private static final String RESET_REQUESTED_PAGE = "password/resetRequested";
 
     @Mock
     private UserService userService;

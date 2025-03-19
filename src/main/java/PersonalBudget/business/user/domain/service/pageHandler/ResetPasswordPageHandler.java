@@ -2,7 +2,6 @@ package PersonalBudget.business.user.domain.service.pageHandler;
 
 import PersonalBudget.business.user.domain.service.UserService;
 import PersonalBudget.business.user.domain.service.UserTemplateService;
-import PersonalBudget.business.user.dto.UserEmailDTO;
 import PersonalBudget.business.user.dto.UserPasswordDTO;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
