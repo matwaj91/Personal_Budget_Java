@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 @RequiredArgsConstructor
 @Service
 public class BalanceTemplateService {
