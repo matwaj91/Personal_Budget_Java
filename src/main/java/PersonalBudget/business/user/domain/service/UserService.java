@@ -53,7 +53,7 @@ public class UserService implements UserDetailsService {
         userRepository.enableUserAccount(userAccount.getEmail());
     }
 
-    public Long getCurrentLoggedInUserId() {
+    public Long getCurrentLoggedInUserId() throws UserNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String email = userDetails.getUsername();
