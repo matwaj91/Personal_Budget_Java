@@ -23,35 +23,35 @@ class ExpenseFacadeTest {
     private ExpenseService expenseService;
 
     @Test
-    void addDefaultExpenseCategoriesForUser() {
+    void addDefaultExpenseCategoriesForUserTest() {
         expenseFacade.addDefaultExpenseCategoriesForUser(userId);
 
         verify(expenseService, times(1)).addDefaultExpenseCategoriesToUserAccount(userId);
     }
 
     @Test
-    void addDefaultPaymentMethodsForUser() {
+    void addDefaultPaymentMethodsForUserTest() {
         expenseFacade.addDefaultPaymentMethodsForUser(userId);
 
         verify(expenseService, times(1)).addDefaultPaymentMethodsToUserAccount(userId);
     }
 
     @Test
-    void deleteExpensesForUser() {
+    void deleteExpensesForUserTest() {
         expenseFacade.deleteExpensesForUser(userId);
 
         verify(expenseService, times(1)).deleteUserExpenses(userId);
     }
 
     @Test
-    void deleteExpenseCategoriesForUser() {
+    void deleteExpenseCategoriesForUserTest() {
         expenseFacade.deleteExpenseCategoriesForUser(userId);
 
         verify(expenseService, times(1)).deleteUserExpenseCategories(userId);
     }
 
     @Test
-    void deletePaymentMethodsForUser() {
+    void deletePaymentMethodsForUserTest() {
         expenseFacade.deletePaymentMethodsForUser(userId);
 
         verify(expenseService, times(1)).deleteUserPaymentMethods(userId);
