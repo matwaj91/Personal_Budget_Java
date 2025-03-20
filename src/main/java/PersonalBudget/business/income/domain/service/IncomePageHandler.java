@@ -1,8 +1,6 @@
 package PersonalBudget.business.income.domain.service;
 
-import PersonalBudget.business.income.dto.IncomeCategoryDTO;
 import PersonalBudget.business.income.dto.IncomeDTO;
-import PersonalBudget.business.income.dto.IncomeNewCategoryDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
