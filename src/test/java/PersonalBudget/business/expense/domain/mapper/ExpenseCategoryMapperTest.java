@@ -4,13 +4,13 @@ import PersonalBudget.business.expense.domain.model.ExpenseCategoryEntity;
 import PersonalBudget.business.expense.domain.model.ExpensePaymentMethodEntity;
 import PersonalBudget.business.expense.dto.ExpenseNewCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseNewPaymentMethodDTO;
-import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @AutoConfigureMockMvc
