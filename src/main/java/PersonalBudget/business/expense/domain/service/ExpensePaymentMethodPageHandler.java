@@ -1,7 +1,5 @@
 package PersonalBudget.business.expense.domain.service;
 
-import PersonalBudget.business.expense.dto.ExpenseCategoryDTO;
-import PersonalBudget.business.expense.dto.ExpenseNewCategoryDTO;
 import PersonalBudget.business.expense.dto.ExpenseNewPaymentMethodDTO;
 import PersonalBudget.business.expense.dto.ExpensePaymentMethodDTO;
 import jakarta.validation.Valid;
