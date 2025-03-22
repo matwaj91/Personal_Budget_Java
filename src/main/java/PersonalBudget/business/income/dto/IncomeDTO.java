@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public record IncomeDTO(
+public record IncomeDTO (
 
         @NotNull(message = "{income.amount.empty}")
         BigDecimal amount,
