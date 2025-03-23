@@ -3,8 +3,12 @@ package PersonalBudget.business.user.domain.service;
 import PersonalBudget.business.user.domain.mapper.UserMapper;
 import PersonalBudget.business.user.domain.model.UserAccountEntity;
 import PersonalBudget.business.user.domain.repository.UserRepository;
+import PersonalBudget.business.user.domain.service.exception.EmailAlreadyConfirmedException;
+import PersonalBudget.business.user.domain.service.exception.TokenNotFoundException;
 import PersonalBudget.business.user.domain.service.exception.UserNotFoundException;
 import PersonalBudget.business.user.dto.UserDTO;
+import PersonalBudget.business.user.dto.UserEmailDTO;
+import PersonalBudget.business.user.dto.UserProfileDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +32,14 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    private final String NAME ="MATEUSZ";
+    private final String EMAIL = "test@example.com";
+    private final String PASSWORD = "testPassword";
+    private final String TOKEN = "123456789";
+    private final String PASSWORD_RESET_TOKEN = "dasdk234";
+    private final Long EXPECTED_USER_ID = 1L;
+    private final UserProfileDTO userProfileDTO = new UserProfileDTO(NAME, PASSWORD);
+
     @Mock
     private UserMapper userMapper;
 
@@ -42,7 +54,7 @@ public class UserServiceTest {
 
     @Test
     void addNewUserShouldAddNewUserSuccessfully() {
-        UserDTO userDTO = new UserDTO("testName", "testEmail", "testPassword");
+        UserDTO userDTO = new UserDTO(NAME, EMAIL, PASSWORD);
         UserAccountEntity userEntity = new UserAccountEntity();
         String encodedPassword = bCryptPasswordEncoder.encode(userDTO.password());
 
@@ -54,40 +66,60 @@ public class UserServiceTest {
         UserAccountEntity addedUser = userService.addNewUser(userDTO);
         assertNotNull(addedUser);
         assertEquals(userEntity.getName(), addedUser.getName());
-        assertEquals("testEmail", userDTO.email());
-        assertNotEquals("testpassword", userEntity.getPassword());
+        assertEquals(EMAIL, userDTO.email());
+        assertNotEquals(PASSWORD, userEntity.getPassword());
+    }
+
+    @Test
+    public void enableUserAccountTest() {
+        UserAccountEntity userAccountEntity = new UserAccountEntity();
+
+        when(userRepository.findUserByToken(TOKEN)).thenReturn(Optional.of(userAccountEntity));
+
+        userService.enableUserAccount(TOKEN);
+
+        verify(userRepository, times(1)).enableUserAccount(userAccountEntity.getEmail());
+    }
+
+    @Test
+    public void enableUserAccountFailureTest() {
+        when(userRepository.findUserByToken(TOKEN)).thenReturn(Optional.empty());
+
+        assertThrows(TokenNotFoundException.class, () -> userService.enableUserAccount(TOKEN));
+    }
+
+    @Test
+    public void enableUserAccountIsEnabledTest() {
+        UserAccountEntity userAccountEntity = new UserAccountEntity();
+        userAccountEntity.setEnabled(true);
+
+        when(userRepository.findUserByToken(TOKEN)).thenReturn(Optional.of(userAccountEntity));
+        assertThrows(EmailAlreadyConfirmedException.class, () -> userService.enableUserAccount(TOKEN));
     }
 
     @Test
     void isEmailTest() {
-        String email = "test@example.com";
-        when(userRepository.existsByEmail(email)).thenReturn(true);
+        when(userRepository.existsByEmail(EMAIL)).thenReturn(true);
 
-        boolean result = userService.isEmail(email);
+        boolean result = userService.isEmail(EMAIL);
 
         assertTrue(result);
-        verify(userRepository, times(1)).existsByEmail(email);
+        verify(userRepository, times(1)).existsByEmail(EMAIL);
     }
 
     @Test
     public void getCurrentLoggedInUserIdTest() {
-        String email = "test@example.com";
-        Long expectedUserId = 1L;
-
-        authenticateUser(email, expectedUserId);
+        authenticateUser(EMAIL, EXPECTED_USER_ID);
         Long loggedUserId = userService.getCurrentLoggedInUserId();
 
-        assertEquals(expectedUserId, loggedUserId);
+        assertEquals(EXPECTED_USER_ID, loggedUserId);
     }
 
     @Test
     public void getCurrentLoggedInUserIdFailureTest() {
-        String email = "test@example.com";
-        Long expectedUserId = 1L;
+        authenticateUser(EMAIL, EXPECTED_USER_ID);
 
-        authenticateUser(email, expectedUserId);
-
-        when(userRepository.findIdByEmail(email)).thenReturn(Optional.empty());
+        when(userRepository.findIdByEmail(EMAIL)).thenReturn(Optional.empty());
 
         UserNotFoundException exception = assertThrows(
                 UserNotFoundException.class,
@@ -100,12 +132,11 @@ public class UserServiceTest {
 
     @Test
     public void loadUserByUsernameTest() {
-        String email = "test@example.com";
-        when(userRepository.findUserByEmail(email)).thenReturn(Optional.empty());
+        when(userRepository.findUserByEmail(EMAIL)).thenReturn(Optional.empty());
 
         UsernameNotFoundException exception = assertThrows(
                 UsernameNotFoundException.class,
-                () -> userService.loadUserByUsername(email),
+                () -> userService.loadUserByUsername(EMAIL),
                 "UsernameNotFoundException should be thrown"
         );
 
@@ -113,35 +144,78 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updatePasswordResetTokenTest() {
-        String email = "test@example.com";
-        String passwordResetToken = "14$csd839";
+    public void getUserProfileDetailsTest() {
+        authenticateUser(EMAIL, EXPECTED_USER_ID);
+        Long loggedInUserId = userService.getCurrentLoggedInUserId();
 
-        userRepository.setUserPasswordAfterReset(email, passwordResetToken);
+        userService.getUserProfileDetails();
 
-        verify(userRepository, times(1)).setUserPasswordAfterReset(email, passwordResetToken);
-
+        verify(userRepository, times(1)).findUserProfileDetailsByUserId(loggedInUserId);
     }
 
     @Test
-    public void isAccountSuccessTest() {
-        String token = "123456789";
-        when(userRepository.existsByToken(token)).thenReturn(Optional.of("test@example.com"));
+    public void updateUserNameTest() {
+        authenticateUser(EMAIL, EXPECTED_USER_ID);
+        Long loggedInUserId = userService.getCurrentLoggedInUserId();
 
-        Optional<String> result = userService.isAccount(token);
+        userService.updateUserName(userProfileDTO);
 
-        assertTrue(result.isPresent());
+        verify(userRepository, times(1)).setUserName(loggedInUserId, NAME);
+    }
+
+    @Test
+    public void updateUserPasswordTest() {
+        authenticateUser(EMAIL, EXPECTED_USER_ID);
+        Long loggedInUserId = userService.getCurrentLoggedInUserId();
+        String encodedPassword = bCryptPasswordEncoder.encode(userProfileDTO.password());
+
+        userService.updateUserPassword(userProfileDTO);
+
+        verify(userRepository, times(1)).setUserPassword(loggedInUserId, encodedPassword);
+    }
+
+    @Test
+    public void updateUserNameAndPasswordTest() {
+        authenticateUser(EMAIL, EXPECTED_USER_ID);
+        Long loggedInUserId = userService.getCurrentLoggedInUserId();
+        String encodedPassword = bCryptPasswordEncoder.encode(userProfileDTO.password());
+
+        userService.updateUserNameAndPassword(userProfileDTO);
+
+        verify(userRepository, times(1)).setUserNameAndPassword(loggedInUserId, NAME, encodedPassword);
+    }
+
+    @Test
+    public void deleteUserAccountTest() {
+        Long userId = 1L;
+
+        userService.deleteUserAccount(userId);
+
+        verify(userRepository, times(1)).deleteById(userId);
+    }
+
+    @Test
+    public void updatePasswordResetTokenTest() {
+        UserEmailDTO userEmailDTO = new UserEmailDTO(EMAIL);
+        userService.updatePasswordResetToken(userEmailDTO, PASSWORD_RESET_TOKEN);
+
+        verify(userRepository, times(1)).setPasswordResetToken(EMAIL, PASSWORD_RESET_TOKEN);
+    }
+
+    @Test
+    public void isAccountTest() {
+        userService.isAccount( TOKEN);
+
+        verify(userRepository, times(1)).existsByToken(TOKEN);
     }
 
     @Test
     public void resetPasswordTest() {
-        String email = "test@example.com";
-        String password = "testPassword";
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
+        userService.resetPassword(EMAIL, PASSWORD);
 
-        userRepository.setUserPasswordAfterReset(email, encodedPassword);
+        String encodedPassword = bCryptPasswordEncoder.encode(PASSWORD);
 
-        verify(userRepository, times(1)).setUserPasswordAfterReset(email, encodedPassword);
+        verify(userRepository, times(1)).setUserPasswordAfterReset(EMAIL, encodedPassword);
     }
 
     public void authenticateUser(String email, Long expectedUserId) {
