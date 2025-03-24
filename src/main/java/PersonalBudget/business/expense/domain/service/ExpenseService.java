@@ -45,7 +45,6 @@ public class ExpenseService {
 
     public List<ExpensePaymentMethodDTO> getUserPaymentMethods() {
         Long loggedInUserId = userFacade.fetchLoggedInUserId();
-        paymentMethodRepository.findAllPaymentMethodsNames(loggedInUserId);
         return paymentMethodRepository.findAllPaymentMethodsNames(loggedInUserId);
     }
 
