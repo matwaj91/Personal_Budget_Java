@@ -42,7 +42,6 @@ class UserAccountControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @Test
     public void getUserAccountPageTest() throws Exception {
         mockMvc.perform(get("/api/v1/menu/user-account"))
