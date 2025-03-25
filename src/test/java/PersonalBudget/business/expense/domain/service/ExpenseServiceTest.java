@@ -36,7 +36,6 @@ import static org.mockito.Mockito.*;
 @AutoConfigureMockMvc
 class ExpenseServiceTest {
 
-
     private final Long USER_ID = 1L;
 
     @Mock
