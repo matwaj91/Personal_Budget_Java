@@ -3,9 +3,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/personalbudget
-    username: postgres
-    password: 12345
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
   jpa:
     show-sql: true
     hibernate:
@@ -18,7 +18,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: personal.budget.java.app@gmail.com
-    password: fxzd jcpb wfpl kbpw
+    password: ${mail_password}
     properties:
       mail:
         smtp:
