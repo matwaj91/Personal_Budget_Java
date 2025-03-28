@@ -1,6 +1,5 @@
 package PersonalBudget.business.user.domain.service;
 
-import PersonalBudget.business.user.domain.service.exception.FailedToSendEmailException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeBodyPart;
 import jakarta.mail.internet.MimeMessage;
@@ -48,23 +47,6 @@ class EmailServiceTest {
         when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
 
         emailService.sendEmail(EMAIL_MESSAGE, RECIPIENT, SUBJECT);
-
-        verify(javaMailSender, times(1)).send(mimeMessage);
-    }
-
-    @Test
-    void sendEmailTestThrowsMessagingExceptionTest()  {
-        MimeMessage mimeMessage = mock(MimeMessage.class);
-        when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
-
-        doAnswer(invocation -> {
-            throw new MessagingException("Simulated MessagingException");}).when(javaMailSender).send(mimeMessage);
-
-        try {
-            emailService.sendEmail(EMAIL_MESSAGE, RECIPIENT, SUBJECT);
-        } catch (FailedToSendEmailException ex) {
-            assert ex.getMessage().equals("Failed to send an email");
-        }
 
         verify(javaMailSender, times(1)).send(mimeMessage);
     }

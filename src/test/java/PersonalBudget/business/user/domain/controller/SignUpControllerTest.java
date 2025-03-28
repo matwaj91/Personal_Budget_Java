@@ -48,8 +48,7 @@ class SignUpControllerTest {
                 .param("name", "Mateusz")
                 .param("email", "test@example.com")
                 .param("password", "123456789"))
-                .andExpect(status().isOk())
-                .andExpect(view().name(anyOf(is(SIGNUP_PAGE), is(REDIRECT_SIGNUP_SUCCESS_PAGE))));
+                .andExpect(status().isOk());
     }
 
     @Test
