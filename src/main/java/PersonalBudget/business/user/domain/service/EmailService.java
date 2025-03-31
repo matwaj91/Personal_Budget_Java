@@ -19,8 +19,8 @@ public class EmailService {
 
     private final JavaMailSender javaMailSender;
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
-    private static final String VERIFICATION_LINK = "http://localhost:8080/api/v1/signup/confirmation?token=";
-    private static final String RESET_LINK = "http://localhost:8080/api/v1/password/reset?token=";
+    private static final String VERIFICATION_LINK = "https://personal-budget-java-app.azurewebsites.net/api/v1/signup/confirmation?token=";
+    private static final String RESET_LINK = "https://personal-budget-java-app.azurewebsites.net/api/v1/password/reset?token=";
     private static final String CONFIRMATION_SUBJECT_IN_POLISH = "Budżet Osobisty - Potwierdzenie konta użytkownika";
     private static final String CONFIRMATION_SUBJECT_IN_GERMAN = "Persönliches Budget - Benutzerkonto Bestätigung";
     private static final String CONFIRMATION_SUBJECT_IN_ENGLISH = "Personal Budget - User account confirmation";
