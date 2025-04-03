@@ -20,11 +20,11 @@ In the settings, users can add new income, expense, or payment categories, or de
 
 Users can also change their password from the settings page or by sending a password reset email.
 
-# Languanges
+## Languanges
 
 The user can switch between three languages: Polish, English, and German.
 
-# Usage
+## Usage
 
 The application is containerized using Docker and hosted on Azure App Service.
 
